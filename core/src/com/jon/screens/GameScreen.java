@@ -1,7 +1,9 @@
 package com.jon.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.jon.AlienInvaderGame;
+import com.jon.InputHandler;
 import com.jon.Renderer;
 import com.jon.World;
 
@@ -15,6 +17,7 @@ class GameScreen implements Screen {
         this.game = game;
         this.world = new World();
         this.renderer = new Renderer(game.batch, this.world, game.camera);
+        Gdx.input.setInputProcessor(new InputHandler(world));
     }
 
     @Override

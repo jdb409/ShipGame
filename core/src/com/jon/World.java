@@ -7,51 +7,33 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.jon.GameObjects.Ship;
 
 import java.util.Iterator;
 
 import lombok.Data;
 
+import static com.jon.Constants.SHIP_HEIGHT;
+import static com.jon.Constants.SHIP_WIDTH;
+
 @Data
 public class World {
-    private Rectangle bucket;
+    private Ship ship;
     private Array<Rectangle> raindrops;
     private long lastDropTime;
     private int dropsGathered;
 
     public World() {
-        this.bucket = new Rectangle();
-        this.bucket.x = 800 / 2 - 64 / 2;
-        this.bucket.y = 20;
-
-        this.bucket.width = 64;
-        this.bucket.height = 64;
-
+        float midX = Constants.WINDOW_WIDTH / 2 + SHIP_WIDTH / 2;
+        ship = new Ship(midX, 20, SHIP_WIDTH, SHIP_HEIGHT);
         this.raindrops = new Array<>();
         spawnRainDrop();
     }
 
     public void update() {
-        if (Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-//            camera.unproject(touchPos);
-            bucket.x = touchPos.x - 64 / 2;
-        }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            bucket.x -= 200 * Gdx.graphics.getDeltaTime();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            bucket.x += 200 * Gdx.graphics.getDeltaTime();
-        }
+        ship.update();
 
-        if (bucket.x < 0) {
-            bucket.x = 0;
-        }
-        if (bucket.x > 800 - 64) {
-            bucket.x = 800 - 64;
-        }
 
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
@@ -67,7 +49,7 @@ public class World {
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
             if (raindrop.y + 64 < 0)
                 iter.remove();
-            if (raindrop.overlaps(bucket)) {
+            if (raindrop.overlaps(ship.getRectangle())) {
                 dropsGathered++;
                 iter.remove();
             }
@@ -77,8 +59,8 @@ public class World {
 
     private void spawnRainDrop() {
         Rectangle raindrop = new Rectangle();
-        raindrop.x = MathUtils.random(0, 800 - 64);
-        raindrop.y = 480;
+        raindrop.x = MathUtils.random(0, Constants.WINDOW_WIDTH - 64);
+        raindrop.y = Constants.WINDOW_HEIGHT;
         raindrop.width = 64;
         raindrop.height = 64;
         raindrops.add(raindrop);

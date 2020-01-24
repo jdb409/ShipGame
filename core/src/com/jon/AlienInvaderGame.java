@@ -19,7 +19,7 @@ public class AlienInvaderGame extends Game {
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800,480);
+        camera.setToOrtho(false, Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT);
         this.setScreen(new MainMenuScreen(this, camera));
     }
 
