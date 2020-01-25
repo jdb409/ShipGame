@@ -7,9 +7,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.Ship;
 
 import java.util.Iterator;
+import java.util.List;
 
 import lombok.Data;
 
@@ -21,6 +23,7 @@ public class World {
     private Ship ship;
     private Array<Rectangle> raindrops;
     private long lastDropTime;
+    private long lastHeroBullet;
     private int dropsGathered;
 
     public World() {
@@ -34,11 +37,11 @@ public class World {
 
         ship.update();
 
-
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
             spawnRainDrop();
         }
+
 
         // move the raindrops, remove any that are beneath the bottom edge of
         // the screen or that hit the bucket. In the later case we increase the

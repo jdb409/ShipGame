@@ -1,52 +1,91 @@
 package com.jon.GameObjects;
 
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.jon.Constants;
 
+import java.util.Iterator;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import static com.jon.Constants.SHIP_HEIGHT;
 import static com.jon.Constants.SHIP_WIDTH;
+import static com.jon.Constants.WINDOW_HEIGHT;
 
 @Data
-public class Ship implements GameObject {
-    public static float SHIP_SPEED;
-    private Vector2 velocity;
-    //maybe don't need??
-    private Vector2 acceleration;
-    private Rectangle rectangle;
-    private float x;
-    private float y;
-    private float height;
-    private float width;
+@EqualsAndHashCode(callSuper = true)
+public class Ship extends MoveableGameObject {
+    private static float DEFAULT_SPEED = 8;
+    private static float DEFAULT_BULLET_SIZE = 40;
+
+    private Array<Bullet> bullets;
+    private float lastBulletFired;
 
     public Ship(float x, float y, float width, float height) {
-        velocity = new Vector2(0, 0);
-        acceleration = new Vector2(0, 0);
-        rectangle = new Rectangle(x, y, width, height);
+        super(x, y, width, height, DEFAULT_SPEED);
+        bullets = new Array<>();
     }
 
     @Override
     public void update() {
+        updatePosition();
+        updateBullets();
+    }
+
+    private void updatePosition() {
         velocity.add(this.acceleration);
         rectangle.x += velocity.x;
         rectangle.y += velocity.y;
         checkX();
         checkY();
+
     }
 
-    public void setCenter(float x, float y){
-        rectangle.setCenter(x,y);
+    private void updateBullets() {
+        if (TimeUtils.nanoTime() - lastBulletFired > 700000000) {
+            spawnBullets();
+        }
+
+        Iterator<Bullet> bulletIterator = bullets.iterator();
+        while (bulletIterator.hasNext()) {
+            Bullet bullet = bulletIterator.next();
+            bullet.update();
+            if (bullet.getY() > WINDOW_HEIGHT) {
+                bulletIterator.remove();
+            }
+        }
+    }
+
+//    @Override
+//    public void moveUp() {
+//        velocity.y = speed / 2;
+//    }
+//
+//    @Override
+//    public void moveDown() {
+//        velocity.y = -(speed / 2);
+//    }
+
+    //how often do we spawn bullets?  Depending on current ships.
+    private void spawnBullets() {
+        Bullet bullet =
+                new Bullet(this.getX() + this.getWidth() / 3,
+                        this.getY() + this.getHeight(),
+                        DEFAULT_BULLET_SIZE,
+                        DEFAULT_BULLET_SIZE);
+        bullets.add(bullet);
+        lastBulletFired = TimeUtils.nanoTime();
     }
 
     private void checkX() {
-        if (this.getX() < 0) {
-            this.setX(0);
+        if ((this.getX() + this.getWidth() / 2) < 0) {
+            this.setX((this.getX() + this.getWidth() / 2));
         }
 
-        if (this.getX() > Constants.WINDOW_WIDTH - SHIP_WIDTH) {
-            this.setX(Constants.WINDOW_WIDTH - SHIP_WIDTH);
+        if (this.getX() > Constants.WINDOW_WIDTH - SHIP_WIDTH / 2) {
+            this.setX(Constants.WINDOW_WIDTH - SHIP_WIDTH / 2);
         }
     }
 
@@ -58,55 +97,4 @@ public class Ship implements GameObject {
             this.setY(Constants.WINDOW_HEIGHT - SHIP_HEIGHT);
         }
     }
-
-    public void moveLeft() {
-        velocity.x = -20;
-    }
-
-    public void moveRight() {
-        velocity.x = 20;
-    }
-
-    public void moveDown() {
-        velocity.y = -20;
-    }
-
-    public void moveUp() {
-        velocity.y = 20;
-    }
-
-    public void resetSpeed() {
-        velocity.set(0, 0);
-    }
-
-    public float getX() {
-        return rectangle.x;
-    }
-
-    public float getY() {
-        return rectangle.y;
-    }
-
-    public float getWidth() { return rectangle.width; }
-
-    public float getHeight() {
-        return rectangle.height;
-    }
-
-    public void setX(float x) {
-        rectangle.x = x;
-    }
-
-    public void setY(float y) {
-        rectangle.y = y;
-    }
-
-    public void setWidth(float width) {
-        rectangle.width = width;
-    }
-
-    public void setHeight(float height) {
-        rectangle.height = height;
-    }
-
 }
