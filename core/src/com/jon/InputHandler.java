@@ -8,10 +8,14 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 public class InputHandler implements InputProcessor {
     private World world;
     private Ship ship;
+    private float scaleFactorX;
+    private float scaleFactorY;
 
-    public InputHandler(World world) {
+    public InputHandler(World world, float scaleFactorX, float scaleFactorY) {
         this.world = world;
         ship = world.getShip();
+        this.scaleFactorX = scaleFactorX;
+        this.scaleFactorY = scaleFactorY;
     }
 
     @Override
@@ -46,6 +50,10 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.format(" before scale -- %d : %d\n",screenX, screenY);
+        screenX = scaleX(screenX);
+        screenY = scaleY(screenY);
+        System.out.format(" after scale -- %d : %d\n",screenX, screenY);
         ship.setCenter(screenX, WINDOW_HEIGHT - screenY);
         return false;
     }
@@ -57,6 +65,8 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        screenX = scaleX(screenX);
+        screenY = scaleY(screenY);
         ship.setCenter(screenX, WINDOW_HEIGHT - screenY);
         return false;
     }
@@ -69,5 +79,13 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    private int scaleX(int screenX) {
+        return (int) (screenX / scaleFactorX);
+    }
+
+    private int scaleY(int screenY) {
+        return (int) (screenY / scaleFactorY);
     }
 }

@@ -64,7 +64,7 @@ public class Renderer {
         // begin a new batch and draw the bucket and
         // all drops
         batch.begin();
-        font.draw(batch, "Drops Collected: " + world.getDropsGathered(), 0, 480);
+        font.draw(batch, "Drops Collected: " + world.getDropsGathered(), 0, Constants.WINDOW_HEIGHT);
         batch.draw(shipImage, ship.getX(), ship.getY(), ship.getWidth(), ship.getHeight());
 
         for (Rectangle raindrop : raindrops) {

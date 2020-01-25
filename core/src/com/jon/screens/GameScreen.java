@@ -7,6 +7,9 @@ import com.jon.InputHandler;
 import com.jon.Renderer;
 import com.jon.World;
 
+import static com.jon.Constants.WINDOW_HEIGHT;
+import static com.jon.Constants.WINDOW_WIDTH;
+
 class GameScreen implements Screen {
     private AlienInvaderGame game;
     private World world;
@@ -17,7 +20,12 @@ class GameScreen implements Screen {
         this.game = game;
         this.world = new World();
         this.renderer = new Renderer(game.batch, this.world, game.camera);
-        Gdx.input.setInputProcessor(new InputHandler(world));
+        //scale actual screen by desired
+        float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();
+        Gdx.input.setInputProcessor(new InputHandler(world,
+                screenWidth / WINDOW_WIDTH,
+                screenHeight / WINDOW_HEIGHT));
     }
 
     @Override
