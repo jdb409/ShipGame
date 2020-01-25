@@ -17,8 +17,10 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Ship extends MoveableGameObject {
-    private static float DEFAULT_SPEED = 8;
-    private static float DEFAULT_BULLET_SIZE = 40;
+    private static float DEFAULT_SPEED = 10;
+    private static float DEFAULT_BULLET_WIDTH = 20;
+    private static float DEFAULT_BULLET_HEIGHT = 24;
+
 
     private Array<Bullet> bullets;
     private float lastBulletFired;
@@ -73,8 +75,8 @@ public class Ship extends MoveableGameObject {
         Bullet bullet =
                 new Bullet(this.getX() + this.getWidth() / 3,
                         this.getY() + this.getHeight(),
-                        DEFAULT_BULLET_SIZE,
-                        DEFAULT_BULLET_SIZE);
+                        DEFAULT_BULLET_WIDTH,
+                        DEFAULT_BULLET_HEIGHT);
         bullets.add(bullet);
         lastBulletFired = TimeUtils.nanoTime();
     }

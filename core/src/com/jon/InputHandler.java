@@ -11,13 +11,14 @@ public class InputHandler implements InputProcessor {
     private float scaleFactorY;
     private int lastX;
     private int lastY;
+
     public InputHandler(World world, float scaleFactorX, float scaleFactorY) {
         this.world = world;
         ship = world.getShip();
         this.scaleFactorX = scaleFactorX;
         this.scaleFactorY = scaleFactorY;
-        lastX = scaleX((int) ship.getX());
-        lastY = scaleY((int) ship.getY());
+        lastX = (int) ship.getX();
+        lastY = (int) ship.getY();
     }
 
     @Override
@@ -64,34 +65,70 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 //        //only want the direction
-        screenX = scaleX(screenX);
-        screenY = scaleY(screenY);
+        // need to take into consideration how far finger moved when determing distance
+//
         if (screenX == lastX) {
+            lastX = screenX;
+            lastY = screenY;
             ship.resetSpeedX();
             return false;
         }
 
         if (screenY == lastY) {
+            lastX = screenX;
+            lastY = screenY;
             ship.resetSpeedY();
             return false;
         }
 
-        if (screenX > lastX) {
-            ship.moveRight();
+        if (Math.abs(screenX - lastX) > 2) {
+            if (screenX > lastX) {
+                ship.moveRight();
+            }
+
+            if (screenX < lastX) {
+                ship.moveLeft();
+            }
+            if (Math.abs(screenY - lastY) > 10) {
+                if (screenY > lastY) {
+                    ship.moveDown();
+                }
+
+                if (screenY < lastY) {
+                    ship.moveUp();
+                }
+            }
+            lastX = screenX;
+            lastY = screenY;
+            return false;
         }
 
-        if (screenX < lastX) {
-            ship.moveLeft();
-        }
+        if (Math.abs(screenY - lastY) > 2) {
+            if (screenY > lastY) {
+                ship.moveDown();
 
-        if (screenY > lastY) {
-            ship.moveDown();
-        }
+            }
 
-        if (screenY < lastY) {
-            ship.moveUp();
-        }
+            if (screenY < lastY) {
+                ship.moveUp();
 
+            }
+            if (Math.abs(screenX - lastX) > 10) {
+                if (screenX > lastX) {
+                    ship.moveRight();
+
+                }
+
+                if (screenX < lastX) {
+                    ship.moveLeft();
+
+                }
+            }
+            lastX = screenX;
+            lastY = screenY;
+            return false;
+
+        }
         lastX = screenX;
         lastY = screenY;
         return false;

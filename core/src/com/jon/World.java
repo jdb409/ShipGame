@@ -27,8 +27,8 @@ public class World {
     private int dropsGathered;
 
     public World() {
-        float midX = Constants.WINDOW_WIDTH / 2 + SHIP_WIDTH / 2;
-        ship = new Ship(midX, 20, SHIP_WIDTH, SHIP_HEIGHT);
+        float midX = Constants.WINDOW_WIDTH / 2 - SHIP_WIDTH/2;
+        ship = new Ship(midX, 0, SHIP_WIDTH, SHIP_HEIGHT);
         this.raindrops = new Array<>();
         spawnRainDrop();
     }
@@ -36,6 +36,8 @@ public class World {
     public void update() {
 
         ship.update();
+
+        Array<Bullet> heroBullets = ship.getBullets();
 
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
@@ -46,15 +48,27 @@ public class World {
         // move the raindrops, remove any that are beneath the bottom edge of
         // the screen or that hit the bucket. In the later case we increase the
         // value our drops counter and add a sound effect.
+
+
         Iterator<Rectangle> iter = raindrops.iterator();
         while (iter.hasNext()) {
             Rectangle raindrop = iter.next();
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-            if (raindrop.y + 64 < 0)
+            if (raindrop.y + 64 < 0) {
                 iter.remove();
+            }
             if (raindrop.overlaps(ship.getRectangle())) {
                 dropsGathered++;
                 iter.remove();
+            }
+            Iterator<Bullet> bulletIterator = heroBullets.iterator();
+            while (bulletIterator.hasNext()){
+                Bullet bullet = bulletIterator.next();
+                if (raindrop.overlaps(bullet.getRectangle())){
+                    iter.remove();
+                    bulletIterator.remove();
+                    dropsGathered++;
+                }
             }
         }
 
