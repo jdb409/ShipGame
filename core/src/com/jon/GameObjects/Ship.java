@@ -17,7 +17,7 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Ship extends MoveableGameObject {
-    private static float DEFAULT_SPEED = 10;
+    private static float DEFAULT_SPEED = 12;
     private static float DEFAULT_BULLET_WIDTH = 20;
     private static float DEFAULT_BULLET_HEIGHT = 24;
 
@@ -37,7 +37,6 @@ public class Ship extends MoveableGameObject {
     }
 
     private void updatePosition() {
-        velocity.add(this.acceleration);
         rectangle.x += velocity.x;
         rectangle.y += velocity.y;
         checkX();

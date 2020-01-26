@@ -3,6 +3,8 @@ package com.jon;
 import com.badlogic.gdx.InputProcessor;
 import com.jon.GameObjects.Ship;
 
+import static com.jon.Constants.WINDOW_HEIGHT;
+
 
 public class InputHandler implements InputProcessor {
     private World world;
@@ -65,74 +67,34 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 //        //only want the direction
-        // need to take into consideration how far finger moved when determing distance
-//
-        if (screenX == lastX) {
-            lastX = screenX;
-            lastY = screenY;
-            ship.resetSpeedX();
-            return false;
-        }
 
-        if (screenY == lastY) {
-            lastX = screenX;
-            lastY = screenY;
-            ship.resetSpeedY();
-            return false;
-        }
-
-        if (Math.abs(screenX - lastX) > 2) {
+        if (Math.abs(screenX - lastX) > 10) {
             if (screenX > lastX) {
                 ship.moveRight();
             }
-
             if (screenX < lastX) {
                 ship.moveLeft();
             }
-            if (Math.abs(screenY - lastY) > 10) {
-                if (screenY > lastY) {
-                    ship.moveDown();
-                }
-
-                if (screenY < lastY) {
-                    ship.moveUp();
-                }
-            }
-            lastX = screenX;
-            lastY = screenY;
-            return false;
+        } else {
+            ship.resetSpeedX();
         }
 
-        if (Math.abs(screenY - lastY) > 2) {
+        if (Math.abs(screenY - lastY) > 10) {
             if (screenY > lastY) {
                 ship.moveDown();
-
             }
-
             if (screenY < lastY) {
                 ship.moveUp();
-
             }
-            if (Math.abs(screenX - lastX) > 10) {
-                if (screenX > lastX) {
-                    ship.moveRight();
-
-                }
-
-                if (screenX < lastX) {
-                    ship.moveLeft();
-
-                }
-            }
-            lastX = screenX;
-            lastY = screenY;
-            return false;
-
+        } else {
+            ship.resetSpeedY();
         }
+
         lastX = screenX;
         lastY = screenY;
         return false;
     }
+
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
