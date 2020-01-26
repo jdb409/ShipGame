@@ -3,8 +3,6 @@ package com.jon;
 import com.badlogic.gdx.InputProcessor;
 import com.jon.GameObjects.Ship;
 
-import static com.jon.Constants.WINDOW_HEIGHT;
-
 
 public class InputHandler implements InputProcessor {
     private World world;
@@ -66,8 +64,17 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-//        //only want the direction
+        useRelativeY(screenY);
+        ship.setX(scaleX(screenX));
+        return false;
+    }
 
+    private void useRelativeDirections(int screenX, int screenY) {
+        useRelativeX(screenX);
+        useRelativeY(screenY);
+    }
+
+    private void useRelativeX(int screenX) {
         if (Math.abs(screenX - lastX) > 10) {
             if (screenX > lastX) {
                 ship.moveRight();
@@ -78,7 +85,10 @@ public class InputHandler implements InputProcessor {
         } else {
             ship.resetSpeedX();
         }
+        lastX = screenX;
+    }
 
+    private void useRelativeY(int screenY) {
         if (Math.abs(screenY - lastY) > 10) {
             if (screenY > lastY) {
                 ship.moveDown();
@@ -89,10 +99,7 @@ public class InputHandler implements InputProcessor {
         } else {
             ship.resetSpeedY();
         }
-
-        lastX = screenX;
         lastY = screenY;
-        return false;
     }
 
 
