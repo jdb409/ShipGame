@@ -10,8 +10,6 @@ abstract public class MoveableGameObject implements GameObject {
     protected Vector2 velocity;
     protected Vector2 acceleration;
     protected Rectangle rectangle;
-    protected float x;
-    protected float y;
     protected float height;
     protected float width;
     protected float speed;

@@ -1,70 +1,52 @@
 package com.jon;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.jon.AI.AI;
+import com.jon.AI.StandardEnemyAI;
+import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
-import com.jon.GameObjects.Ship;
+import com.jon.GameObjects.PlayerControllerShip;
 
 import java.util.Iterator;
-import java.util.List;
 
 import lombok.Data;
 
 import static com.jon.Constants.SHIP_HEIGHT;
 import static com.jon.Constants.SHIP_WIDTH;
+import static com.jon.Constants.WINDOW_HEIGHT;
 
 @Data
 public class World {
-    private Ship ship;
-    private Array<Rectangle> raindrops;
+    private PlayerControllerShip playerControlledShip;
     private long lastDropTime;
     private long lastHeroBullet;
     private int dropsGathered;
+    Array<AIControlledShip> enemyShips;
+
 
     public World() {
-        float midX = Constants.WINDOW_WIDTH / 2 - SHIP_WIDTH/2;
-        ship = new Ship(midX, 0, SHIP_WIDTH, SHIP_HEIGHT);
-        this.raindrops = new Array<>();
-        spawnRainDrop();
+        float midX = Constants.WINDOW_WIDTH / 2 - SHIP_WIDTH / 2;
+        playerControlledShip = new PlayerControllerShip(midX, 0, SHIP_WIDTH, SHIP_HEIGHT);
+        enemyShips = new Array<>();
+        spawnEnemies();
     }
 
     public void update() {
-
-        ship.update();
-
-        Array<Bullet> heroBullets = ship.getBullets();
-
-        // check if we need to create a new raindrop
-        if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
-            spawnRainDrop();
-        }
-
-
-        // move the raindrops, remove any that are beneath the bottom edge of
-        // the screen or that hit the bucket. In the later case we increase the
-        // value our drops counter and add a sound effect.
-
-
-        Iterator<Rectangle> iter = raindrops.iterator();
+        playerControlledShip.update();
+        Array<Bullet> heroBullets = playerControlledShip.getBullets();
+        Iterator<AIControlledShip> iter = enemyShips.iterator();
         while (iter.hasNext()) {
-            Rectangle raindrop = iter.next();
-            raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-            if (raindrop.y + 64 < 0) {
-                iter.remove();
-            }
-            if (raindrop.overlaps(ship.getRectangle())) {
-                dropsGathered++;
-                iter.remove();
-            }
+            AIControlledShip enemyShip = iter.next();
+            enemyShip.update();
+
             Iterator<Bullet> bulletIterator = heroBullets.iterator();
-            while (bulletIterator.hasNext()){
+            while (bulletIterator.hasNext()) {
                 Bullet bullet = bulletIterator.next();
-                if (raindrop.overlaps(bullet.getRectangle())){
+                if (enemyShip.getRectangle().overlaps(bullet.getRectangle())) {
                     iter.remove();
                     bulletIterator.remove();
                     dropsGathered++;
@@ -74,14 +56,14 @@ public class World {
 
     }
 
-    private void spawnRainDrop() {
-        Rectangle raindrop = new Rectangle();
-        raindrop.x = MathUtils.random(0, Constants.WINDOW_WIDTH - 64);
-        raindrop.y = Constants.WINDOW_HEIGHT;
-        raindrop.width = 64;
-        raindrop.height = 64;
-        raindrops.add(raindrop);
-        lastDropTime = TimeUtils.nanoTime();
+    private void spawnEnemies() {
+        for (int i = 0; i < 10; i++) {
+            AI enemyAI = new StandardEnemyAI();
+            float randomX = MathUtils.random(0, Constants.WINDOW_WIDTH);
+            AIControlledShip aiControlledShip = new AIControlledShip(randomX, 650, SHIP_WIDTH, SHIP_HEIGHT, 5, enemyAI);
+            enemyShips.add(aiControlledShip);
+        }
+
     }
 
     public void dispose() {

@@ -1,12 +1,12 @@
 package com.jon;
 
 import com.badlogic.gdx.InputProcessor;
-import com.jon.GameObjects.Ship;
+import com.jon.GameObjects.PlayerControllerShip;
 
 
 public class InputHandler implements InputProcessor {
     private World world;
-    private Ship ship;
+    private PlayerControllerShip ship;
     private float scaleFactorX;
     private float scaleFactorY;
     private int lastX;
@@ -14,7 +14,7 @@ public class InputHandler implements InputProcessor {
 
     public InputHandler(World world, float scaleFactorX, float scaleFactorY) {
         this.world = world;
-        ship = world.getShip();
+        ship = world.getPlayerControlledShip();
         this.scaleFactorX = scaleFactorX;
         this.scaleFactorY = scaleFactorY;
         lastX = (int) ship.getX();

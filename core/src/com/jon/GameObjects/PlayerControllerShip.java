@@ -10,22 +10,25 @@ import java.util.Iterator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import static com.jon.Constants.SHIP_HEIGHT;
-import static com.jon.Constants.SHIP_WIDTH;
 import static com.jon.Constants.WINDOW_HEIGHT;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Ship extends MoveableGameObject {
+public class PlayerControllerShip extends MoveableGameObject {
     private static float DEFAULT_SPEED = 15;
     private static float DEFAULT_BULLET_WIDTH = 20;
     private static float DEFAULT_BULLET_HEIGHT = 24;
 
-
     private Array<Bullet> bullets;
     private float lastBulletFired;
 
-    public Ship(float x, float y, float width, float height) {
+
+    public PlayerControllerShip(float x, float y, float width, float height, float speed) {
+        super(x, y, width, height, speed);
+        bullets = new Array<>();
+    }
+
+    public PlayerControllerShip(float x, float y, float width, float height) {
         super(x, y, width, height, DEFAULT_SPEED);
         bullets = new Array<>();
     }
@@ -41,7 +44,6 @@ public class Ship extends MoveableGameObject {
         rectangle.y += velocity.y;
         checkX();
         checkY();
-
     }
 
     private void updateBullets() {
@@ -59,16 +61,6 @@ public class Ship extends MoveableGameObject {
         }
     }
 
-//    @Override
-//    public void moveUp() {
-//        velocity.y = speed / 2;
-//    }
-//
-//    @Override
-//    public void moveDown() {
-//        velocity.y = -(speed / 2);
-//    }
-
     //how often do we spawn bullets?  Depending on current ships.
     private void spawnBullets() {
         Bullet bullet =
@@ -85,8 +77,8 @@ public class Ship extends MoveableGameObject {
             this.setX((this.getX() + this.getWidth() / 2));
         }
 
-        if (this.getX() > Constants.WINDOW_WIDTH - SHIP_WIDTH / 2) {
-            this.setX(Constants.WINDOW_WIDTH - SHIP_WIDTH / 2);
+        if (this.getX() > Constants.WINDOW_WIDTH - this.getWidth() / 2) {
+            this.setX(Constants.WINDOW_WIDTH - this.getWidth() / 2);
         }
     }
 
@@ -94,8 +86,8 @@ public class Ship extends MoveableGameObject {
         if (this.getY() < 0) {
             this.setY(0);
         }
-        if (this.getY() > Constants.WINDOW_HEIGHT - SHIP_HEIGHT) {
-            this.setY(Constants.WINDOW_HEIGHT - SHIP_HEIGHT);
+        if (this.getY() > Constants.WINDOW_HEIGHT - this.getHeight()) {
+            this.setY(Constants.WINDOW_HEIGHT - this.getHeight());
         }
     }
 }
