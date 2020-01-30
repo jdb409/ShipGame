@@ -21,10 +21,6 @@ abstract public class MoveableGameObject implements GameObject {
         this.speed = speed;
     }
 
-    public void setCenter(float x, float y) {
-        rectangle.setCenter(x, y);
-    }
-
     public void moveLeft() {
         velocity.x = -speed;
     }

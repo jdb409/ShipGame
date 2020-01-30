@@ -16,17 +16,11 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 @EqualsAndHashCode(callSuper = true)
 public class PlayerControllerShip extends MoveableGameObject {
     private static float DEFAULT_SPEED = 15;
-    private static float DEFAULT_BULLET_WIDTH = 20;
+    private static float DEFAULT_BULLET_WIDTH = 15;
     private static float DEFAULT_BULLET_HEIGHT = 24;
 
     private Array<Bullet> bullets;
     private float lastBulletFired;
-
-
-    public PlayerControllerShip(float x, float y, float width, float height, float speed) {
-        super(x, y, width, height, speed);
-        bullets = new Array<>();
-    }
 
     public PlayerControllerShip(float x, float y, float width, float height) {
         super(x, y, width, height, DEFAULT_SPEED);
@@ -68,6 +62,7 @@ public class PlayerControllerShip extends MoveableGameObject {
                         this.getY() + this.getHeight(),
                         DEFAULT_BULLET_WIDTH,
                         DEFAULT_BULLET_HEIGHT);
+        bullet.moveUp();
         bullets.add(bullet);
         lastBulletFired = TimeUtils.nanoTime();
     }

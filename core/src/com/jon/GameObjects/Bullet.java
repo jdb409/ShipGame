@@ -6,7 +6,6 @@ public class Bullet extends MoveableGameObject {
 
     public Bullet(float x, float y, float width, float height) {
         super(x,y,width,height,DEFAULT_SPEED);
-        this.moveUp();
     }
 
     @Override

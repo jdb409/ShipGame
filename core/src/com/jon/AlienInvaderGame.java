@@ -20,6 +20,7 @@ public class AlienInvaderGame extends Game {
         font = new BitmapFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.WINDOW_WIDTH,Constants.WINDOW_HEIGHT);
+        AssetLoader.load();
         this.setScreen(new MainMenuScreen(this, camera));
     }
 

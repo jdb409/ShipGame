@@ -3,6 +3,7 @@ package com.jon.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.jon.AlienInvaderGame;
+import com.jon.GameState;
 import com.jon.InputHandler;
 import com.jon.Renderer;
 import com.jon.World;
@@ -18,14 +19,19 @@ class GameScreen implements Screen {
 
     public GameScreen(AlienInvaderGame game) {
         this.game = game;
-        this.world = new World();
-        this.renderer = new Renderer(game.batch, this.world, game.camera);
+        this.world = new World(game);
         //scale actual screen by desired
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
+
         Gdx.input.setInputProcessor(new InputHandler(world,
                 screenWidth / WINDOW_WIDTH,
                 screenHeight / WINDOW_HEIGHT));
+
+        this.world.gameState = GameState.RUNNING;
+        this.renderer = new Renderer(game.batch, this.world, game.camera);
+
+
     }
 
     @Override
