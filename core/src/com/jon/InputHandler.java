@@ -1,7 +1,11 @@
 package com.jon;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 import com.jon.GameObjects.PlayerControllerShip;
+
+import static com.jon.Constants.WINDOW_HEIGHT;
 
 
 public class InputHandler implements InputProcessor {
@@ -67,15 +71,14 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        System.out.println("screen: " + scaleX(screenX));
-        System.out.println("x: " + ship.getX());
         if (GameState.RUNNING.equals(world.getGameState())) {
-            useRelativeY(screenY);
-
-            if (Math.abs(scaleX(screenX) - ship.getX()) > 20) {
-                useRelativeX(screenX);
+            float relY = ship.getY() - (WINDOW_HEIGHT - scaleY(screenY));
+            float relX = ship.getX() - scaleX(screenX);
+            if (relX > -110 && relX < 40
+                    && relY > -250 && relY < 125) {
+                ship.setCenter(scaleX(screenX), WINDOW_HEIGHT - scaleY(screenY));
             } else {
-                ship.setX(scaleX(screenX));
+                useRelativeDirections(screenX, screenY);
             }
         }
         return false;
@@ -87,29 +90,36 @@ public class InputHandler implements InputProcessor {
     }
 
     private void useRelativeX(int screenX) {
-        if (Math.abs(screenX - lastX) > 10) {
+        float speed = 600 * Gdx.graphics.getDeltaTime();
+        if (Math.abs(screenX - lastX) > 5) {
+            //move right
             if (screenX > lastX) {
-                ship.moveRight();
+                ship.setX(ship.getX() + speed);
             }
+            //move left
             if (screenX < lastX) {
-                ship.moveLeft();
+                ship.setX(ship.getX() - speed);
             }
         } else {
-            ship.resetSpeedX();
+            ship.resetSpeed();
         }
         lastX = screenX;
     }
 
     private void useRelativeY(int screenY) {
-        if (Math.abs(screenY - lastY) > 10) {
+        float speed = 700 * Gdx.graphics.getDeltaTime();
+
+        if (Math.abs(screenY - lastY) > 5) {
+            //move down
             if (screenY > lastY) {
-                ship.moveDown();
+                ship.setY(ship.getY() - speed);
             }
+            //move up
             if (screenY < lastY) {
-                ship.moveUp();
+                ship.setY(ship.getY() + speed);
             }
         } else {
-            ship.resetSpeedY();
+            ship.resetSpeed();
         }
         lastY = screenY;
     }

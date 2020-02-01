@@ -14,6 +14,7 @@ import lombok.Data;
 
 import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.ENEMY_WIDTH;
+import static com.jon.Constants.HANDLE_COLLISION;
 import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
 import static com.jon.Constants.PLAYER_SHIP_WIDTH;
 import static com.jon.Constants.WINDOW_HEIGHT;
@@ -58,29 +59,37 @@ public class World {
             AIControlledShip enemyShip = enemyIterator.next();
             enemyShip.update();
 
-            Iterator<Bullet> enemyBulletIterator = enemyShip.getBullets().iterator();
-            while (enemyBulletIterator.hasNext()) {
-                Bullet bullet = enemyBulletIterator.next();
-                if (bullet.getRectangle().overlaps(ship.getRectangle())) {
-                    enemyBulletIterator.remove();
+            //enemy bullet
+            if (HANDLE_COLLISION) {
+
+                Iterator<Bullet> enemyBulletIterator = enemyShip.getBullets().iterator();
+                while (enemyBulletIterator.hasNext()) {
+                    Bullet bullet = enemyBulletIterator.next();
+                    if (bullet.getRectangle().overlaps(ship.getRectangle())) {
+                        enemyBulletIterator.remove();
+                        gameState = GameState.GAME_OVER;
+                    }
+                }
+
+                //enemy ship touch player ship
+                if (ship.getRectangle().overlaps(enemyShip.getRectangle())) {
                     gameState = GameState.GAME_OVER;
                 }
-            }
 
-            Iterator<Bullet> playerBulletIterator = playerBullets.iterator();
-            if (ship.getRectangle().overlaps(enemyShip.getRectangle())) {
-                gameState = GameState.GAME_OVER;
-            }
+                //player bullets
+                Iterator<Bullet> playerBulletIterator = playerBullets.iterator();
 
-            while (playerBulletIterator.hasNext()) {
-                Bullet bullet = playerBulletIterator.next();
-                if (enemyShip.getRectangle().overlaps(bullet.getRectangle())) {
-                    enemyIterator.remove();
-                    playerBulletIterator.remove();
-                    shipsDestroyed++;
+                while (playerBulletIterator.hasNext()) {
+                    Bullet bullet = playerBulletIterator.next();
+                    if (enemyShip.getRectangle().overlaps(bullet.getRectangle())) {
+                        enemyIterator.remove();
+                        playerBulletIterator.remove();
+                        shipsDestroyed++;
+                    }
                 }
             }
         }
+
     }
 
     private void handleGameOver() {
@@ -106,10 +115,9 @@ public class World {
     }
 
     private void spawnEnemies() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             AI enemyAI = new StandardEnemyAI();
-            float x = i * (ENEMY_WIDTH +70);
-            System.out.println(x);
+            float x = i * (ENEMY_WIDTH + 70);
             AIControlledShip aiControlledShip = new AIControlledShip(x, WINDOW_HEIGHT - ENEMY_HEIGHT - 20, ENEMY_WIDTH, ENEMY_HEIGHT, 4, enemyAI);
             enemyShips.add(aiControlledShip);
         }

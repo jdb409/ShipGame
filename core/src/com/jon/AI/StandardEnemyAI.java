@@ -39,7 +39,7 @@ public class StandardEnemyAI implements AI {
     @Override
     public void updateBullets(AIControlledShip ship) {
         if (TimeUtils.nanoTime() - ship.getLastBulletFired() > 1000000000) {
-//            spawnBullets(ship);
+            spawnBullets(ship);
         }
 
         Iterator<Bullet> bulletIterator = ship.getBullets().iterator();
@@ -70,7 +70,7 @@ public class StandardEnemyAI implements AI {
                         ship.getY(),
                         ship.getBulletWidth(),
                         ship.getBulletHeight());
-        bullet.setSpeed(5);
+        bullet.setSpeed(2);
         bullet.moveDown();
         ship.getBullets().add(bullet);
         ship.setLastBulletFired(TimeUtils.nanoTime());
