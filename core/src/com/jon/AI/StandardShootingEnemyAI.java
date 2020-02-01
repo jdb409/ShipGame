@@ -8,9 +8,11 @@ import com.jon.GameObjects.Bullet;
 import java.util.Iterator;
 
 
-public class StandardEnemyAI implements AI {
+public class StandardShootingEnemyAI implements AI {
 
     boolean moveRight = false;
+    int numFramesDir = 0;
+    int framesToMove = 60;
 
     @Override
     public void update(AIControlledShip ship) {
@@ -21,19 +23,43 @@ public class StandardEnemyAI implements AI {
     @Override
     public void updatePosition(AIControlledShip ship) {
         float fullShipLength = ship.getX() + ship.getWidth();
-        if (ship.getX() <= 0) {
-//            moveDown(ship);
+        if (moveRight) {
             moveRight(ship);
-            moveRight = true;
-        } else if ((fullShipLength >= Constants.WINDOW_WIDTH)) {
-//            moveDown(ship);
-            moveLeft(ship);
-            moveRight = false;
-        } else if (moveRight == true) {
-            moveRight(ship);
+            numFramesDir++;
+            if (numFramesDir == framesToMove) {
+                moveRight = false;
+                numFramesDir = 0;
+            }
         } else {
             moveLeft(ship);
+            numFramesDir++;
+            if (numFramesDir == framesToMove) {
+                moveRight = true;
+                numFramesDir = 0;
+            }
         }
+        if (ship.getX() <= 0) {
+            moveRight = true;
+            numFramesDir = 0;
+        }
+
+        if (fullShipLength >= Constants.WINDOW_WIDTH) {
+            moveRight = false;
+            numFramesDir = 0;
+        }
+//        if (ship.getX() <= 0) {
+////            moveDown(ship);
+//            moveRight(ship);
+//            moveRight = true;
+//        } else if ((fullShipLength >= Constants.WINDOW_WIDTH)) {
+////            moveDown(ship);
+//            moveLeft(ship);
+//            moveRight = false;
+//        } else if (moveRight == true) {
+//            moveRight(ship);
+//        } else {
+//            moveLeft(ship);
+//        }
     }
 
     @Override

@@ -7,7 +7,7 @@ public class Constants {
     public static final int WINDOW_WIDTH = 400;
     public static final int ENEMY_WIDTH = 60;
     public static final int ENEMY_HEIGHT = 120;
-    public static boolean HANDLE_COLLISION = true;
+    public static boolean HANDLE_COLLISION = false;
 
     private Constants() {
 

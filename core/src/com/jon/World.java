@@ -2,7 +2,7 @@ package com.jon;
 
 import com.badlogic.gdx.utils.Array;
 import com.jon.AI.AI;
-import com.jon.AI.StandardEnemyAI;
+import com.jon.AI.DivingEnemyAI;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
@@ -116,9 +116,9 @@ public class World {
 
     private void spawnEnemies() {
         for (int i = 0; i < 4; i++) {
-            AI enemyAI = new StandardEnemyAI();
-            float x = i * (ENEMY_WIDTH + 70);
-            AIControlledShip aiControlledShip = new AIControlledShip(x, WINDOW_HEIGHT - ENEMY_HEIGHT - 20, ENEMY_WIDTH, ENEMY_HEIGHT, 4, enemyAI);
+            AI enemyAI = new DivingEnemyAI();
+            float x = i * (ENEMY_WIDTH + 40);
+            AIControlledShip aiControlledShip = new AIControlledShip(x, WINDOW_HEIGHT - ENEMY_HEIGHT - 20, ENEMY_WIDTH, ENEMY_HEIGHT, 10, enemyAI);
             enemyShips.add(aiControlledShip);
         }
 
