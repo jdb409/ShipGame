@@ -1,23 +1,22 @@
 package com.jon;
 
 import com.badlogic.gdx.utils.Array;
-import com.jon.AI.AI;
-import com.jon.AI.DivingEnemyAI;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
+import com.jon.enemy.EnemyFactory;
+import com.jon.enemy.EnemyType;
 import com.jon.screens.MainMenuScreen;
 
 import java.util.Iterator;
+import java.util.Random;
 
 import lombok.Data;
 
-import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.ENEMY_WIDTH;
 import static com.jon.Constants.HANDLE_COLLISION;
 import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
 import static com.jon.Constants.PLAYER_SHIP_WIDTH;
-import static com.jon.Constants.WINDOW_HEIGHT;
 
 @Data
 public class World {
@@ -28,68 +27,69 @@ public class World {
     private int shipsDestroyed;
     Array<AIControlledShip> enemyShips;
     private AlienInvaderGame game;
+    private Long spawnEnemyWaitingTime = null;
 
     public World(AlienInvaderGame game) {
         init(game);
     }
 
     public void update() {
-        if (enemyShips.size == 0) {
-            spawnEnemies();
-        }
-
+        handleEnemySpawn();
         if (GameState.RUNNING.equals(gameState)) {
             playerControlledShip.update();
-            Array<Bullet> playerBullets = playerControlledShip.getBullets();
-            handleCollision(playerBullets, enemyShips, playerControlledShip);
+            handleCollision();
         } else if (GameState.GAME_OVER.equals(gameState)) {
             handleGameOver();
         }
-
     }
 
     public void restart() {
-        System.out.println("restarting");
         game.setScreen(new MainMenuScreen(game, game.camera));
     }
 
-    private void handleCollision(Array<Bullet> playerBullets, Array<AIControlledShip> enemyShips, PlayerControllerShip ship) {
+    private void handleCollision() {
         Iterator<AIControlledShip> enemyIterator = enemyShips.iterator();
         while (enemyIterator.hasNext()) {
             AIControlledShip enemyShip = enemyIterator.next();
             enemyShip.update();
 
-            //enemy bullet
             if (HANDLE_COLLISION) {
-
-                Iterator<Bullet> enemyBulletIterator = enemyShip.getBullets().iterator();
-                while (enemyBulletIterator.hasNext()) {
-                    Bullet bullet = enemyBulletIterator.next();
-                    if (bullet.getRectangle().overlaps(ship.getRectangle())) {
-                        enemyBulletIterator.remove();
-                        gameState = GameState.GAME_OVER;
-                    }
-                }
-
-                //enemy ship touch player ship
-                if (ship.getRectangle().overlaps(enemyShip.getRectangle())) {
-                    gameState = GameState.GAME_OVER;
-                }
-
-                //player bullets
-                Iterator<Bullet> playerBulletIterator = playerBullets.iterator();
-
-                while (playerBulletIterator.hasNext()) {
-                    Bullet bullet = playerBulletIterator.next();
-                    if (enemyShip.getRectangle().overlaps(bullet.getRectangle())) {
-                        enemyIterator.remove();
-                        playerBulletIterator.remove();
-                        shipsDestroyed++;
-                    }
-                }
+                handleEnemyBulletCollision(enemyShip);
+                handlePlayerEnemyCollision(enemyShip);
+                handlePlayerBulletCollision(enemyShip, enemyIterator);
             }
         }
+    }
 
+    private void handlePlayerBulletCollision(AIControlledShip enemyShip, Iterator<AIControlledShip> enemyIterator) {
+        Array<Bullet> playerBullets = playerControlledShip.getBullets();
+        Iterator<Bullet> playerBulletIterator = playerBullets.iterator();
+
+        while (playerBulletIterator.hasNext()) {
+            Bullet bullet = playerBulletIterator.next();
+            if (enemyShip.getRectangle().overlaps(bullet.getRectangle())) {
+                enemyIterator.remove();
+                playerBulletIterator.remove();
+                shipsDestroyed++;
+            }
+        }
+    }
+
+    private void handleEnemyBulletCollision(AIControlledShip enemyShip) {
+        Iterator<Bullet> enemyBulletIterator = enemyShip.getBullets().iterator();
+        while (enemyBulletIterator.hasNext()) {
+            Bullet bullet = enemyBulletIterator.next();
+            if (bullet.getRectangle().overlaps(playerControlledShip.getRectangle())) {
+                enemyBulletIterator.remove();
+                gameState = GameState.GAME_OVER;
+            }
+        }
+    }
+
+    private void handlePlayerEnemyCollision(AIControlledShip enemyShip) {
+        if (playerControlledShip.getRectangle().overlaps(enemyShip.getRectangle())) {
+            gameState = GameState.GAME_OVER;
+        }
     }
 
     private void handleGameOver() {
@@ -99,26 +99,37 @@ public class World {
         }
     }
 
-
-//    private void reset() {
-//        playerControlledShip = null;
-//        enemyShips = null;
-//        init();
-//    }
-
     private void init(AlienInvaderGame game) {
-        float heroStart = Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2;
         this.game = game;
+        float heroStart = Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2;
         playerControlledShip = new PlayerControllerShip(heroStart, 0, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT);
         enemyShips = new Array<>();
         spawnEnemies();
     }
 
+    private void handleEnemySpawn() {
+        if (enemyShips.size == 0 && spawnEnemyWaitingTime == null) {
+            spawnEnemyWaitingTime = System.currentTimeMillis();
+        }
+
+        if (spawnEnemyWaitingTime != null && System.currentTimeMillis() - spawnEnemyWaitingTime >= 1000) {
+            spawnEnemies();
+            spawnEnemyWaitingTime = null;
+        }
+
+    }
+
     private void spawnEnemies() {
-        for (int i = 0; i < 4; i++) {
-            AI enemyAI = new DivingEnemyAI();
+        for (int i = 0; i < 6; i++) {
             float x = i * (ENEMY_WIDTH + 40);
-            AIControlledShip aiControlledShip = new AIControlledShip(x, WINDOW_HEIGHT - ENEMY_HEIGHT - 20, ENEMY_WIDTH, ENEMY_HEIGHT, 10, enemyAI);
+            Random rand = new Random();
+            int type = rand.nextInt(10);
+            AIControlledShip aiControlledShip;
+            if (type % 2 == 0) {
+                aiControlledShip = EnemyFactory.create(EnemyType.DIVING, x);
+            } else {
+                aiControlledShip = EnemyFactory.create(EnemyType.STANDARD_SHOOTING, x);
+            }
             enemyShips.add(aiControlledShip);
         }
 

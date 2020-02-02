@@ -1,8 +1,10 @@
 package com.jon.GameObjects;
 
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.jon.AssetLoader;
 import com.jon.Constants;
 
 import java.util.Iterator;
@@ -15,6 +17,8 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlayerControllerShip extends MoveableGameObject {
+    private static TextureRegion image = AssetLoader.blueShip;
+    private static TextureRegion bulletImage = AssetLoader.blueShot;
     private static float DEFAULT_SPEED = 15;
     private static float DEFAULT_BULLET_WIDTH = 15;
     private static float DEFAULT_BULLET_HEIGHT = 24;
@@ -61,7 +65,8 @@ public class PlayerControllerShip extends MoveableGameObject {
                 new Bullet(this.getX() + this.getWidth() / 3,
                         this.getY() + this.getHeight(),
                         DEFAULT_BULLET_WIDTH,
-                        DEFAULT_BULLET_HEIGHT);
+                        DEFAULT_BULLET_HEIGHT,
+                        bulletImage);
         bullet.moveUp();
         bullets.add(bullet);
         lastBulletFired = TimeUtils.nanoTime();
@@ -84,5 +89,9 @@ public class PlayerControllerShip extends MoveableGameObject {
         if (this.getY() > Constants.WINDOW_HEIGHT - this.getHeight()) {
             this.setY(Constants.WINDOW_HEIGHT - this.getHeight());
         }
+    }
+
+    public static TextureRegion getImage() {
+        return image;
     }
 }

@@ -74,8 +74,8 @@ public class InputHandler implements InputProcessor {
         if (GameState.RUNNING.equals(world.getGameState())) {
             float relY = ship.getY() - (WINDOW_HEIGHT - scaleY(screenY));
             float relX = ship.getX() - scaleX(screenX);
-            if (relX > -110 && relX < 40
-                    && relY > -250 && relY < 125) {
+            if (relX > -100 && relX < 30
+                    && relY > -240 && relY < 115) {
                 ship.setCenter(scaleX(screenX), WINDOW_HEIGHT - scaleY(screenY));
             } else {
                 useRelativeDirections(screenX, screenY);

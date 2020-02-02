@@ -1,17 +1,16 @@
-package com.jon.AI;
+package com.jon.enemy.AI;
 
-import com.badlogic.gdx.utils.TimeUtils;
 import com.jon.Constants;
 import com.jon.GameObjects.AIControlledShip;
 
-import java.sql.Time;
+import static com.jon.Constants.ENEMY_HEIGHT;
+import static com.jon.Constants.WINDOW_HEIGHT;
 
 public class DivingEnemyAI implements AI {
     boolean moveRight = false;
     int numFramesDir = 0;
     int framesToMove = 60;
 
-    boolean lastX;
     private long lastDove;
     public boolean isDiving = true;
 
@@ -51,12 +50,13 @@ public class DivingEnemyAI implements AI {
         } else {
             ship.setX(ship.getX());
         }
+
         ship.setY(ship.getY() + ship.getVelocity().y);
         if (ship.getY() < 100) {
             ship.resetSpeed();
             ship.moveUp();
         }
-        if (ship.getY() > 680) {
+        if (ship.getY() >= WINDOW_HEIGHT - ENEMY_HEIGHT - 20) {
             ship.resetSpeed();
         }
 

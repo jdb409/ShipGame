@@ -1,18 +1,21 @@
-package com.jon.AI;
+package com.jon.enemy.AI;
 
 import com.badlogic.gdx.utils.TimeUtils;
+import com.jon.AssetLoader;
 import com.jon.Constants;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 
 import java.util.Iterator;
 
+import lombok.Data;
 
+@Data
 public class StandardShootingEnemyAI implements AI {
-
     boolean moveRight = false;
     int numFramesDir = 0;
     int framesToMove = 60;
+
 
     @Override
     public void update(AIControlledShip ship) {
@@ -47,19 +50,6 @@ public class StandardShootingEnemyAI implements AI {
             moveRight = false;
             numFramesDir = 0;
         }
-//        if (ship.getX() <= 0) {
-////            moveDown(ship);
-//            moveRight(ship);
-//            moveRight = true;
-//        } else if ((fullShipLength >= Constants.WINDOW_WIDTH)) {
-////            moveDown(ship);
-//            moveLeft(ship);
-//            moveRight = false;
-//        } else if (moveRight == true) {
-//            moveRight(ship);
-//        } else {
-//            moveLeft(ship);
-//        }
     }
 
     @Override
@@ -95,7 +85,8 @@ public class StandardShootingEnemyAI implements AI {
                 new Bullet(ship.getX() + ship.getWidth() / 3,
                         ship.getY(),
                         ship.getBulletWidth(),
-                        ship.getBulletHeight());
+                        ship.getBulletHeight(),
+                        AssetLoader.redShot);
         bullet.setSpeed(2);
         bullet.moveDown();
         ship.getBullets().add(bullet);

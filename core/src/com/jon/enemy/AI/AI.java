@@ -1,4 +1,4 @@
-package com.jon.AI;
+package com.jon.enemy.AI;
 
 import com.jon.GameObjects.AIControlledShip;
 
