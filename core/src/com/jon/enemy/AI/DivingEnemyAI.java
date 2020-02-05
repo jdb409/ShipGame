@@ -1,18 +1,21 @@
 package com.jon.enemy.AI;
-
-import com.jon.Constants;
 import com.jon.GameObjects.AIControlledShip;
+import com.jon.enemy.HorizontalMovement;
 
 import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.WINDOW_HEIGHT;
 
 public class DivingEnemyAI implements AI {
-    boolean moveRight = false;
-    int numFramesDir = 0;
-    int framesToMove = 60;
-
+    private int horizontalSpeed;
     private long lastDove;
-    public boolean isDiving = true;
+    private boolean isDiving;
+    private HorizontalMovement horizontalMovement;
+
+    public DivingEnemyAI() {
+        horizontalSpeed = 2;
+        horizontalMovement = new HorizontalMovement();
+        isDiving = true;
+    }
 
     @Override
     public void update(AIControlledShip ship) {
@@ -22,31 +25,7 @@ public class DivingEnemyAI implements AI {
     @Override
     public void updatePosition(AIControlledShip ship) {
         if (!isDiving) {
-            float fullShipLength = ship.getX() + ship.getWidth();
-            if (moveRight) {
-                moveRight(ship);
-                numFramesDir++;
-                if (numFramesDir == framesToMove) {
-                    moveRight = false;
-                    numFramesDir = 0;
-                }
-            } else {
-                moveLeft(ship);
-                numFramesDir++;
-                if (numFramesDir == framesToMove) {
-                    moveRight = true;
-                    numFramesDir = 0;
-                }
-            }
-            if (ship.getX() <= 0) {
-                moveRight = true;
-                numFramesDir = 0;
-            }
-
-            if (fullShipLength >= Constants.WINDOW_WIDTH) {
-                moveRight = false;
-                numFramesDir = 0;
-            }
+            horizontalMovement.update(ship, horizontalSpeed);
         } else {
             ship.setX(ship.getX());
         }
@@ -83,14 +62,6 @@ public class DivingEnemyAI implements AI {
         if (isDiving && (System.currentTimeMillis() - lastDove) > 2000) {
             isDiving = false;
         }
-    }
-
-    public void moveLeft(AIControlledShip ship) {
-        ship.setX(ship.getX() - 2);
-    }
-
-    public void moveRight(AIControlledShip ship) {
-        ship.setX(ship.getX() + 2);
     }
 
 }

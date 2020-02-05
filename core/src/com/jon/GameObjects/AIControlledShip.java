@@ -15,18 +15,25 @@ public class AIControlledShip extends MoveableGameObject {
     private Array<Bullet> bullets;
     private static final float DEFAULT_BULLET_WIDTH = 10;
     private static final float DEFAULT_BULLET_HEIGHT = 15;
-    private float lastBulletFired;
+    private long lastBulletFired;
     private float bulletHeight;
     private float bulletWidth;
     private TextureRegion image;
+    private int health;
+    private long lastHit;
 
-    public AIControlledShip(float x, float y, float width, float height, float speed, AI ai, TextureRegion image) {
+    public AIControlledShip(float x, float y, float width, float height, float speed, int health, AI ai, TextureRegion image) {
         super(x, y, width, height, speed);
         this.ai = ai;
         bulletWidth = DEFAULT_BULLET_WIDTH;
         bulletHeight = DEFAULT_BULLET_HEIGHT;
         this.image = image;
         bullets = new Array<>();
+        this.health = health;
+    }
+
+    public void decrementHealth(int amount) {
+        health -= amount;
     }
 
     @Override

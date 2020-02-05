@@ -1,21 +1,25 @@
 package com.jon.enemy.AI;
 
-import com.badlogic.gdx.utils.TimeUtils;
 import com.jon.AssetLoader;
-import com.jon.Constants;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
+import com.jon.enemy.HorizontalMovement;
 
 import java.util.Iterator;
+import java.util.Random;
 
 import lombok.Data;
 
 @Data
 public class StandardShootingEnemyAI implements AI {
-    boolean moveRight = false;
-    int numFramesDir = 0;
-    int framesToMove = 60;
+    private int bulletSpeed = 2;
+    private int horizontalSpeed;
+    private HorizontalMovement horizontalMovement;
 
+    public StandardShootingEnemyAI() {
+        horizontalMovement = new HorizontalMovement();
+        horizontalSpeed = 2;
+    }
 
     @Override
     public void update(AIControlledShip ship) {
@@ -25,36 +29,14 @@ public class StandardShootingEnemyAI implements AI {
 
     @Override
     public void updatePosition(AIControlledShip ship) {
-        float fullShipLength = ship.getX() + ship.getWidth();
-        if (moveRight) {
-            moveRight(ship);
-            numFramesDir++;
-            if (numFramesDir == framesToMove) {
-                moveRight = false;
-                numFramesDir = 0;
-            }
-        } else {
-            moveLeft(ship);
-            numFramesDir++;
-            if (numFramesDir == framesToMove) {
-                moveRight = true;
-                numFramesDir = 0;
-            }
-        }
-        if (ship.getX() <= 0) {
-            moveRight = true;
-            numFramesDir = 0;
-        }
-
-        if (fullShipLength >= Constants.WINDOW_WIDTH) {
-            moveRight = false;
-            numFramesDir = 0;
-        }
+        horizontalMovement.update(ship, horizontalSpeed);
     }
 
     @Override
     public void updateBullets(AIControlledShip ship) {
-        if (TimeUtils.nanoTime() - ship.getLastBulletFired() > 1000000000) {
+        Random r = new Random();
+        long shotTime = r.nextInt(2500 - 2000) + 2000;
+        if (System.currentTimeMillis() - ship.getLastBulletFired() > shotTime) {
             spawnBullets(ship);
         }
 
@@ -72,14 +54,6 @@ public class StandardShootingEnemyAI implements AI {
         ship.setY(ship.getY() - 75);
     }
 
-    public void moveLeft(AIControlledShip ship) {
-        ship.setX(ship.getX() - ship.getSpeed());
-    }
-
-    public void moveRight(AIControlledShip ship) {
-        ship.setX(ship.getX() + ship.getSpeed());
-    }
-
     private void spawnBullets(AIControlledShip ship) {
         Bullet bullet =
                 new Bullet(ship.getX() + ship.getWidth() / 3,
@@ -87,10 +61,10 @@ public class StandardShootingEnemyAI implements AI {
                         ship.getBulletWidth(),
                         ship.getBulletHeight(),
                         AssetLoader.redShot);
-        bullet.setSpeed(2);
+        bullet.setSpeed(bulletSpeed);
         bullet.moveDown();
         ship.getBullets().add(bullet);
-        ship.setLastBulletFired(TimeUtils.nanoTime());
+        ship.setLastBulletFired(System.currentTimeMillis());
     }
 
 }

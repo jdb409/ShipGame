@@ -20,6 +20,7 @@ public class AssetLoader {
     public static TextureAtlas.AtlasRegion redShot;
     public static TextureAtlas.AtlasRegion blueShot;
 
+    public static Texture bg;
 
     public static void load() {
         //in atlas files
@@ -41,5 +42,16 @@ public class AssetLoader {
         float u = fishShip.getU();
         fishShip.setU(fishShip.getV());
         fishShip.setV(u);
+
+        bg = new Texture(Gdx.files.internal("GalaxyUno.png"));
+        bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+    }
+
+    public static void dispose(){
+        shipAtlas.dispose();
+        shipTexture.dispose();
+        shotTexture.dispose();
+        shotAtlas.dispose();
+        bg.dispose();
     }
 }

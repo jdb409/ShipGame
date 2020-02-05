@@ -17,6 +17,7 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlayerControllerShip extends MoveableGameObject {
+    private static int DEFAULT_HEALTH = 3;
     private static TextureRegion image = AssetLoader.blueShip;
     private static TextureRegion bulletImage = AssetLoader.blueShot;
     private static float DEFAULT_SPEED = 15;
@@ -25,16 +26,29 @@ public class PlayerControllerShip extends MoveableGameObject {
 
     private Array<Bullet> bullets;
     private float lastBulletFired;
+    private long lastHit;
+    private int health;
 
     public PlayerControllerShip(float x, float y, float width, float height) {
         super(x, y, width, height, DEFAULT_SPEED);
         bullets = new Array<>();
+        this.health = DEFAULT_HEALTH;
+    }
+
+    public PlayerControllerShip(float x, float y, float width, float height, int health) {
+        super(x, y, width, height, DEFAULT_SPEED);
+        bullets = new Array<>();
+        this.health = health;
     }
 
     @Override
     public void update() {
         updatePosition();
         updateBullets();
+    }
+
+    public void decrementHealth(int amount) {
+        this.health -= amount;
     }
 
     private void updatePosition() {
@@ -45,7 +59,7 @@ public class PlayerControllerShip extends MoveableGameObject {
     }
 
     private void updateBullets() {
-        if (TimeUtils.nanoTime() - lastBulletFired > 700000000) {
+        if (TimeUtils.nanoTime() - lastBulletFired > 300000000) {
             spawnBullets();
         }
 

@@ -11,6 +11,7 @@ import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
 
+import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
 
 
@@ -22,6 +23,7 @@ public class Renderer {
     private ShapeRenderer shapeRenderer;
 
     private PlayerControllerShip playerControllerShip;
+    private int scrollY;
 
     public Renderer(SpriteBatch batch, World world, OrthographicCamera camera) {
         this.batch = batch;
@@ -33,9 +35,16 @@ public class Renderer {
     }
 
     public void render() {
+        Gdx.gl.glClearColor(0, 0, 0.1f, .1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        scrollY = scrollY - 1 % 1600;
+        batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
+
         switch (this.world.gameState) {
             case READY:
-//                handleReady();
+                handleReady();
                 break;
             case RUNNING:
                 handleRunning();
@@ -44,26 +53,17 @@ public class Renderer {
                 handleGameOver();
                 break;
         }
+        batch.end();
     }
 
     private void handleRunning() {
         Array<AIControlledShip> enemyShips = world.getEnemyShips();
         Array<Bullet> heroBullets = world.getPlayerControlledShip().getBullets();
-        Gdx.gl.glClearColor(0, 0, 0.1f, .1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // tell the camera to update its matrices.
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-
-        batch.begin();
         font.draw(batch, "Ships Destroyed: " + world.getShipsDestroyed(), 0, Constants.WINDOW_HEIGHT);
-//
-//        shapeRenderer.setProjectionMatrix(camera.combined);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-
         batch.draw(PlayerControllerShip.getImage(), playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
-
+        for (int h = 0; h < playerControllerShip.getHealth(); h++) {
+            font.draw(batch, "X", WINDOW_WIDTH - (h * 10) - 20, WINDOW_HEIGHT);
+        }
         for (AIControlledShip enemyShip : enemyShips) {
             batch.draw(enemyShip.getImage(), enemyShip.getX(), enemyShip.getY(), enemyShip.getWidth(), enemyShip.getHeight());
             for (Bullet bullet : enemyShip.getBullets()) {
@@ -73,21 +73,29 @@ public class Renderer {
         for (Bullet bullet : heroBullets) {
             batch.draw(bullet.getImage(), bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
         }
-        batch.end();
+    }
+
+    private void handleReady() {
+        font.draw(batch, "Get Ready!!!", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2);
+        long elapsedSinceSpawn = System.currentTimeMillis() - world.getSpawnEnemyWaitingTime();
+        font.getData().setScale(2);
+        if (elapsedSinceSpawn > 0 && elapsedSinceSpawn < 600) {
+            font.draw(batch, "3", WINDOW_WIDTH / 2 - 10, Constants.WINDOW_HEIGHT / 2 + 40);
+        } else if (elapsedSinceSpawn > 600 && elapsedSinceSpawn < 1200) {
+            font.draw(batch, "2", WINDOW_WIDTH / 2 - 10, Constants.WINDOW_HEIGHT / 2 + 40);
+        } else if (elapsedSinceSpawn > 1200 && elapsedSinceSpawn < 1800) {
+            font.draw(batch, "1", WINDOW_WIDTH / 2 - 10, Constants.WINDOW_HEIGHT / 2 + 40);
+        }
+        font.getData().setScale(1);
     }
 
     private void handleGameOver() {
-        Gdx.gl.glClearColor(0, 0, 0.1f, .1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
         font.draw(batch, "Game Over", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2);
         font.draw(batch, "Touch Screen", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 - 20);
-        batch.end();
     }
 
     public void dispose() {
-
+        AssetLoader.dispose();
     }
 
     private void initGameObjects() {
@@ -97,10 +105,8 @@ public class Renderer {
 }
 
 
-/**
- * shapeRender.setProjectionMatrix(camera.combined);
- * shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
- * shapeRenderer.rect(playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
- * shapeRenderer.rect(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
- * shapeRenderer.end();
- */
+// shapeRenderer.setProjectionMatrix(camera.combined);
+// shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+// shapeRenderer.rect(playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
+// shapeRenderer.rect(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
+// shapeRenderer.end();

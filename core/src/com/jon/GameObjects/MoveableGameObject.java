@@ -13,8 +13,12 @@ abstract public class MoveableGameObject implements GameObject {
     protected float height;
     protected float width;
     protected float speed;
+    private float originalX;
+    private float originalY;
 
     public MoveableGameObject(float x, float y, float width, float height, float speed) {
+        this.originalX = x;
+        this.originalY = y;
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 0);
         rectangle = new Rectangle(x, y, width, height);
@@ -87,5 +91,10 @@ abstract public class MoveableGameObject implements GameObject {
 
     public void resetSpeed() {
         velocity.set(0, 0);
+    }
+
+    public void resetOrigin(){
+        this.setX(this.originalX);
+        this.setY(this.originalY);
     }
 }
