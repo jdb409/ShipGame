@@ -1,0 +1,83 @@
+
+BlueShipExplosion.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Ship3_Explosion
+  rotate: false
+  xy: 2, 97
+  size: 153, 153
+  orig: 256, 256
+  offset: 51, 52
+  index: 6
+Ship3_Explosion
+  rotate: false
+  xy: 157, 115
+  size: 135, 135
+  orig: 256, 256
+  offset: 60, 63
+  index: 5
+Ship3_Explosion
+  rotate: false
+  xy: 294, 129
+  size: 121, 121
+  orig: 256, 256
+  offset: 68, 68
+  index: 4
+Ship3_Explosion
+  rotate: false
+  xy: 294, 6
+  size: 121, 121
+  orig: 256, 256
+  offset: 68, 68
+  index: 7
+Ship3_Explosion
+  rotate: false
+  xy: 157, 19
+  size: 94, 94
+  orig: 256, 256
+  offset: 81, 80
+  index: 3
+Ship3_Explosion
+  rotate: false
+  xy: 253, 27
+  size: 39, 86
+  orig: 256, 256
+  offset: 109, 84
+  index: 0
+Ship3_Explosion
+  rotate: false
+  xy: 2, 2
+  size: 93, 93
+  orig: 256, 256
+  offset: 82, 82
+  index: 8
+Ship3_Explosion
+  rotate: false
+  xy: 97, 9
+  size: 48, 86
+  orig: 256, 256
+  offset: 104, 84
+  index: 1
+Ship3_Explosion
+  rotate: false
+  xy: 417, 173
+  size: 79, 77
+  orig: 256, 256
+  offset: 89, 90
+  index: 9
+Ship3_Explosion
+  rotate: false
+  xy: 417, 94
+  size: 79, 77
+  orig: 256, 256
+  offset: 89, 90
+  index: 10
+Ship3_Explosion
+  rotate: false
+  xy: 417, 6
+  size: 72, 86
+  orig: 256, 256
+  offset: 92, 84
+  index: 2

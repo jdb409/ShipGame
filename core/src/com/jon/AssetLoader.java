@@ -2,6 +2,7 @@ package com.jon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -22,6 +23,14 @@ public class AssetLoader {
 
     public static Texture bg;
 
+    public static Animation<TextureRegion> blueShipExplosion;
+    public static TextureAtlas blueShipExplosionAtlas;
+    public static TextureAtlas.AtlasRegion blueShipHit1;
+    public static TextureAtlas.AtlasRegion blueShipHit2;
+    public static TextureAtlas.AtlasRegion blueShipHit3;
+
+    public static Animation<TextureRegion> blueShipHitAnim;
+
     public static void load() {
         //in atlas files
         //decrease size, to increase render size
@@ -29,6 +38,7 @@ public class AssetLoader {
         shipTexture = new Texture(Gdx.files.internal("Ships.png"));
         shotAtlas = new TextureAtlas(Gdx.files.internal("Shots.atlas"));
         shotTexture = new Texture(Gdx.files.internal("Shots.png"));
+        blueShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("BlueShipExplosion.atlas"));
 
         redShip = shipAtlas.findRegion("Ship2");
         redShip.flip(false, true);
@@ -45,9 +55,23 @@ public class AssetLoader {
 
         bg = new Texture(Gdx.files.internal("GalaxyUno.png"));
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+
+        blueShipExplosion = new Animation<TextureRegion>(0.1f,
+                blueShipExplosionAtlas.findRegions("Ship3_Explosion"), Animation.PlayMode.LOOP);
+
+        TextureRegion[] blueShipHitFrames = new TextureRegion[3];
+        blueShipHit1 = blueShipExplosionAtlas.findRegion("Ship3_Explosion", 0);
+        blueShipHit2 = blueShipExplosionAtlas.findRegion("Ship3_Explosion", 1);
+        blueShipHit3 = blueShipExplosionAtlas.findRegion("Ship3_Explosion", 2);
+        blueShipHitFrames[0] = blueShipHit1;
+        blueShipHitFrames[1] = blueShipHit2;
+        blueShipHitFrames[2] = blueShipHit3;
+        blueShipHitAnim = new Animation<>(.02f, blueShipHitFrames);
+
+
     }
 
-    public static void dispose(){
+    public static void dispose() {
         shipAtlas.dispose();
         shipTexture.dispose();
         shotTexture.dispose();

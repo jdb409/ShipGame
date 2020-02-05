@@ -70,7 +70,7 @@ abstract public class MoveableGameObject implements GameObject {
         rectangle.y = y;
     }
 
-    abstract public void update();
+    abstract public void update(float runTime);
 
     public void setWidth(float width) {
         rectangle.width = width;

@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.jon.AssetLoader;
 import com.jon.Constants;
+import com.jon.GameState;
+import com.jon.World;
 
 import java.util.Iterator;
 
@@ -15,10 +17,10 @@ import lombok.EqualsAndHashCode;
 import static com.jon.Constants.WINDOW_HEIGHT;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class PlayerControllerShip extends MoveableGameObject {
     private static int DEFAULT_HEALTH = 3;
-    private static TextureRegion image = AssetLoader.blueShip;
+    private static TextureRegion defaultImage = AssetLoader.blueShip;
     private static TextureRegion bulletImage = AssetLoader.blueShot;
     private static float DEFAULT_SPEED = 15;
     private static float DEFAULT_BULLET_WIDTH = 15;
@@ -28,6 +30,9 @@ public class PlayerControllerShip extends MoveableGameObject {
     private float lastBulletFired;
     private long lastHit;
     private int health;
+    private boolean hit;
+    private float runTime;
+    private long animationStart = 0L;
 
     public PlayerControllerShip(float x, float y, float width, float height) {
         super(x, y, width, height, DEFAULT_SPEED);
@@ -42,7 +47,8 @@ public class PlayerControllerShip extends MoveableGameObject {
     }
 
     @Override
-    public void update() {
+    public void update(float runTime) {
+        this.runTime = runTime;
         updatePosition();
         updateBullets();
     }
@@ -66,7 +72,7 @@ public class PlayerControllerShip extends MoveableGameObject {
         Iterator<Bullet> bulletIterator = bullets.iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
-            bullet.update();
+            bullet.update(runTime);
             if (bullet.getY() > WINDOW_HEIGHT) {
                 bulletIterator.remove();
             }
@@ -105,7 +111,20 @@ public class PlayerControllerShip extends MoveableGameObject {
         }
     }
 
-    public static TextureRegion getImage() {
-        return image;
+    public TextureRegion getImage() {
+        if (GameState.GAME_OVER.equals(World.gameState)){
+            return AssetLoader.blueShipExplosion.getKeyFrame(this.runTime);
+        }
+        if (animationStart != 0L && System.currentTimeMillis() - animationStart > 500) {
+            hit = false;
+            animationStart = 0L;
+            this.setWidth(this.getWidth()/2);
+        }
+        if (!hit) {
+            return defaultImage;
+        } else {
+            return AssetLoader.blueShipHitAnim.getKeyFrame(this.runTime);
+        }
+
     }
 }

@@ -57,7 +57,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (GameState.GAME_OVER.equals(world.getGameState())) {
+        if (GameState.GAME_OVER.equals(World.gameState)) {
             world.restart();
         }
         return false;
@@ -71,7 +71,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (GameState.RUNNING.equals(world.getGameState())) {
+        if (GameState.RUNNING.equals(World.gameState)) {
             float relY = ship.getY() - (WINDOW_HEIGHT - scaleY(screenY));
             float relX = ship.getX() - scaleX(screenX);
             if (relX > -60 && relX < 15

@@ -1,5 +1,5 @@
 package com.jon.GameObjects;
 
 public interface GameObject {
-    void update();
+    void update(float runTime);
 }

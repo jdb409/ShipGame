@@ -60,7 +60,7 @@ public class Renderer {
         Array<AIControlledShip> enemyShips = world.getEnemyShips();
         Array<Bullet> heroBullets = world.getPlayerControlledShip().getBullets();
         font.draw(batch, "Ships Destroyed: " + world.getShipsDestroyed(), 0, Constants.WINDOW_HEIGHT);
-        batch.draw(PlayerControllerShip.getImage(), playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
+        batch.draw(playerControllerShip.getImage(), playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
         for (int h = 0; h < playerControllerShip.getHealth(); h++) {
             font.draw(batch, "X", WINDOW_WIDTH - (h * 10) - 20, WINDOW_HEIGHT);
         }
@@ -90,6 +90,7 @@ public class Renderer {
     }
 
     private void handleGameOver() {
+        handleRunning();
         font.draw(batch, "Game Over", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2);
         font.draw(batch, "Touch Screen", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 - 20);
     }

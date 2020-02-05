@@ -37,8 +37,8 @@ public class AIControlledShip extends MoveableGameObject {
     }
 
     @Override
-    public void update() {
-        ai.update(this);
+    public void update(float runTime) {
+        ai.update(this, runTime);
     }
 
     public TextureRegion getImage() {

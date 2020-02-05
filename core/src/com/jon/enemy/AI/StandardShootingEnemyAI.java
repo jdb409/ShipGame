@@ -22,18 +22,18 @@ public class StandardShootingEnemyAI implements AI {
     }
 
     @Override
-    public void update(AIControlledShip ship) {
-        updatePosition(ship);
-        updateBullets(ship);
+    public void update(AIControlledShip ship, float runTime) {
+        updatePosition(ship, runTime);
+        updateBullets(ship, runTime);
     }
 
     @Override
-    public void updatePosition(AIControlledShip ship) {
+    public void updatePosition(AIControlledShip ship, float runTime) {
         horizontalMovement.update(ship, horizontalSpeed);
     }
 
     @Override
-    public void updateBullets(AIControlledShip ship) {
+    public void updateBullets(AIControlledShip ship, float runTime) {
         Random r = new Random();
         long shotTime = r.nextInt(2500 - 2000) + 2000;
         if (System.currentTimeMillis() - ship.getLastBulletFired() > shotTime) {
@@ -43,7 +43,7 @@ public class StandardShootingEnemyAI implements AI {
         Iterator<Bullet> bulletIterator = ship.getBullets().iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
-            bullet.update();
+            bullet.update(runTime);
             if (bullet.getY() < 0) {
                 bulletIterator.remove();
             }

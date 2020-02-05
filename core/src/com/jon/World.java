@@ -1,7 +1,6 @@
 package com.jon;
 
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
@@ -23,7 +22,7 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 
 @Data
 public class World {
-    public GameState gameState = GameState.READY;
+    public static GameState gameState = GameState.READY;
     private int level = 1;
     private PlayerControllerShip playerControlledShip;
     private long lastDropTime;
@@ -42,9 +41,10 @@ public class World {
         runTime += delta;
         handleEnemySpawn();
         if (GameState.RUNNING.equals(gameState)) {
-            playerControlledShip.update();
+            playerControlledShip.update(runTime);
             handleCollision();
         } else if (GameState.GAME_OVER.equals(gameState)) {
+            playerControlledShip.update(runTime);
             handleGameOver();
         }
     }
@@ -57,8 +57,7 @@ public class World {
         Iterator<AIControlledShip> enemyIterator = enemyShips.iterator();
         while (enemyIterator.hasNext()) {
             AIControlledShip enemyShip = enemyIterator.next();
-            enemyShip.update();
-
+            enemyShip.update(runTime);
             if (HANDLE_COLLISION) {
                 handleEnemyBulletPlayerCollision(enemyShip);
                 handlePlayerEnemyCollision(enemyShip, enemyIterator);
@@ -74,7 +73,7 @@ public class World {
             Bullet bullet = playerBulletIterator.next();
             if (enemyShip.getRectangle().overlaps(bullet.getRectangle())) {
                 playerBulletIterator.remove();
-//                handleEnemyCollision(enemyShip, enemyIterator);
+                handleEnemyCollision(enemyShip, enemyIterator);
             }
         }
     }
@@ -100,8 +99,11 @@ public class World {
 
     private void handlePlayerCollision() {
         if (System.currentTimeMillis() - playerControlledShip.getLastHit() < 500) return;
+        playerControlledShip.setHit(true);
         playerControlledShip.decrementHealth(1);
         playerControlledShip.setLastHit(System.currentTimeMillis());
+        playerControlledShip.setAnimationStart(System.currentTimeMillis());
+        playerControlledShip.setWidth(playerControlledShip.getWidth() * 2f);
         if (playerControlledShip.getHealth() <= 0) {
             gameState = GameState.GAME_OVER;
         }
@@ -120,6 +122,7 @@ public class World {
 
     private void handleGameOver() {
         playerControlledShip.setSpeed(0);
+        playerControlledShip.setBullets(new Array<Bullet>());
         for (AIControlledShip enemyShip : enemyShips) {
             enemyShip.setSpeed(0);
         }

@@ -1,4 +1,5 @@
 package com.jon.enemy.AI;
+
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.enemy.HorizontalMovement;
 
@@ -18,12 +19,12 @@ public class DivingEnemyAI implements AI {
     }
 
     @Override
-    public void update(AIControlledShip ship) {
-        updatePosition(ship);
+    public void update(AIControlledShip ship, float runTime) {
+        updatePosition(ship, runTime);
     }
 
     @Override
-    public void updatePosition(AIControlledShip ship) {
+    public void updatePosition(AIControlledShip ship, float runTime) {
         if (!isDiving) {
             horizontalMovement.update(ship, horizontalSpeed);
         } else {
@@ -44,7 +45,7 @@ public class DivingEnemyAI implements AI {
 
 
     @Override
-    public void updateBullets(AIControlledShip ship) {
+    public void updateBullets(AIControlledShip ship, float runTime) {
         return;
     }
 
