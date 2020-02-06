@@ -64,8 +64,6 @@ public class InputHandler implements InputProcessor {
         }
         lastScreenX = scaleX(screenX);
         lastScreenY = scaleY(screenY);
-        System.out.printf("lastScreenX: %d\n", lastScreenX);
-        System.out.printf("lastScreenY: %d\n", lastScreenY);
         return false;
     }
 
@@ -75,75 +73,25 @@ public class InputHandler implements InputProcessor {
         return false;
     }
 
-    /**
-     * where we touch is where we want to pretend our ship is.  if we move 10 down.  want ship to move 10 down
-     * <p>
-     * when we drag finger in diff area, we need to drag ship same distance
-     */
-
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        screenX = scaleX(screenX);
+        screenY = scaleY(screenY);
         if (GameState.RUNNING.equals(World.gameState)) {
-            float relY = ship.getY() - (WINDOW_HEIGHT - scaleY(screenY));
-            float relX = ship.getX() - scaleX(screenX);
+            float relY = ship.getY() - (WINDOW_HEIGHT - screenY);
+            float relX = ship.getX() - screenX;
             if (relX > -60 && relX < 15
                     && relY > -120 && relY < 60) {
-                ship.setCenter(scaleX(screenX), WINDOW_HEIGHT - scaleY(screenY));
+                ship.setCenter(screenX, WINDOW_HEIGHT - screenY);
             } else {
-                screenX = scaleX(screenX);
-                screenY = scaleY(screenY);
                 ship.setX(ship.getX() + (screenX - lastScreenX));
                 ship.setY(ship.getY() - (screenY - lastScreenY));
-                lastScreenX = screenX;
-                lastScreenY = screenY;
-                return false;
             }
         }
-        lastScreenX = scaleX(screenX);
-        lastScreenY = scaleY(screenY);
+        lastScreenX = screenX;
+        lastScreenY = screenY;
         return false;
     }
-
-    private void useRelativeDirections(int screenX, int screenY) {
-        useRelativeX(screenX);
-        useRelativeY(screenY);
-    }
-
-    private void useRelativeX(int screenX) {
-        float speed = 600 * Gdx.graphics.getDeltaTime();
-        if (Math.abs(screenX - lastX) > 5) {
-            //move right
-            if (screenX > lastX) {
-                ship.setX(ship.getX() + speed);
-            }
-            //move left
-            if (screenX < lastX) {
-                ship.setX(ship.getX() - speed);
-            }
-        } else {
-            ship.resetSpeed();
-        }
-        lastX = screenX;
-    }
-
-    private void useRelativeY(int screenY) {
-        float speed = 700 * Gdx.graphics.getDeltaTime();
-
-        if (Math.abs(screenY - lastY) > 5) {
-            //move down
-            if (screenY > lastY) {
-                ship.setY(ship.getY() - speed);
-            }
-            //move up
-            if (screenY < lastY) {
-                ship.setY(ship.getY() + speed);
-            }
-        } else {
-            ship.resetSpeed();
-        }
-        lastY = screenY;
-    }
-
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
