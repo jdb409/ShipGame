@@ -15,6 +15,8 @@ public class InputHandler implements InputProcessor {
     private float scaleFactorY;
     private int lastX;
     private int lastY;
+    private int lastScreenX;
+    private int lastScreenY;
 
     public InputHandler(World world, float scaleFactorX, float scaleFactorY) {
         this.world = world;
@@ -60,6 +62,10 @@ public class InputHandler implements InputProcessor {
         if (GameState.GAME_OVER.equals(World.gameState)) {
             world.restart();
         }
+        lastScreenX = scaleX(screenX);
+        lastScreenY = scaleY(screenY);
+        System.out.printf("lastScreenX: %d\n", lastScreenX);
+        System.out.printf("lastScreenY: %d\n", lastScreenY);
         return false;
     }
 
@@ -68,6 +74,12 @@ public class InputHandler implements InputProcessor {
         ship.resetSpeed();
         return false;
     }
+
+    /**
+     * where we touch is where we want to pretend our ship is.  if we move 10 down.  want ship to move 10 down
+     * <p>
+     * when we drag finger in diff area, we need to drag ship same distance
+     */
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -78,9 +90,17 @@ public class InputHandler implements InputProcessor {
                     && relY > -120 && relY < 60) {
                 ship.setCenter(scaleX(screenX), WINDOW_HEIGHT - scaleY(screenY));
             } else {
-                useRelativeDirections(screenX, screenY);
+                screenX = scaleX(screenX);
+                screenY = scaleY(screenY);
+                ship.setX(ship.getX() + (screenX - lastScreenX));
+                ship.setY(ship.getY() - (screenY - lastScreenY));
+                lastScreenX = screenX;
+                lastScreenY = screenY;
+                return false;
             }
         }
+        lastScreenX = scaleX(screenX);
+        lastScreenY = scaleY(screenY);
         return false;
     }
 
