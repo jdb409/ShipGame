@@ -15,19 +15,24 @@ public class AIControlledShip extends MoveableGameObject {
 
     private AI ai;
     private Array<Bullet> bullets;
-    private static final float DEFAULT_BULLET_WIDTH = 10;
-    private static final float DEFAULT_BULLET_HEIGHT = 15;
-    private long lastBulletFired;
-    private float bulletHeight;
-    private float bulletWidth;
-    private TextureRegion image;
+
     private int health;
     private long lastHit;
-    private float runTime;
     private boolean dead = false;
+
+    private TextureRegion image;
+    //animation
     private Animation<TextureRegion> deathAnimation;
     private float animTime;
     private boolean removeFromScreen = false;
+
+    //bullets
+    private long lastBulletFired;
+    private float bulletHeight;
+    private float bulletWidth;
+
+    private float runTime;
+
 
     public AIControlledShip(float x,
                             float y,
@@ -40,26 +45,21 @@ public class AIControlledShip extends MoveableGameObject {
                             Animation<TextureRegion> deathAnimation) {
         super(x, y, width, height, speed);
         this.ai = ai;
-        bulletWidth = DEFAULT_BULLET_WIDTH;
-        bulletHeight = DEFAULT_BULLET_HEIGHT;
-        bullets = new Array<>();
         this.health = health;
         this.image = image;
         this.deathAnimation = deathAnimation;
-    }
-
-    public void decrementHealth(int amount) {
-        health -= amount;
+        this.bulletWidth = 10;
+        this.bulletHeight = 15;
+        this.bullets = new Array<>();
     }
 
     @Override
     public void update(float runTime) {
-
         ai.update(this, runTime);
         this.runTime = runTime;
     }
 
-    public void handleCollision(){
+    public void handleCollision() {
         //500ms of invincibility
         if (System.currentTimeMillis() - this.getLastHit() < 500) {
             return;
@@ -84,4 +84,9 @@ public class AIControlledShip extends MoveableGameObject {
             return image;
         }
     }
+
+    private void decrementHealth(int amount) {
+        health -= amount;
+    }
+
 }
