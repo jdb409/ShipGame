@@ -1,5 +1,6 @@
 package com.jon.enemy.AI;
 
+import com.badlogic.gdx.utils.Array;
 import com.jon.AssetLoader;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
@@ -34,20 +35,28 @@ public class StandardShootingEnemyAI implements AI {
 
     @Override
     public void updateBullets(AIControlledShip ship, float runTime) {
-        Random r = new Random();
-        long shotTime = r.nextInt(2500 - 2000) + 2000;
-        if (System.currentTimeMillis() - ship.getLastBulletFired() > shotTime) {
-            spawnBullets(ship);
-        }
+        if (!ship.isDead()) {
+            Random r = new Random();
+            long shotTime = r.nextInt(2500 - 2000) + 2000;
+            if (System.currentTimeMillis() - ship.getLastBulletFired() > shotTime) {
+                spawnBullets(ship);
+            }
 
-        Iterator<Bullet> bulletIterator = ship.getBullets().iterator();
-        while (bulletIterator.hasNext()) {
-            Bullet bullet = bulletIterator.next();
-            bullet.update(runTime);
-            if (bullet.getY() < 0) {
-                bulletIterator.remove();
+            Iterator<Bullet> bulletIterator = ship.getBullets().iterator();
+            while (bulletIterator.hasNext()) {
+                Bullet bullet = bulletIterator.next();
+                bullet.update(runTime);
+                if (bullet.getY() < 0) {
+                    bulletIterator.remove();
+                }
             }
         }
+    }
+
+    @Override
+    public void die(AIControlledShip ship, float runTime) {
+        ship.setBullets(new Array<Bullet>());
+        ship.setDead(true);
     }
 
     public void moveDown(AIControlledShip ship) {

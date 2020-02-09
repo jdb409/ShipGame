@@ -49,9 +49,17 @@ public class DivingEnemyAI implements AI {
         return;
     }
 
+    @Override
+    public void die(AIControlledShip ship, float runTime) {
+        ship.setDead(true);
+
+    }
+
     private void dive(AIControlledShip ship) {
-        lastDove = System.currentTimeMillis();
-        ship.moveDown();
+        if (!ship.isDead()) {
+            lastDove = System.currentTimeMillis();
+            ship.moveDown();
+        }
     }
 
     private void checkDive(AIControlledShip ship) {

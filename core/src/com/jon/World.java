@@ -115,6 +115,7 @@ public class World {
         enemyShip.setLastHit(System.currentTimeMillis());
         if (enemyShip.getHealth() <= 0) {
             enemyIterator.remove();
+            enemyShip.die();
             shipsDestroyed++;
         }
     }

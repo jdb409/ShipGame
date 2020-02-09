@@ -24,7 +24,8 @@ public class EnemyFactory {
                         DIVING_ENEMY_SPEED,
                         2,
                         divingAI,
-                        AssetLoader.redShip);
+                        AssetLoader.redShip,
+                        null);
             case STANDARD_SHOOTING:
                 AI shootingAI = new StandardShootingEnemyAI();
                 return new AIControlledShip(x,
@@ -34,7 +35,8 @@ public class EnemyFactory {
                         SHOOTING_ENEMY_SPEED,
                         2,
                         shootingAI,
-                        AssetLoader.fishShip);
+                        AssetLoader.fishShip,
+                        null);
             default:
                 System.out.println("should not reach here");
                 return null;
