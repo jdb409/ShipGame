@@ -78,6 +78,7 @@ public class AIControlledShip extends MoveableGameObject {
             removeFromScreen = true;
         }
         if (dead) {
+            //getKeyFrame needs to know how long its been running.  runtime is total, need just this frame
             animTime += Gdx.graphics.getDeltaTime();
             return deathAnimation.getKeyFrame(animTime, false);
         } else {
