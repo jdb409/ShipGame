@@ -4,6 +4,7 @@ import com.jon.GameObjects.AIControlledShip;
 import com.jon.enemy.HorizontalMovement;
 
 import static com.jon.Constants.ENEMY_HEIGHT;
+import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
 import static com.jon.Constants.WINDOW_HEIGHT;
 
 public class DivingEnemyAI implements AI {
@@ -11,11 +12,13 @@ public class DivingEnemyAI implements AI {
     private long lastDove;
     private boolean isDiving;
     private HorizontalMovement horizontalMovement;
+    private float additionalDivingDepth;
 
     public DivingEnemyAI() {
         horizontalSpeed = 2;
         horizontalMovement = new HorizontalMovement();
         isDiving = true;
+        additionalDivingDepth = 20;
     }
 
     @Override
@@ -32,7 +35,8 @@ public class DivingEnemyAI implements AI {
         }
 
         ship.setY(ship.getY() + ship.getVelocity().y);
-        if (ship.getY() < 100) {
+        float maxDivingDepth = PLAYER_SHIP_HEIGHT + ship.getHeight() - additionalDivingDepth;
+        if (ship.getY() < maxDivingDepth) {
             ship.resetSpeed();
             ship.moveUp();
         }
@@ -52,6 +56,10 @@ public class DivingEnemyAI implements AI {
     @Override
     public void die(AIControlledShip ship, float runTime) {
         ship.setDead(true);
+    }
+
+    public void setAdditionalDivingDepth(float additionalDivingDepth){
+        this.additionalDivingDepth = additionalDivingDepth;
     }
 
     private void dive(AIControlledShip ship) {

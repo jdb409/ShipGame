@@ -39,7 +39,7 @@ public class Renderer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        scrollY = scrollY - 1 % 1600;
+        scrollY--;
         batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         switch (this.world.gameState) {
@@ -62,7 +62,7 @@ public class Renderer {
         font.draw(batch, "Ships Destroyed: " + world.getShipsDestroyed(), 0, Constants.WINDOW_HEIGHT);
         batch.draw(playerControllerShip.getImage(), playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
         for (int h = 0; h < playerControllerShip.getHealth(); h++) {
-            font.draw(batch, "X", WINDOW_WIDTH - (h * 10) - 20, WINDOW_HEIGHT);
+            batch.draw(playerControllerShip.getOriginalImage(), (h * 25), 0, 20, 25);
         }
         for (AIControlledShip enemyShip : enemyShips) {
             batch.draw(enemyShip.getImage(), enemyShip.getX(), enemyShip.getY(), enemyShip.getWidth(), enemyShip.getHeight());

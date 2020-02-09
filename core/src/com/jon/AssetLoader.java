@@ -62,7 +62,7 @@ public class AssetLoader {
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         blueShipExplosion = new Animation<TextureRegion>(0.1f,
-                blueShipExplosionAtlas.findRegions("Ship3_Explosion"), Animation.PlayMode.NORMAL);
+                blueShipExplosionAtlas.findRegions("Ship3_Explosion"), Animation.PlayMode.LOOP);
 
         redShipExplosion = new Animation<TextureRegion>(0.05f,
                 redShipExplosionAtlas.findRegions("Ship2_Explosion"), Animation.PlayMode.NORMAL);
@@ -85,5 +85,9 @@ public class AssetLoader {
         shotTexture.dispose();
         shotAtlas.dispose();
         bg.dispose();
+        blueShipExplosionAtlas.dispose();
+        yellowShipExplosionAtlas.dispose();
+        redShipExplosionAtlas.dispose();
+
     }
 }

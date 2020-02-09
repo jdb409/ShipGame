@@ -103,8 +103,8 @@ public class PlayerControllerShip extends MoveableGameObject {
     }
 
     private void checkY() {
-        if (this.getY() < 0) {
-            this.setY(0);
+        if (this.getY() < 25) {
+            this.setY(25);
         }
         if (this.getY() > Constants.WINDOW_HEIGHT - this.getHeight()) {
             this.setY(Constants.WINDOW_HEIGHT - this.getHeight());
@@ -125,6 +125,9 @@ public class PlayerControllerShip extends MoveableGameObject {
         } else {
             return AssetLoader.blueShipHitAnim.getKeyFrame(this.runTime);
         }
+    }
 
+    public TextureRegion getOriginalImage(){
+        return defaultImage;
     }
 }
