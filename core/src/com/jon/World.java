@@ -23,12 +23,14 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 @Data
 public class World {
     public static GameState gameState = GameState.READY;
+    private final int NUM_ENEMY_PER_ROW = 6;
     private int level = 1;
     private PlayerControllerShip playerControlledShip;
+    private Array<AIControlledShip> enemyShips;
+
     private long lastDropTime;
     private long lastHeroBullet;
     private int shipsDestroyed;
-    Array<AIControlledShip> enemyShips;
     private AlienInvaderGame game;
     private Long spawnEnemyWaitingTime = 0L;
     private float runTime;
@@ -40,11 +42,11 @@ public class World {
     public void update(float delta) {
         runTime += delta;
         handleEnemySpawn();
+        playerControlledShip.update(runTime);
+
         if (GameState.RUNNING.equals(gameState)) {
-            playerControlledShip.update(runTime);
             handleCollision();
         } else if (GameState.GAME_OVER.equals(gameState)) {
-            playerControlledShip.update(runTime);
             handleGameOver();
         }
     }
@@ -63,31 +65,23 @@ public class World {
             }
             if (HANDLE_COLLISION) {
                 handleEnemyBulletPlayerCollision(enemyShip);
-                handlePlayerEnemyCollision(enemyShip, enemyIterator);
-                handlePlayerBulletEnemyCollision(enemyShip, enemyIterator);
+                handlePlayerEnemyCollision(enemyShip);
+                handlePlayerBulletEnemyCollision(enemyShip);
             }
         }
     }
 
-    private void handlePlayerBulletEnemyCollision(AIControlledShip enemyShip, Iterator<AIControlledShip> enemyIterator) {
+    private void handlePlayerBulletEnemyCollision(AIControlledShip enemyShip) {
         Array<Bullet> playerBullets = playerControlledShip.getBullets();
         Iterator<Bullet> playerBulletIterator = playerBullets.iterator();
         while (playerBulletIterator.hasNext()) {
             Bullet bullet = playerBulletIterator.next();
             if (enemyShip.getRectangle().overlaps(bullet.getRectangle())) {
                 playerBulletIterator.remove();
-                handleEnemyCollision(enemyShip, enemyIterator);
+                handleEnemyCollision(enemyShip);
             }
         }
     }
-
-    private void handlePlayerEnemyCollision(AIControlledShip enemyShip, Iterator<AIControlledShip> enemyIterator) {
-        if (playerControlledShip.getRectangle().overlaps(enemyShip.getRectangle())) {
-            handleEnemyCollision(enemyShip, enemyIterator);
-            handlePlayerCollision();
-        }
-    }
-
 
     private void handleEnemyBulletPlayerCollision(AIControlledShip enemyShip) {
         Iterator<Bullet> enemyBulletIterator = enemyShip.getBullets().iterator();
@@ -100,22 +94,23 @@ public class World {
         }
     }
 
+    private void handlePlayerEnemyCollision(AIControlledShip enemyShip) {
+        if (playerControlledShip.getRectangle().overlaps(enemyShip.getRectangle())) {
+            handleEnemyCollision(enemyShip);
+            handlePlayerCollision();
+        }
+    }
+
     private void handlePlayerCollision() {
-        if (System.currentTimeMillis() - playerControlledShip.getLastHit() < 500) return;
-        playerControlledShip.setHit(true);
-        playerControlledShip.decrementHealth(1);
-        playerControlledShip.setLastHit(System.currentTimeMillis());
-        playerControlledShip.setAnimationStart(System.currentTimeMillis());
-        playerControlledShip.setWidth(playerControlledShip.getWidth() * 2f);
+        // if player has been hit, give 500ms window of invincibility
+        playerControlledShip.handleCollision(1);
         if (playerControlledShip.getHealth() <= 0) {
             gameState = GameState.GAME_OVER;
         }
     }
 
-    private void handleEnemyCollision(AIControlledShip enemyShip, Iterator<AIControlledShip> enemyIterator) {
-        if (System.currentTimeMillis() - enemyShip.getLastHit() < 500) return;
-        enemyShip.decrementHealth(1);
-        enemyShip.setLastHit(System.currentTimeMillis());
+    private void handleEnemyCollision(AIControlledShip enemyShip) {
+        enemyShip.handleCollision();
         if (enemyShip.getHealth() <= 0) {
             if (!enemyShip.isDead()) {
                 enemyShip.die();
@@ -123,7 +118,6 @@ public class World {
             }
         }
     }
-
 
     private void handleGameOver() {
         playerControlledShip.setSpeed(0);
@@ -136,12 +130,13 @@ public class World {
     private void init(AlienInvaderGame game) {
         this.game = game;
         float heroStart = Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2;
-        playerControlledShip = new PlayerControllerShip(heroStart, 25, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT);
+        playerControlledShip = new PlayerControllerShip(heroStart, 25, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, AssetLoader.blueShipExplosion, AssetLoader.blueShipHitAnim);
         enemyShips = new Array<>();
         spawnEnemies();
     }
 
     private void handleEnemySpawn() {
+        //if no enemies are left, start timer
         if (enemyShips.size == 0 && spawnEnemyWaitingTime == 0L) {
             level++;
             spawnEnemyWaitingTime = System.currentTimeMillis();
@@ -164,11 +159,11 @@ public class World {
 
     private void spawnEnemies() {
         for (int l = 1; l <= level; l++) {
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < NUM_ENEMY_PER_ROW; i++) {
                 float enemyX = i * (ENEMY_WIDTH + 40);
                 float enemyY = (WINDOW_HEIGHT - 20) - (l * ENEMY_HEIGHT);
                 Random rand = new Random();
-                int type = rand.nextInt(10);
+                int type = rand.nextInt(2);
                 AIControlledShip aiControlledShip;
                 if (type % 2 == 0) {
                     aiControlledShip = EnemyFactory.create(EnemyType.DIVING, enemyX, enemyY);
@@ -181,7 +176,4 @@ public class World {
 
     }
 
-    public void dispose() {
-
-    }
 }

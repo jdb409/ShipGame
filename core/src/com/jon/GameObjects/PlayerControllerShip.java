@@ -1,9 +1,9 @@
 package com.jon.GameObjects;
 
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.jon.AssetLoader;
 import com.jon.Constants;
 import com.jon.GameState;
@@ -27,23 +27,28 @@ public class PlayerControllerShip extends MoveableGameObject {
     private static float DEFAULT_BULLET_HEIGHT = 24;
 
     private Array<Bullet> bullets;
-    private float lastBulletFired;
+    private long lastBulletFired;
     private long lastHit;
     private int health;
     private boolean hit;
     private float runTime;
     private long animationStart = 0L;
+    private long bulletFrequency;
+    private Animation<TextureRegion> deathAnimation;
+    private Animation<TextureRegion> hitAnimation;
 
-    public PlayerControllerShip(float x, float y, float width, float height) {
-        super(x, y, width, height, DEFAULT_SPEED);
-        bullets = new Array<>();
-        this.health = DEFAULT_HEALTH;
+    public PlayerControllerShip(float x, float y, float width, float height, Animation<TextureRegion> deathAnimation, Animation<TextureRegion> hitAnimation) {
+        this(x, y, width, height, deathAnimation, hitAnimation, DEFAULT_HEALTH);
     }
 
-    public PlayerControllerShip(float x, float y, float width, float height, int health) {
+    public PlayerControllerShip(float x, float y, float width, float height, Animation<TextureRegion> deathAnimation, Animation<TextureRegion> hitAnimation, int health) {
         super(x, y, width, height, DEFAULT_SPEED);
         bullets = new Array<>();
         this.health = health;
+        //the smaller the number, the faster bullets will be spawned
+        this.bulletFrequency = 300;
+        this.deathAnimation = deathAnimation;
+        this.hitAnimation = hitAnimation;
     }
 
     @Override
@@ -51,10 +56,6 @@ public class PlayerControllerShip extends MoveableGameObject {
         this.runTime = runTime;
         updatePosition();
         updateBullets();
-    }
-
-    public void decrementHealth(int amount) {
-        this.health -= amount;
     }
 
     private void updatePosition() {
@@ -65,7 +66,7 @@ public class PlayerControllerShip extends MoveableGameObject {
     }
 
     private void updateBullets() {
-        if (TimeUtils.nanoTime() - lastBulletFired > 300000000) {
+        if (System.currentTimeMillis() - lastBulletFired > bulletFrequency) {
             spawnBullets();
         }
 
@@ -89,8 +90,22 @@ public class PlayerControllerShip extends MoveableGameObject {
                         bulletImage);
         bullet.moveUp();
         bullets.add(bullet);
-        lastBulletFired = TimeUtils.nanoTime();
+        lastBulletFired = System.currentTimeMillis();
     }
+
+    public void handleCollision(int damage) {
+        if (System.currentTimeMillis() - this.getLastHit() < 500) {
+            return;
+        }
+        this.setHit(true);
+        this.decrementHealth(damage);
+        this.setLastHit(System.currentTimeMillis());
+        this.setAnimationStart(System.currentTimeMillis());
+
+        //handle animation image change.  anim width is .5 size
+        this.setWidth(this.getWidth() * 2f);
+    }
+
 
     private void checkX() {
         if ((this.getX() + this.getWidth() / 2) < 0) {
@@ -111,23 +126,31 @@ public class PlayerControllerShip extends MoveableGameObject {
         }
     }
 
+    private void decrementHealth(int amount) {
+        this.health -= amount;
+    }
+
+
     public TextureRegion getImage() {
         if (GameState.GAME_OVER.equals(World.gameState)) {
-            return AssetLoader.blueShipExplosion.getKeyFrame(this.runTime);
+            return this.deathAnimation.getKeyFrame(300);
         }
+
+        //if hit animation has gone on for longer than 500ms, end anim
         if (animationStart != 0L && System.currentTimeMillis() - animationStart > 500) {
             hit = false;
             animationStart = 0L;
+            //resize width.  had to size up animation width
             this.setWidth(this.getWidth() / 2);
         }
         if (!hit) {
             return defaultImage;
         } else {
-            return AssetLoader.blueShipHitAnim.getKeyFrame(this.runTime);
+            return this.hitAnimation.getKeyFrame(this.runTime);
         }
     }
 
-    public TextureRegion getOriginalImage(){
+    public TextureRegion getOriginalImage() {
         return defaultImage;
     }
 }

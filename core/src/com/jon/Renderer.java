@@ -20,10 +20,13 @@ public class Renderer {
     private World world;
     private OrthographicCamera camera;
     private BitmapFont font;
+    private int scrollY;
+
     private ShapeRenderer shapeRenderer;
 
     private PlayerControllerShip playerControllerShip;
-    private int scrollY;
+    private Array<AIControlledShip> enemyShips;
+    private Array<Bullet> heroBullets;
 
     public Renderer(SpriteBatch batch, World world, OrthographicCamera camera) {
         this.batch = batch;
@@ -39,7 +42,8 @@ public class Renderer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        scrollY--;
+        //prevent overflow if game runs for too long
+        scrollY = scrollY - 1 % 1600;
         batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         switch (this.world.gameState) {
@@ -54,25 +58,6 @@ public class Renderer {
                 break;
         }
         batch.end();
-    }
-
-    private void handleRunning() {
-        Array<AIControlledShip> enemyShips = world.getEnemyShips();
-        Array<Bullet> heroBullets = world.getPlayerControlledShip().getBullets();
-        font.draw(batch, "Ships Destroyed: " + world.getShipsDestroyed(), 0, Constants.WINDOW_HEIGHT);
-        batch.draw(playerControllerShip.getImage(), playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
-        for (int h = 0; h < playerControllerShip.getHealth(); h++) {
-            batch.draw(playerControllerShip.getOriginalImage(), (h * 25), 0, 20, 25);
-        }
-        for (AIControlledShip enemyShip : enemyShips) {
-            batch.draw(enemyShip.getImage(), enemyShip.getX(), enemyShip.getY(), enemyShip.getWidth(), enemyShip.getHeight());
-            for (Bullet bullet : enemyShip.getBullets()) {
-                batch.draw(bullet.getImage(), bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
-            }
-        }
-        for (Bullet bullet : heroBullets) {
-            batch.draw(bullet.getImage(), bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
-        }
     }
 
     private void handleReady() {
@@ -95,12 +80,48 @@ public class Renderer {
         font.draw(batch, "Touch Screen", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 - 20);
     }
 
+    private void handleRunning() {
+        font.draw(batch, "Ships Destroyed: " + world.getShipsDestroyed(), 0, Constants.WINDOW_HEIGHT);
+        drawLives();
+        drawPlayerShip();
+        drawPlayerBullets();
+        drawEnemies();
+    }
+
     public void dispose() {
         AssetLoader.dispose();
     }
 
+
+    private void drawLives() {
+        for (int h = 0; h < playerControllerShip.getHealth(); h++) {
+            batch.draw(playerControllerShip.getOriginalImage(), (h * 25), 0, 20, 25);
+        }
+    }
+
+    private void drawPlayerShip() {
+        batch.draw(playerControllerShip.getImage(), playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
+    }
+
+    private void drawPlayerBullets() {
+        for (Bullet bullet : heroBullets) {
+            batch.draw(bullet.getImage(), bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
+        }
+    }
+
+    private void drawEnemies() {
+        for (AIControlledShip enemyShip : enemyShips) {
+            batch.draw(enemyShip.getImage(), enemyShip.getX(), enemyShip.getY(), enemyShip.getWidth(), enemyShip.getHeight());
+            for (Bullet bullet : enemyShip.getBullets()) {
+                batch.draw(bullet.getImage(), bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
+            }
+        }
+    }
+
     private void initGameObjects() {
         playerControllerShip = world.getPlayerControlledShip();
+        enemyShips = world.getEnemyShips();
+        heroBullets = world.getPlayerControlledShip().getBullets();
     }
 
 }

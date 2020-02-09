@@ -59,6 +59,15 @@ public class AIControlledShip extends MoveableGameObject {
         this.runTime = runTime;
     }
 
+    public void handleCollision(){
+        //500ms of invincibility
+        if (System.currentTimeMillis() - this.getLastHit() < 500) {
+            return;
+        }
+        this.decrementHealth(1);
+        this.setLastHit(System.currentTimeMillis());
+    }
+
     public void die() {
         ai.die(this, runTime);
         animTime = 0f;

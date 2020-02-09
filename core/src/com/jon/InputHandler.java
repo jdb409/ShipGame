@@ -1,8 +1,6 @@
 package com.jon;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
 import com.jon.GameObjects.PlayerControllerShip;
 
 import static com.jon.Constants.WINDOW_HEIGHT;
@@ -13,8 +11,6 @@ public class InputHandler implements InputProcessor {
     private PlayerControllerShip ship;
     private float scaleFactorX;
     private float scaleFactorY;
-    private int lastX;
-    private int lastY;
     private int lastScreenX;
     private int lastScreenY;
 
@@ -23,8 +19,6 @@ public class InputHandler implements InputProcessor {
         ship = world.getPlayerControlledShip();
         this.scaleFactorX = scaleFactorX;
         this.scaleFactorY = scaleFactorY;
-        lastX = (int) ship.getX();
-        lastY = (int) ship.getY();
     }
 
     @Override
