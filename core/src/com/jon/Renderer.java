@@ -95,7 +95,7 @@ public class Renderer {
 
     private void drawLives() {
         for (int h = 0; h < playerControllerShip.getHealth(); h++) {
-            batch.draw(playerControllerShip.getOriginalImage(), (h * 25), 0, 20, 25);
+            batch.draw(playerControllerShip.getOriginalImage(), (h * 25), 5, 20, 25);
         }
     }
 

@@ -130,7 +130,7 @@ public class World {
     private void init(AlienInvaderGame game) {
         this.game = game;
         float heroStart = Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2;
-        playerControlledShip = new PlayerControllerShip(heroStart, 25, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, AssetLoader.blueShipExplosion, AssetLoader.blueShipHitAnim);
+        playerControlledShip = new PlayerControllerShip(heroStart, 30, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, AssetLoader.blueShipExplosion, AssetLoader.blueShipHitAnim);
         enemyShips = new Array<>();
         spawnEnemies();
     }

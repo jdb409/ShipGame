@@ -13,12 +13,15 @@ public class DivingEnemyAI implements AI {
     private boolean isDiving;
     private HorizontalMovement horizontalMovement;
     private float additionalDivingDepth;
+    //the lower this number the more often the ship dives
+    private float diveFrequency = 5000;
 
     public DivingEnemyAI() {
         horizontalSpeed = 2;
         horizontalMovement = new HorizontalMovement();
-        isDiving = true;
         additionalDivingDepth = 20;
+        //delay first dive by 1 second
+        lastDove = System.currentTimeMillis() - 4000;
     }
 
     @Override
@@ -30,20 +33,9 @@ public class DivingEnemyAI implements AI {
     public void updatePosition(AIControlledShip ship, float runTime) {
         if (!isDiving) {
             horizontalMovement.update(ship, horizontalSpeed);
-        } else {
-            ship.setX(ship.getX());
         }
-
         ship.setY(ship.getY() + ship.getVelocity().y);
-        float maxDivingDepth = PLAYER_SHIP_HEIGHT + ship.getHeight() - additionalDivingDepth;
-        if (ship.getY() < maxDivingDepth) {
-            ship.resetSpeed();
-            ship.moveUp();
-        }
-        if (ship.getY() >= WINDOW_HEIGHT - ENEMY_HEIGHT - 20) {
-            ship.resetSpeed();
-        }
-
+        checkY(ship);
         checkDive(ship);
     }
 
@@ -58,7 +50,7 @@ public class DivingEnemyAI implements AI {
         ship.setDead(true);
     }
 
-    public void setAdditionalDivingDepth(float additionalDivingDepth){
+    public void setAdditionalDivingDepth(float additionalDivingDepth) {
         this.additionalDivingDepth = additionalDivingDepth;
     }
 
@@ -69,8 +61,21 @@ public class DivingEnemyAI implements AI {
         }
     }
 
+    private void checkY(AIControlledShip ship) {
+        float maxDivingDepth = PLAYER_SHIP_HEIGHT + ship.getHeight() - additionalDivingDepth;
+
+        if (ship.getY() < maxDivingDepth) {
+            ship.resetSpeed();
+            ship.moveUp();
+        }
+        int topOfScreen = WINDOW_HEIGHT - ENEMY_HEIGHT - 20;
+        if (ship.getY() >= topOfScreen) {
+            ship.resetSpeed();
+        }
+    }
+
     private void checkDive(AIControlledShip ship) {
-        if ((System.currentTimeMillis() - lastDove) > 5000) {
+        if ((System.currentTimeMillis() - lastDove) > diveFrequency) {
             dive(ship);
             isDiving = true;
         }

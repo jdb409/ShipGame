@@ -88,7 +88,6 @@ abstract public class MoveableGameObject implements GameObject {
         velocity.y = 0;
     }
 
-
     public void resetSpeed() {
         velocity.set(0, 0);
     }

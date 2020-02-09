@@ -1,6 +1,7 @@
 package com.jon;
 
 public class Constants {
+    public static final float PLAYER_SHIP_START_Y = 30;
     public static final float PLAYER_SHIP_WIDTH = 40;
     public static final float PLAYER_SHIP_HEIGHT = 80;
     public static final int WINDOW_HEIGHT = 800;

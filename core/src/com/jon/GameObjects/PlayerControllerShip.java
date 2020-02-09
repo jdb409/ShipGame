@@ -14,6 +14,7 @@ import java.util.Iterator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import static com.jon.Constants.PLAYER_SHIP_START_Y;
 import static com.jon.Constants.WINDOW_HEIGHT;
 
 @Data
@@ -118,8 +119,8 @@ public class PlayerControllerShip extends MoveableGameObject {
     }
 
     private void checkY() {
-        if (this.getY() < 25) {
-            this.setY(25);
+        if (this.getY() < PLAYER_SHIP_START_Y) {
+            this.setY(PLAYER_SHIP_START_Y);
         }
         if (this.getY() > Constants.WINDOW_HEIGHT - this.getHeight()) {
             this.setY(Constants.WINDOW_HEIGHT - this.getHeight());
