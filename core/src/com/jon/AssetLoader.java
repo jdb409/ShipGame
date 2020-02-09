@@ -25,9 +25,12 @@ public class AssetLoader {
 
     public static Animation<TextureRegion> blueShipExplosion;
     public static TextureAtlas blueShipExplosionAtlas;
-    public static TextureAtlas.AtlasRegion blueShipHit1;
-    public static TextureAtlas.AtlasRegion blueShipHit2;
-    public static TextureAtlas.AtlasRegion blueShipHit3;
+
+    public static Animation<TextureRegion> yellowShipExplosion;
+    public static TextureAtlas yellowShipExplosionAtlas;
+
+    public static Animation<TextureRegion> redShipExplosion;
+    public static TextureAtlas redShipExplosionAtlas;
 
     public static Animation<TextureRegion> blueShipHitAnim;
 
@@ -39,6 +42,8 @@ public class AssetLoader {
         shotAtlas = new TextureAtlas(Gdx.files.internal("Shots.atlas"));
         shotTexture = new Texture(Gdx.files.internal("Shots.png"));
         blueShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("BlueShipExplosion.atlas"));
+        redShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("RedShipExplosion.atlas"));
+        yellowShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("YellowShipExplosion.atlas"));
 
         redShip = shipAtlas.findRegion("Ship2");
         redShip.flip(false, true);
@@ -57,15 +62,18 @@ public class AssetLoader {
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         blueShipExplosion = new Animation<TextureRegion>(0.1f,
-                blueShipExplosionAtlas.findRegions("Ship3_Explosion"), Animation.PlayMode.LOOP);
+                blueShipExplosionAtlas.findRegions("Ship3_Explosion"), Animation.PlayMode.NORMAL);
+
+        redShipExplosion = new Animation<TextureRegion>(0.05f,
+                redShipExplosionAtlas.findRegions("Ship2_Explosion"), Animation.PlayMode.NORMAL);
+
+        yellowShipExplosion = new Animation<TextureRegion>(0.05f,
+                yellowShipExplosionAtlas.findRegions("Ship5_Explosion"), Animation.PlayMode.NORMAL);
 
         TextureRegion[] blueShipHitFrames = new TextureRegion[3];
-        blueShipHit1 = blueShipExplosionAtlas.findRegion("Ship3_Explosion", 0);
-        blueShipHit2 = blueShipExplosionAtlas.findRegion("Ship3_Explosion", 1);
-        blueShipHit3 = blueShipExplosionAtlas.findRegion("Ship3_Explosion", 2);
-        blueShipHitFrames[0] = blueShipHit1;
-        blueShipHitFrames[1] = blueShipHit2;
-        blueShipHitFrames[2] = blueShipHit3;
+        for (int frame = 0; frame < 3; frame++) {
+            blueShipHitFrames[frame] = blueShipExplosionAtlas.findRegion("Ship3_Explosion", frame);
+        }
         blueShipHitAnim = new Animation<>(.02f, blueShipHitFrames);
 
 

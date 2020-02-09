@@ -1,0 +1,90 @@
+
+RedShipExplosion.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Ship2_Explosion
+  rotate: false
+  xy: 2, 120
+  size: 125, 125
+  orig: 128, 128
+  offset: 1, 2
+  index: 8
+Ship2_Explosion
+  rotate: false
+  xy: 2, 5
+  size: 113, 113
+  orig: 128, 128
+  offset: 7, 8
+  index: 7
+Ship2_Explosion
+  rotate: false
+  xy: 129, 144
+  size: 101, 101
+  orig: 128, 128
+  offset: 13, 14
+  index: 6
+Ship2_Explosion
+  rotate: false
+  xy: 232, 146
+  size: 99, 99
+  orig: 128, 128
+  offset: 14, 15
+  index: 9
+Ship2_Explosion
+  rotate: false
+  xy: 232, 146
+  size: 99, 99
+  orig: 128, 128
+  offset: 14, 15
+  index: 10
+Ship2_Explosion
+  rotate: false
+  xy: 333, 161
+  size: 79, 84
+  orig: 128, 128
+  offset: 24, 24
+  index: 5
+Ship2_Explosion
+  rotate: false
+  xy: 414, 169
+  size: 76, 76
+  orig: 128, 128
+  offset: 26, 26
+  index: 11
+Ship2_Explosion
+  rotate: false
+  xy: 117, 41
+  size: 61, 77
+  orig: 128, 128
+  offset: 33, 31
+  index: 4
+Ship2_Explosion
+  rotate: false
+  xy: 180, 65
+  size: 40, 77
+  orig: 128, 128
+  offset: 44, 31
+  index: 1
+Ship2_Explosion
+  rotate: false
+  xy: 222, 65
+  size: 34, 77
+  orig: 128, 128
+  offset: 48, 31
+  index: 0
+Ship2_Explosion
+  rotate: false
+  xy: 258, 83
+  size: 61, 61
+  orig: 128, 128
+  offset: 33, 34
+  index: 3
+Ship2_Explosion
+  rotate: false
+  xy: 180, 2
+  size: 61, 61
+  orig: 128, 128
+  offset: 33, 34
+  index: 2

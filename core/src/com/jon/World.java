@@ -58,6 +58,9 @@ public class World {
         while (enemyIterator.hasNext()) {
             AIControlledShip enemyShip = enemyIterator.next();
             enemyShip.update(runTime);
+            if (enemyShip.isRemoveFromScreen()) {
+                enemyIterator.remove();
+            }
             if (HANDLE_COLLISION) {
                 handleEnemyBulletPlayerCollision(enemyShip);
                 handlePlayerEnemyCollision(enemyShip, enemyIterator);
@@ -114,9 +117,10 @@ public class World {
         enemyShip.decrementHealth(1);
         enemyShip.setLastHit(System.currentTimeMillis());
         if (enemyShip.getHealth() <= 0) {
-            enemyIterator.remove();
-            enemyShip.die();
-            shipsDestroyed++;
+            if (!enemyShip.isDead()) {
+                enemyShip.die();
+                shipsDestroyed++;
+            }
         }
     }
 

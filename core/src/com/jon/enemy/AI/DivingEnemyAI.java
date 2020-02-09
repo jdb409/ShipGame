@@ -52,7 +52,6 @@ public class DivingEnemyAI implements AI {
     @Override
     public void die(AIControlledShip ship, float runTime) {
         ship.setDead(true);
-
     }
 
     private void dive(AIControlledShip ship) {

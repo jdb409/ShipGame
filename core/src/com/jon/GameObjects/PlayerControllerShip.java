@@ -112,13 +112,13 @@ public class PlayerControllerShip extends MoveableGameObject {
     }
 
     public TextureRegion getImage() {
-        if (GameState.GAME_OVER.equals(World.gameState)){
-            return AssetLoader.blueShipExplosion.getKeyFrame(this.runTime, true);
+        if (GameState.GAME_OVER.equals(World.gameState)) {
+            return AssetLoader.blueShipExplosion.getKeyFrame(this.runTime);
         }
         if (animationStart != 0L && System.currentTimeMillis() - animationStart > 500) {
             hit = false;
             animationStart = 0L;
-            this.setWidth(this.getWidth()/2);
+            this.setWidth(this.getWidth() / 2);
         }
         if (!hit) {
             return defaultImage;

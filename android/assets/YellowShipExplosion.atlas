@@ -1,0 +1,83 @@
+
+YellowShipExplosion.png
+size: 1024,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Ship5_Explosion
+  rotate: false
+  xy: 2, 71
+  size: 183, 183
+  orig: 256, 256
+  offset: 36, 37
+  index: 7
+Ship5_Explosion
+  rotate: false
+  xy: 187, 93
+  size: 161, 161
+  orig: 256, 256
+  offset: 47, 48
+  index: 6
+Ship5_Explosion
+  rotate: false
+  xy: 350, 109
+  size: 145, 145
+  orig: 256, 256
+  offset: 55, 56
+  index: 8
+Ship5_Explosion
+  rotate: false
+  xy: 497, 109
+  size: 144, 145
+  orig: 256, 256
+  offset: 56, 56
+  index: 5
+Ship5_Explosion
+  rotate: false
+  xy: 643, 141
+  size: 112, 113
+  orig: 256, 256
+  offset: 72, 72
+  index: 4
+Ship5_Explosion
+  rotate: false
+  xy: 757, 145
+  size: 109, 109
+  orig: 256, 256
+  offset: 73, 74
+  index: 9
+Ship5_Explosion
+  rotate: false
+  xy: 868, 149
+  size: 86, 105
+  orig: 256, 256
+  offset: 85, 79
+  index: 3
+Ship5_Explosion
+  rotate: false
+  xy: 956, 149
+  size: 61, 105
+  orig: 256, 256
+  offset: 90, 79
+  index: 0
+Ship5_Explosion
+  rotate: false
+  xy: 350, 2
+  size: 67, 105
+  orig: 256, 256
+  offset: 90, 79
+  index: 1
+Ship5_Explosion
+  rotate: false
+  xy: 419, 16
+  size: 91, 91
+  orig: 256, 256
+  offset: 82, 83
+  index: 10
+Ship5_Explosion
+  rotate: false
+  xy: 512, 25
+  size: 81, 82
+  orig: 256, 256
+  offset: 87, 87
+  index: 2
