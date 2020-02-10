@@ -2,6 +2,7 @@ package com.jon.enemy;
 
 import com.jon.Constants;
 import com.jon.GameObjects.AIControlledShip;
+import com.jon.LevelConfig;
 
 public class HorizontalMovement {
     boolean moveRight = false;
@@ -37,11 +38,11 @@ public class HorizontalMovement {
     }
 
     private void moveLeft(AIControlledShip ship, int speed) {
-        ship.setX(ship.getX() - speed);
+        ship.setX(ship.getX() - LevelConfig.horizontalSpeed);
     }
 
     private void moveRight(AIControlledShip ship, int speed) {
-        ship.setX(ship.getX() + speed);
+        ship.setX(ship.getX() + LevelConfig.horizontalSpeed);
     }
 
 }

@@ -18,24 +18,26 @@ import static com.jon.Constants.ENEMY_WIDTH;
 import static com.jon.Constants.HANDLE_COLLISION;
 import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
 import static com.jon.Constants.PLAYER_SHIP_WIDTH;
+import static com.jon.Constants.TOP_ENEMY_BUFFER;
 import static com.jon.Constants.WINDOW_HEIGHT;
+import static com.jon.Constants.WINDOW_WIDTH;
 
 @Data
 public class World {
     public static GameState gameState = GameState.READY;
-    private final int NUM_ENEMY_PER_ROW = 6;
-    private int level = 1;
     private PlayerControllerShip playerControlledShip;
     private Array<AIControlledShip> enemyShips;
 
     private long lastDropTime;
     private long lastHeroBullet;
     private int shipsDestroyed;
-    private AlienInvaderGame game;
-    private Long spawnEnemyWaitingTime = 0L;
     private float runTime;
+    private long spawnEnemyWaitingTime;
+
+    private AlienInvaderGame game;
 
     public World(AlienInvaderGame game) {
+        LevelConfig.restart();
         init(game);
     }
 
@@ -130,7 +132,7 @@ public class World {
     private void init(AlienInvaderGame game) {
         this.game = game;
         float heroStart = Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2;
-        playerControlledShip = new PlayerControllerShip(heroStart, 30, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, AssetLoader.blueShipExplosion, AssetLoader.blueShipHitAnim);
+        playerControlledShip = new PlayerControllerShip(heroStart, 25, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, AssetLoader.blueShipExplosion, AssetLoader.blueShipHitAnim);
         enemyShips = new Array<>();
         spawnEnemies();
     }
@@ -138,7 +140,7 @@ public class World {
     private void handleEnemySpawn() {
         //if no enemies are left, start timer
         if (enemyShips.size == 0 && spawnEnemyWaitingTime == 0L) {
-            level++;
+            LevelConfig.setNextStage();
             spawnEnemyWaitingTime = System.currentTimeMillis();
             gameState = GameState.READY;
         }
@@ -149,7 +151,6 @@ public class World {
             spawnEnemies();
             spawnEnemyWaitingTime = 0L;
         }
-
     }
 
     private void setRunning() {
@@ -158,10 +159,12 @@ public class World {
     }
 
     private void spawnEnemies() {
-        for (int l = 1; l <= level; l++) {
-            for (int i = 0; i < NUM_ENEMY_PER_ROW; i++) {
-                float enemyX = i * (ENEMY_WIDTH + 40);
-                float enemyY = (WINDOW_HEIGHT - 20) - (l * ENEMY_HEIGHT);
+        int totalX = LevelConfig.numEnemyPerRow * (ENEMY_WIDTH+40);
+        int xLeft = WINDOW_WIDTH - totalX;
+        for (int l = 1; l <= LevelConfig.numRows; l++) {
+            for (int i = 0; i < LevelConfig.numEnemyPerRow; i++) {
+                float enemyX = i * (ENEMY_WIDTH + 40) + xLeft;
+                float enemyY = (WINDOW_HEIGHT - TOP_ENEMY_BUFFER) - (l * ENEMY_HEIGHT);
                 Random rand = new Random();
                 int type = rand.nextInt(2);
                 AIControlledShip aiControlledShip;

@@ -1,10 +1,12 @@
 package com.jon.enemy.AI;
 
 import com.jon.GameObjects.AIControlledShip;
+import com.jon.LevelConfig;
 import com.jon.enemy.HorizontalMovement;
 
 import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
+import static com.jon.Constants.TOP_ENEMY_BUFFER;
 import static com.jon.Constants.WINDOW_HEIGHT;
 
 public class DivingEnemyAI implements AI {
@@ -68,14 +70,15 @@ public class DivingEnemyAI implements AI {
             ship.resetSpeed();
             ship.moveUp();
         }
-        int topOfScreen = WINDOW_HEIGHT - ENEMY_HEIGHT - 20;
+        int topOfScreen = WINDOW_HEIGHT - ENEMY_HEIGHT - TOP_ENEMY_BUFFER;
         if (ship.getY() >= topOfScreen) {
             ship.resetSpeed();
         }
     }
 
     private void checkDive(AIControlledShip ship) {
-        if ((System.currentTimeMillis() - lastDove) > diveFrequency) {
+        if ((System.currentTimeMillis() - lastDove) >
+                diveFrequency * (1- LevelConfig.diveSpeedMultiplier)) {
             dive(ship);
             isDiving = true;
         }

@@ -86,6 +86,7 @@ public class AIControlledShip extends MoveableGameObject {
         }
     }
 
+
     private void decrementHealth(int amount) {
         health -= amount;
     }

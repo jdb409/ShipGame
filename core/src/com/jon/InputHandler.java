@@ -3,6 +3,7 @@ package com.jon;
 import com.badlogic.gdx.InputProcessor;
 import com.jon.GameObjects.PlayerControllerShip;
 
+import static com.jon.Constants.PLAYER_SHIP_WIDTH;
 import static com.jon.Constants.WINDOW_HEIGHT;
 
 
@@ -53,11 +54,18 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.println(scaleX(screenX) + ":" + scaleY(screenY));
         if (GameState.GAME_OVER.equals(World.gameState)) {
             world.restart();
+            lastScreenX =  (int) (Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2);
+            lastScreenY = 0;
+        } else if (GameState.RUNNING.equals(World.gameState)){
+            lastScreenX = scaleX(screenX);
+            lastScreenY = scaleY(screenY);
+        } else {
+            lastScreenX =  (int) (Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2);
+            lastScreenY = 0;
         }
-        lastScreenX = scaleX(screenX);
-        lastScreenY = scaleY(screenY);
         return false;
     }
 

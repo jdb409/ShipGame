@@ -45,6 +45,8 @@ public class Renderer {
         //prevent overflow if game runs for too long
         scrollY = scrollY - 1 % 1600;
         batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
+//        long javaHeap = Gdx.app.getJavaHeap();
+//        long nativeHeap = Gdx.app.getNativeHeap();
 
         switch (this.world.gameState) {
             case READY:
