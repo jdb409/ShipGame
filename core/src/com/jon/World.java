@@ -4,6 +4,10 @@ import com.badlogic.gdx.utils.Array;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
+import com.jon.GameObjects.items.IncreasePowerItem;
+import com.jon.GameObjects.items.Item;
+import com.jon.GameObjects.items.ItemFactory;
+import com.jon.GameObjects.items.ItemType;
 import com.jon.enemy.EnemyFactory;
 import com.jon.enemy.EnemyType;
 import com.jon.screens.MainMenuScreen;
@@ -27,6 +31,7 @@ public class World {
     public static GameState gameState = GameState.READY;
     private PlayerControllerShip playerControlledShip;
     private Array<AIControlledShip> enemyShips;
+    private Array<Item> items;
 
     private long lastDropTime;
     private long lastHeroBullet;
@@ -69,6 +74,7 @@ public class World {
                 handleEnemyBulletPlayerCollision(enemyShip);
                 handlePlayerEnemyCollision(enemyShip);
                 handlePlayerBulletEnemyCollision(enemyShip);
+                handleItemCollision();
             }
         }
     }
@@ -116,9 +122,27 @@ public class World {
         if (enemyShip.getHealth() <= 0) {
             if (!enemyShip.isDead()) {
                 enemyShip.die();
+                handleItemSpawn(enemyShip);
                 shipsDestroyed++;
             }
         }
+    }
+
+    private void handleItemCollision() {
+        Iterator<Item> itemIterator = items.iterator();
+        while (itemIterator.hasNext()) {
+            Item item = itemIterator.next();
+            item.update(runTime);
+            if (item.getRectangle().overlaps(playerControlledShip.getRectangle())) {
+                item.apply(playerControlledShip);
+                itemIterator.remove();
+            }
+        }
+    }
+
+    private void setRunning() {
+        gameState = GameState.RUNNING;
+        playerControlledShip.resetOrigin();
     }
 
     private void handleGameOver() {
@@ -134,6 +158,7 @@ public class World {
         float heroStart = Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2;
         playerControlledShip = new PlayerControllerShip(heroStart, 25, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, AssetLoader.blueShipExplosion, AssetLoader.blueShipHitAnim);
         enemyShips = new Array<>();
+        items = new Array<>();
         spawnEnemies();
     }
 
@@ -153,13 +178,9 @@ public class World {
         }
     }
 
-    private void setRunning() {
-        gameState = GameState.RUNNING;
-        playerControlledShip.resetOrigin();
-    }
 
     private void spawnEnemies() {
-        int totalX = LevelConfig.numEnemyPerRow * (ENEMY_WIDTH+40);
+        int totalX = LevelConfig.numEnemyPerRow * (ENEMY_WIDTH + 40);
         int xLeft = WINDOW_WIDTH - totalX;
         for (int l = 1; l <= LevelConfig.numRows; l++) {
             for (int i = 0; i < LevelConfig.numEnemyPerRow; i++) {
@@ -176,7 +197,18 @@ public class World {
                 enemyShips.add(aiControlledShip);
             }
         }
+    }
 
+    private void handleItemSpawn(AIControlledShip enemyShip) {
+        double shouldSpawnItem = Math.round(Math.random() * playerControlledShip.getChanceToSpawnItem());
+        boolean ableToSpawn = shouldSpawnItem == 0;
+        if (ableToSpawn) {
+            Random rand = new Random();
+            int r = rand.nextInt(3);
+            ItemType type = ItemType.from(r);
+            Item item = ItemFactory.create(type, enemyShip.getX(), enemyShip.getY());
+            items.add(item);
+        }
     }
 
 }

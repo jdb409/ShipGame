@@ -34,6 +34,11 @@ public class AssetLoader {
 
     public static Animation<TextureRegion> blueShipHitAnim;
 
+    public static Texture items;
+    public static TextureRegion increasePowerItem;
+    public static TextureRegion increaseWidthItem;
+    public static TextureRegion increaseHealthItem;
+
     public static void load() {
         //in atlas files
         //decrease size, to increase render size
@@ -44,6 +49,8 @@ public class AssetLoader {
         blueShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("BlueShipExplosion.atlas"));
         redShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("RedShipExplosion.atlas"));
         yellowShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("YellowShipExplosion.atlas"));
+
+        items = new Texture(Gdx.files.internal("items.png"));
 
         redShip = shipAtlas.findRegion("Ship2");
         redShip.flip(false, true);
@@ -76,6 +83,9 @@ public class AssetLoader {
         }
         blueShipHitAnim = new Animation<>(.02f, blueShipHitFrames);
 
+        increasePowerItem = new TextureRegion(items, 10, 156, 60, 62);
+        increaseWidthItem = new TextureRegion(items, 79, 156, 60, 62);
+        increaseHealthItem = new TextureRegion(items, 79, 220, 60, 62);
 
     }
 

@@ -38,7 +38,7 @@ public class EnemyFactory {
                         AssetLoader.redShip,
                         AssetLoader.redShipExplosion);
             default:
-                System.out.println("should not reach here");
+                System.out.println("Enemy Factory - should not reach here");
                 return null;
         }
     }

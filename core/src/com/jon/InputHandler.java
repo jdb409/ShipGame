@@ -54,7 +54,6 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println(scaleX(screenX) + ":" + scaleY(screenY));
         if (GameState.GAME_OVER.equals(World.gameState)) {
             world.restart();
             lastScreenX =  (int) (Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2);

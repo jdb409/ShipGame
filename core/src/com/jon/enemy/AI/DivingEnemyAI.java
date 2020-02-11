@@ -70,8 +70,7 @@ public class DivingEnemyAI implements AI {
             ship.resetSpeed();
             ship.moveUp();
         }
-        int topOfScreen = WINDOW_HEIGHT - ENEMY_HEIGHT - TOP_ENEMY_BUFFER;
-        if (ship.getY() >= topOfScreen) {
+        if (ship.getY() >= ship.getOriginalY()) {
             ship.resetSpeed();
         }
     }

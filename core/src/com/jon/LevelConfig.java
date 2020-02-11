@@ -13,6 +13,7 @@ public class LevelConfig {
     public static int shootingSpeedMin;
     public static int chanceToShoot;
     public static float horizontalSpeed;
+    public static int stagesPerLevel;
 
     public static float diveSpeedMultiplier;
 
@@ -22,14 +23,15 @@ public class LevelConfig {
     }
 
     public static void setNextStage() {
-        stage++;
         numRows++;
-        if (numRows == 4) {
+        if (stage++ == stagesPerLevel) {
             setNextLevel();
         }
     }
 
     public static void setNextLevel() {
+        stage = 1;
+        level++;
         diveSpeedMultiplier += .1;
         shootingSpeedMin -= 500;
         numRows = 2;
@@ -46,5 +48,6 @@ public class LevelConfig {
         //33% chance to shoot.  0,1,2
         chanceToShoot = 2;
         horizontalSpeed = .5f;
+        stagesPerLevel = 4;
     }
 }

@@ -26,6 +26,7 @@ public class PlayerControllerShip extends MoveableGameObject {
     private static float DEFAULT_SPEED = 15;
     private static float DEFAULT_BULLET_WIDTH = 15;
     private static float DEFAULT_BULLET_HEIGHT = 24;
+    private static float MAX_BULLET_WIDTH = 50;
 
     private Array<Bullet> bullets;
     private long lastBulletFired;
@@ -37,6 +38,8 @@ public class PlayerControllerShip extends MoveableGameObject {
     private long bulletFrequency;
     private Animation<TextureRegion> deathAnimation;
     private Animation<TextureRegion> hitAnimation;
+    private int chanceToSpawnItem = 0;
+    private float bulletWidth;
 
     public PlayerControllerShip(float x, float y, float width, float height, Animation<TextureRegion> deathAnimation, Animation<TextureRegion> hitAnimation) {
         this(x, y, width, height, deathAnimation, hitAnimation, DEFAULT_HEALTH);
@@ -50,6 +53,7 @@ public class PlayerControllerShip extends MoveableGameObject {
         this.bulletFrequency = 300;
         this.deathAnimation = deathAnimation;
         this.hitAnimation = hitAnimation;
+        this.bulletWidth = DEFAULT_BULLET_WIDTH;
     }
 
     @Override
@@ -67,6 +71,7 @@ public class PlayerControllerShip extends MoveableGameObject {
     }
 
     private void updateBullets() {
+        bulletFrequency = Math.max(bulletFrequency, 100);
         if (System.currentTimeMillis() - lastBulletFired > bulletFrequency) {
             spawnBullets();
         }
@@ -86,7 +91,7 @@ public class PlayerControllerShip extends MoveableGameObject {
         Bullet bullet =
                 new Bullet(this.getX() + this.getWidth() / 3,
                         this.getY() + this.getHeight(),
-                        DEFAULT_BULLET_WIDTH,
+                        Math.min(bulletWidth, MAX_BULLET_WIDTH),
                         DEFAULT_BULLET_HEIGHT,
                         bulletImage);
         bullet.moveUp();

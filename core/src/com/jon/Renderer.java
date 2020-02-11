@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
+import com.jon.GameObjects.items.Item;
 
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
@@ -27,6 +28,7 @@ public class Renderer {
     private PlayerControllerShip playerControllerShip;
     private Array<AIControlledShip> enemyShips;
     private Array<Bullet> heroBullets;
+    private Array<Item> items;
 
     public Renderer(SpriteBatch batch, World world, OrthographicCamera camera) {
         this.batch = batch;
@@ -44,10 +46,11 @@ public class Renderer {
         batch.begin();
         //prevent overflow if game runs for too long
         scrollY = scrollY - 1 % 1600;
+        batch.disableBlending();
         batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
-//        long javaHeap = Gdx.app.getJavaHeap();
-//        long nativeHeap = Gdx.app.getNativeHeap();
-
+        batch.enableBlending();
+//        shapeRenderer.setProjectionMatrix(camera.combined);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         switch (this.world.gameState) {
             case READY:
                 handleReady();
@@ -60,9 +63,13 @@ public class Renderer {
                 break;
         }
         batch.end();
+//        shapeRenderer.end();
+
     }
 
     private void handleReady() {
+        String levelMsg = String.format("Level: %d, Wave %d", LevelConfig.level, LevelConfig.stage);
+        font.draw(batch, levelMsg, WINDOW_WIDTH / 2 - 55, Constants.WINDOW_HEIGHT - 50);
         font.draw(batch, "Get Ready!!!", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2);
         long elapsedSinceSpawn = System.currentTimeMillis() - world.getSpawnEnemyWaitingTime();
         font.getData().setScale(2);
@@ -84,10 +91,12 @@ public class Renderer {
 
     private void handleRunning() {
         font.draw(batch, "Ships Destroyed: " + world.getShipsDestroyed(), 0, Constants.WINDOW_HEIGHT);
+        font.draw(batch, String.format("Level: %d, Wave %d", LevelConfig.level, LevelConfig.stage), WINDOW_WIDTH - 150, Constants.WINDOW_HEIGHT);
         drawLives();
         drawPlayerShip();
         drawPlayerBullets();
         drawEnemies();
+        drawItems();
     }
 
     public void dispose() {
@@ -120,10 +129,18 @@ public class Renderer {
         }
     }
 
+    private void drawItems() {
+        for (Item item : items) {
+            batch.draw(item.getImage(), item.getX(), item.getY(), item.getWidth(), item.getHeight());
+//            shapeRenderer.rect(item.getX(), item.getY(), item.getWidth(), item.getHeight());
+        }
+    }
+
     private void initGameObjects() {
         playerControllerShip = world.getPlayerControlledShip();
         enemyShips = world.getEnemyShips();
         heroBullets = world.getPlayerControlledShip().getBullets();
+        items = world.getItems();
     }
 
 }
