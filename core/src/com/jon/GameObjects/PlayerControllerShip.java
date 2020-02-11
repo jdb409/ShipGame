@@ -38,7 +38,7 @@ public class PlayerControllerShip extends MoveableGameObject {
     private long bulletFrequency;
     private Animation<TextureRegion> deathAnimation;
     private Animation<TextureRegion> hitAnimation;
-    private int chanceToSpawnItem = 0;
+    private int chanceToSpawnItem = 4;
     private float bulletWidth;
 
     public PlayerControllerShip(float x, float y, float width, float height, Animation<TextureRegion> deathAnimation, Animation<TextureRegion> hitAnimation) {
@@ -88,10 +88,12 @@ public class PlayerControllerShip extends MoveableGameObject {
 
     //how often do we spawn bullets?  Depending on current ships.
     private void spawnBullets() {
+        bulletWidth = Math.min(bulletWidth, MAX_BULLET_WIDTH);
+        float newX = this.getX() + this.getWidth() / 3 - (bulletWidth - DEFAULT_BULLET_WIDTH) / 2;
         Bullet bullet =
-                new Bullet(this.getX() + this.getWidth() / 3,
+                new Bullet(newX,
                         this.getY() + this.getHeight(),
-                        Math.min(bulletWidth, MAX_BULLET_WIDTH),
+                        bulletWidth,
                         DEFAULT_BULLET_HEIGHT,
                         bulletImage);
         bullet.moveUp();

@@ -3,8 +3,8 @@ package com.jon.GameObjects.items;
 import com.jon.AssetLoader;
 
 public class ItemFactory {
-    private static float ITEM_HEIGHT = 20;
-    private static float ITEM_WIDTH = 20;
+    private static float ITEM_HEIGHT = 30;
+    private static float ITEM_WIDTH = 30;
 
     public static Item create(ItemType itemType, float x, float y) {
         switch (itemType.getType()) {
