@@ -27,6 +27,7 @@ public class PlayerControllerShip extends MoveableGameObject {
     private static float DEFAULT_BULLET_WIDTH = 15;
     private static float DEFAULT_BULLET_HEIGHT = 24;
     private static float MAX_BULLET_WIDTH = 50;
+    public final int START_BULLET_FREQUENCY = 300;
 
     private Array<Bullet> bullets;
     private long lastBulletFired;
@@ -50,7 +51,7 @@ public class PlayerControllerShip extends MoveableGameObject {
         bullets = new Array<>();
         this.health = health;
         //the smaller the number, the faster bullets will be spawned
-        this.bulletFrequency = 300;
+        this.bulletFrequency = START_BULLET_FREQUENCY;
         this.deathAnimation = deathAnimation;
         this.hitAnimation = hitAnimation;
         this.bulletWidth = DEFAULT_BULLET_WIDTH;

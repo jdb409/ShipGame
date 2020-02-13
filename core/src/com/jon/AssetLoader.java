@@ -1,6 +1,8 @@
 package com.jon;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -35,9 +37,12 @@ public class AssetLoader {
     public static Animation<TextureRegion> blueShipHitAnim;
 
     public static Texture items;
-    public static TextureRegion increasePowerItem;
+    public static TextureRegion increaseBulletSpeedItem;
     public static TextureRegion increaseWidthItem;
     public static TextureRegion increaseHealthItem;
+    public static TextureRegion whitePixelRegion;
+
+    private static Texture whitePixelTexture;
 
     public static void load() {
         //in atlas files
@@ -83,9 +88,15 @@ public class AssetLoader {
         }
         blueShipHitAnim = new Animation<>(.02f, blueShipHitFrames);
 
-        increasePowerItem = new TextureRegion(items, 10, 156, 60, 62);
+        increaseBulletSpeedItem = new TextureRegion(items, 10, 156, 60, 62);
         increaseWidthItem = new TextureRegion(items, 79, 156, 60, 62);
         increaseHealthItem = new TextureRegion(items, 79, 220, 60, 62);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.drawPixel(0, 0);
+        whitePixelTexture = new Texture(pixmap); //remember to dispose of later
+        pixmap.dispose();
+        whitePixelRegion = new TextureRegion(whitePixelTexture, 0, 0, 1, 1);
 
     }
 
@@ -98,6 +109,7 @@ public class AssetLoader {
         blueShipExplosionAtlas.dispose();
         yellowShipExplosionAtlas.dispose();
         redShipExplosionAtlas.dispose();
+        whitePixelTexture.dispose();
 
     }
 }

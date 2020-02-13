@@ -9,7 +9,7 @@ public class ItemFactory {
     public static Item create(ItemType itemType, float x, float y) {
         switch (itemType.getType()) {
             case 0:
-                return new IncreasePowerItem(x, y, ITEM_WIDTH, ITEM_HEIGHT, AssetLoader.increasePowerItem);
+                return new IncreaseBulletSpeedItem(x, y, ITEM_WIDTH, ITEM_HEIGHT, AssetLoader.increaseBulletSpeedItem);
             case 1:
                 return new IncreaseHealthItem(x, y, ITEM_WIDTH, ITEM_HEIGHT, AssetLoader.increaseHealthItem);
             case 2:

@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.Array;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
-import com.jon.GameObjects.items.IncreasePowerItem;
 import com.jon.GameObjects.items.Item;
 import com.jon.GameObjects.items.ItemFactory;
 import com.jon.GameObjects.items.ItemType;

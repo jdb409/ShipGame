@@ -13,6 +13,8 @@ import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
 import com.jon.GameObjects.items.Item;
 
+import space.earlygrey.shapedrawer.ShapeDrawer;
+
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
 
@@ -24,7 +26,7 @@ public class Renderer {
     private BitmapFont font;
     private int scrollY;
 
-    private ShapeRenderer shapeRenderer;
+    private ShapeDrawer shapeDrawer;
 
     private PlayerControllerShip playerControllerShip;
     private Array<AIControlledShip> enemyShips;
@@ -36,7 +38,7 @@ public class Renderer {
         this.world = world;
         this.camera = camera;
         this.font = new BitmapFont();
-        shapeRenderer = new ShapeRenderer();
+        shapeDrawer = new ShapeDrawer(batch, AssetLoader.whitePixelRegion);
         initGameObjects();
     }
 
@@ -50,8 +52,6 @@ public class Renderer {
         batch.disableBlending();
         batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
         batch.enableBlending();
-//        shapeRenderer.setProjectionMatrix(camera.combined);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         switch (this.world.gameState) {
             case READY:
                 handleReady();
@@ -64,7 +64,6 @@ public class Renderer {
                 break;
         }
         batch.end();
-//        shapeRenderer.end();
 
     }
 
@@ -98,6 +97,7 @@ public class Renderer {
         drawPlayerBullets();
         drawEnemies();
         drawItems();
+        drawBulletSpeedBar();
     }
 
     public void dispose() {
@@ -133,8 +133,24 @@ public class Renderer {
     private void drawItems() {
         for (Item item : items) {
             batch.draw(item.getImage(), item.getX(), item.getY(), item.getWidth(), item.getHeight());
-//            shapeRenderer.rect(item.getX(), item.getY(), item.getWidth(), item.getHeight());
         }
+    }
+
+    private void drawBulletSpeedBar() {
+        Color bulletSpeedBar = Color.GOLDENROD;
+        int width = 150;
+        font.setColor(bulletSpeedBar);
+        font.draw(batch, "Bullet Speed:", width, 18);
+        font.setColor(Color.WHITE);
+        shapeDrawer.setColor(bulletSpeedBar);
+        shapeDrawer.rectangle(WINDOW_WIDTH - 160,
+                5,
+                width,
+                15);
+        shapeDrawer.filledRectangle(WINDOW_WIDTH - 160,
+                5,
+                ((float) (300 - playerControllerShip.getBulletFrequency()) / 200) * width,
+                15);
     }
 
     private void initGameObjects() {
@@ -145,10 +161,3 @@ public class Renderer {
     }
 
 }
-
-
-// shapeRenderer.setProjectionMatrix(camera.combined);
-// shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-// shapeRenderer.rect(playerControllerShip.getX(), playerControllerShip.getY(), playerControllerShip.getWidth(), playerControllerShip.getHeight());
-// shapeRenderer.rect(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
-// shapeRenderer.end();
