@@ -53,6 +53,7 @@ public class World {
 
         if (GameState.RUNNING.equals(gameState)) {
             handleCollision();
+            handleItemCollision();
         } else if (GameState.GAME_OVER.equals(gameState)) {
             handleGameOver();
         }
@@ -74,7 +75,6 @@ public class World {
                 handleEnemyBulletPlayerCollision(enemyShip);
                 handlePlayerEnemyCollision(enemyShip);
                 handlePlayerBulletEnemyCollision(enemyShip);
-                handleItemCollision();
             }
         }
     }
@@ -88,6 +88,7 @@ public class World {
                 playerBulletIterator.remove();
                 handleEnemyCollision(enemyShip);
             }
+            checkPlayerBulletBound(bullet, playerBulletIterator);
         }
     }
 
@@ -99,6 +100,7 @@ public class World {
                 enemyBulletIterator.remove();
                 handlePlayerCollision();
             }
+            checkEnemyBulletBound(bullet, enemyBulletIterator);
         }
     }
 
@@ -137,6 +139,7 @@ public class World {
                 item.apply(playerControlledShip);
                 itemIterator.remove();
             }
+            checkItemBounds(item, itemIterator);
         }
     }
 
@@ -208,6 +211,24 @@ public class World {
             ItemType type = ItemType.from(r);
             Item item = ItemFactory.create(type, enemyShip.getX(), enemyShip.getY());
             items.add(item);
+        }
+    }
+
+    private void checkItemBounds(Item item, Iterator<Item> itemIterator) {
+        if (item.getY() < 0) {
+            itemIterator.remove();
+        }
+    }
+
+    private void checkPlayerBulletBound(Bullet item, Iterator<Bullet> bulletIterator) {
+        if (item.getY() > WINDOW_HEIGHT) {
+            bulletIterator.remove();
+        }
+    }
+
+    private void checkEnemyBulletBound(Bullet item, Iterator<Bullet> bulletIterator) {
+        if (item.getY() < 0) {
+            bulletIterator.remove();
         }
     }
 

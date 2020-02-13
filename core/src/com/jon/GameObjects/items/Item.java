@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 abstract public class Item extends MoveableGameObject {
-    private static float ITEM_SPEED = .5f;
+    private static float ITEM_SPEED = 5f;
 
     private TextureRegion image;
 
