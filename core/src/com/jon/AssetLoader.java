@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AssetLoader {
     private static Texture shipTexture;
     private static Texture shotTexture;
     private static Texture items;
-    private static Texture bg;
     private static Texture whitePixelTexture;
 
     private static TextureAtlas shipAtlas;
@@ -22,6 +22,8 @@ public class AssetLoader {
     private static TextureAtlas yellowShipExplosionAtlas;
     private static TextureAtlas redShipExplosionAtlas;
     private static TextureAtlas menuIconsAtlas;
+
+    public static Texture bg;
 
     public static TextureAtlas.AtlasRegion redShip;
     public static TextureAtlas.AtlasRegion blueShip;
@@ -45,11 +47,14 @@ public class AssetLoader {
     public static TextureRegion increaseWidthItem;
     public static TextureRegion increaseHealthItem;
     public static TextureRegion whitePixelRegion;
-
+    private static TextureAtlas skinAtlas;
+    public static Skin menuSkin;
 
     public static void load() {
         //in atlas files
         //decrease size, to increase render size
+        skinAtlas = new TextureAtlas(Gdx.files.internal("lgdxs-ui.atlas"));
+        menuSkin = new Skin(Gdx.files.internal("lgdxs-ui.json"), skinAtlas);
         loadBackgrounds();
         loadShips();
         loadBullets();

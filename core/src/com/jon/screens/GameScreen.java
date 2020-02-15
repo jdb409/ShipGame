@@ -52,7 +52,7 @@ class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        game.setScreen(new MainMenuScreen(game, game.camera));
     }
 
     @Override

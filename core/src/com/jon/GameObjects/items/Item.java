@@ -5,8 +5,10 @@ import com.jon.GameObjects.MoveableGameObject;
 import com.jon.GameObjects.PlayerControllerShip;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 abstract public class Item extends MoveableGameObject {
     private static float ITEM_SPEED = 5f;
 
