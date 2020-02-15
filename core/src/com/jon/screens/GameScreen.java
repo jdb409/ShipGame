@@ -1,6 +1,7 @@
 package com.jon.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.jon.AlienInvaderGame;
 import com.jon.GameState;
@@ -30,12 +31,17 @@ class GameScreen implements Screen {
 
         this.world.gameState = GameState.RUNNING;
         this.renderer = new Renderer(game.batch, this.world, game.camera);
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
 
     }
 
     @Override
     public void render(float delta) {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.setScreen(new MainMenuScreen(game, game.camera));
+            dispose();
+        }
         world.update(delta);
         renderer.render();
     }

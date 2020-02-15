@@ -68,7 +68,7 @@ public class StandardShootingEnemyAI implements AI {
 
     @Override
     public void die(AIControlledShip ship, float runTime) {
-        ship.setBullets(new Array<Bullet>());
+        ship.setBullets(new Array<>());
         ship.setDead(true);
     }
 

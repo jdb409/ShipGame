@@ -36,26 +36,44 @@ public class LevelConfig {
         }
     }
 
-    public static void setLevel(int level) {
+    public static void setLevel(int newLevel) {
+        level = newLevel;
         stage = 1;
         numRows = 2;
-        diveSpeedMultiplier = level * .1f;
-        shootingSpeedMin -= (level * 500);
-        shootingSpeedMax -= (level * 500);
+        diveSpeedMultiplier = newLevel * .1f;
+        shootingSpeedMin = defaultShootingSpeedMin - (newLevel * 500);
+        shootingSpeedMax = defaultShootingSpeedMax - (newLevel * 500);
     }
 
     private static void init() {
-        level = 1;
+        //check if user selected a level
+        if (level == 0) {
+            level = 1;
+            diveSpeedMultiplier = defaultDiveSpeedMultiplier;
+            shootingSpeedMax = defaultShootingSpeedMax;
+            shootingSpeedMin = defaultShootingSpeedMin;
+        }
         stage = 1;
-        stagesPerLevel = 2;
+        stagesPerLevel = 3;
         numEnemyPerRow = defaultNumEnemyPerRow;
         numRows = defaultNumRows;
-        diveSpeedMultiplier = defaultDiveSpeedMultiplier;
-        shootingSpeedMax = defaultShootingSpeedMax;
-        shootingSpeedMin = defaultShootingSpeedMin;
         //33% chance to shoot.  0,1,2
         chanceToShoot = defaultChanceToShoot;
         horizontalSpeed = defaultHorizontalSpeed;
     }
 
+    public static String printConfig() {
+        return "LevelConfig{" +
+                "level=" + level +
+                ", numEnemyPerRow=" + numEnemyPerRow +
+                ", numRows=" + numRows +
+                ", stage=" + stage +
+                ", shootingSpeedMax=" + shootingSpeedMax +
+                ", shootingSpeedMin=" + shootingSpeedMin +
+                ", chanceToShoot=" + chanceToShoot +
+                ", horizontalSpeed=" + horizontalSpeed +
+                ", stagesPerLevel=" + stagesPerLevel +
+                ", diveSpeedMultiplier=" + diveSpeedMultiplier +
+                '}';
+    }
 }

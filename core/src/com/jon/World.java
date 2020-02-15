@@ -11,7 +11,6 @@ import com.jon.enemy.EnemyFactory;
 import com.jon.enemy.EnemyType;
 import com.jon.screens.MainMenuScreen;
 
-import java.awt.Window;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -153,13 +152,14 @@ public class World {
 
     private void handleGameOver() {
         playerControlledShip.setSpeed(0);
-        playerControlledShip.setBullets(new Array<Bullet>());
+        playerControlledShip.setBullets(new Array<>());
         for (AIControlledShip enemyShip : enemyShips) {
             enemyShip.setSpeed(0);
         }
     }
 
     private void init(AlienInvaderGame game) {
+        System.out.println(LevelConfig.printConfig());
         this.game = game;
         float heroStart = Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2;
         playerControlledShip = new PlayerControllerShip(heroStart, 25, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, AssetLoader.blueShipExplosion, AssetLoader.blueShipHitAnim);

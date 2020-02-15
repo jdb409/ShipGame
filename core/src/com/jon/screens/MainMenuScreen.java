@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -22,6 +24,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jon.AlienInvaderGame;
 import com.jon.AssetLoader;
+import com.jon.LevelConfig;
+
+import java.util.Arrays;
 
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
@@ -66,13 +71,33 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        stageSelect.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Dialog dialog = new Dialog("", skin, "dialog") {
+                    public void result(Object obj) {
+                        LevelConfig.setLevel((int) obj);
+                        game.setScreen(new GameScreen(game));
+                    }
+                };
+                TextButton.TextButtonStyle style = skin.get("oval1", TextButton.TextButtonStyle.class);
+//                SelectBox<Integer> selectBox = new SelectBox(skin);
+//                selectBox.setItems(1,2,3);
+//                dialog.getContentTable().add(selectBox);
+                for (int i = 1; i < 7; i++) {
+                    dialog.button(Integer.toString(i), i, style); //sends "true" as the result
+                }
+                dialog.show(stage);
+            }
+        });
+
 
         //Add buttons to table
         mainTable.add(startButton).width(800).height(200);
         mainTable.row().pad(50);
         mainTable.add(stageSelect).width(800).height(200);
-        mainTable.row().pad(50);
-        mainTable.add(settingsButton);
+//        mainTable.row().pad(50);
+//        mainTable.add(settingsButton);
 
         //Add table to stage
         stage.addActor(mainTable);
