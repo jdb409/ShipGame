@@ -1,0 +1,104 @@
+
+menu_icons.png
+size: 2048,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Close_BTN
+  rotate: false
+  xy: 1554, 214
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Exit_BTN
+  rotate: false
+  xy: 294, 222
+  size: 410, 120
+  orig: 410, 121
+  offset: 0, 1
+  index: -1
+FAQ_BTN
+  rotate: false
+  xy: 1342, 2
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Info_BTN
+  rotate: false
+  xy: 1130, 214
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Music_BTN
+  rotate: false
+  xy: 918, 132
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Pause_BTN
+  rotate: false
+  xy: 1766, 214
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Rating_BTN
+  rotate: false
+  xy: 1554, 2
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Score
+  rotate: false
+  xy: 2, 16
+  size: 235, 45
+  orig: 235, 45
+  offset: 0, 0
+  index: -1
+Settings_BTN
+  rotate: false
+  xy: 706, 132
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Shop_BTN
+  rotate: false
+  xy: 1342, 214
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Sound_BTN
+  rotate: false
+  xy: 1130, 2
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Star
+  rotate: false
+  xy: 2, 63
+  size: 290, 279
+  orig: 292, 280
+  offset: 1, 1
+  index: 3
+Start_BTN
+  rotate: false
+  xy: 294, 100
+  size: 410, 120
+  orig: 410, 121
+  offset: 0, 1
+  index: -1
+Stats_Bar
+  rotate: false
+  xy: 2, 344
+  size: 1080, 80
+  orig: 1080, 80
+  offset: 0, 0
+  index: -1

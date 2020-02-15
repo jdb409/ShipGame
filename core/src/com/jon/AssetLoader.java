@@ -10,94 +10,53 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
-    public static Texture shipTexture;
-    public static TextureAtlas shipAtlas;
+    private static Texture shipTexture;
+    private static Texture shotTexture;
+    private static Texture items;
+    private static Texture bg;
+    private static Texture whitePixelTexture;
+
+    private static TextureAtlas shipAtlas;
+    private static TextureAtlas shotAtlas;
+    private static TextureAtlas blueShipExplosionAtlas;
+    private static TextureAtlas yellowShipExplosionAtlas;
+    private static TextureAtlas redShipExplosionAtlas;
+    private static TextureAtlas menuIconsAtlas;
 
     public static TextureAtlas.AtlasRegion redShip;
     public static TextureAtlas.AtlasRegion blueShip;
     public static TextureAtlas.AtlasRegion fishShip;
-
-    public static Texture shotTexture;
-    public static TextureAtlas shotAtlas;
-
     public static TextureAtlas.AtlasRegion redShot;
     public static TextureAtlas.AtlasRegion blueShot;
-
-    public static Texture bg;
+    public static TextureAtlas.AtlasRegion startBtn;
+    public static TextureAtlas.AtlasRegion settingsBtn;
+    public static TextureAtlas.AtlasRegion soundBtn;
+    public static TextureAtlas.AtlasRegion score;
+    public static TextureAtlas.AtlasRegion faq;
+    public static TextureAtlas.AtlasRegion pause;
+    public static TextureAtlas.AtlasRegion exit;
 
     public static Animation<TextureRegion> blueShipExplosion;
-    public static TextureAtlas blueShipExplosionAtlas;
-
     public static Animation<TextureRegion> yellowShipExplosion;
-    public static TextureAtlas yellowShipExplosionAtlas;
-
     public static Animation<TextureRegion> redShipExplosion;
-    public static TextureAtlas redShipExplosionAtlas;
-
     public static Animation<TextureRegion> blueShipHitAnim;
 
-    public static Texture items;
     public static TextureRegion increaseBulletSpeedItem;
     public static TextureRegion increaseWidthItem;
     public static TextureRegion increaseHealthItem;
     public static TextureRegion whitePixelRegion;
 
-    private static Texture whitePixelTexture;
 
     public static void load() {
         //in atlas files
         //decrease size, to increase render size
-        shipAtlas = new TextureAtlas(Gdx.files.internal("Ships.atlas"));
-        shipTexture = new Texture(Gdx.files.internal("Ships.png"));
-        shotAtlas = new TextureAtlas(Gdx.files.internal("Shots.atlas"));
-        shotTexture = new Texture(Gdx.files.internal("Shots.png"));
-        blueShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("BlueShipExplosion.atlas"));
-        redShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("RedShipExplosion.atlas"));
-        yellowShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("YellowShipExplosion.atlas"));
-
-        items = new Texture(Gdx.files.internal("items.png"));
-
-        redShip = shipAtlas.findRegion("Ship2");
-        redShip.flip(false, true);
-        redShot = shotAtlas.findRegion("shot6");
-        redShot.flip(false, true);
-
-        blueShip = shipAtlas.findRegion("Ship3");
-        blueShot = shotAtlas.findRegion("shot2");
-
-        fishShip = shipAtlas.findRegion("Ship5");
-        float u = fishShip.getU();
-        fishShip.setU(fishShip.getV());
-        fishShip.setV(u);
-
-        bg = new Texture(Gdx.files.internal("GalaxyUno.png"));
-        bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-
-        blueShipExplosion = new Animation<TextureRegion>(0.1f,
-                blueShipExplosionAtlas.findRegions("Ship3_Explosion"), Animation.PlayMode.LOOP);
-
-        redShipExplosion = new Animation<TextureRegion>(0.05f,
-                redShipExplosionAtlas.findRegions("Ship2_Explosion"), Animation.PlayMode.NORMAL);
-
-        yellowShipExplosion = new Animation<TextureRegion>(0.05f,
-                yellowShipExplosionAtlas.findRegions("Ship5_Explosion"), Animation.PlayMode.NORMAL);
-
-        TextureRegion[] blueShipHitFrames = new TextureRegion[3];
-        for (int frame = 0; frame < 3; frame++) {
-            blueShipHitFrames[frame] = blueShipExplosionAtlas.findRegion("Ship3_Explosion", frame);
-        }
-        blueShipHitAnim = new Animation<>(.02f, blueShipHitFrames);
-
-        increaseBulletSpeedItem = new TextureRegion(items, 10, 156, 60, 62);
-        increaseWidthItem = new TextureRegion(items, 79, 156, 60, 62);
-        increaseHealthItem = new TextureRegion(items, 79, 220, 60, 62);
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.drawPixel(0, 0);
-        whitePixelTexture = new Texture(pixmap); //remember to dispose of later
-        pixmap.dispose();
-        whitePixelRegion = new TextureRegion(whitePixelTexture, 0, 0, 1, 1);
-
+        loadBackgrounds();
+        loadShips();
+        loadBullets();
+        loadItems();
+        loadAnimations();
+        loadMenuItems();
+        setUpShapeDrawer();
     }
 
     public static void dispose() {
@@ -110,6 +69,81 @@ public class AssetLoader {
         yellowShipExplosionAtlas.dispose();
         redShipExplosionAtlas.dispose();
         whitePixelTexture.dispose();
+    }
 
+    private static void loadBackgrounds() {
+        bg = new Texture(Gdx.files.internal("GalaxyUno.png"));
+        bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+    }
+
+    private static void loadMenuItems() {
+        menuIconsAtlas = new TextureAtlas(Gdx.files.internal("menu_icons.atlas"));
+        startBtn = menuIconsAtlas.findRegion("Start_BTN");
+        settingsBtn = menuIconsAtlas.findRegion("Settings_BTN");
+        soundBtn = menuIconsAtlas.findRegion("Sound_BTN");
+        score = menuIconsAtlas.findRegion("Score");
+        faq = menuIconsAtlas.findRegion("FAQ_BTN");
+        pause = menuIconsAtlas.findRegion("Pause_BTN");
+        exit = menuIconsAtlas.findRegion("Exit_BTN");
+    }
+
+    private static void loadShips() {
+        shipAtlas = new TextureAtlas(Gdx.files.internal("Ships.atlas"));
+        shipTexture = new Texture(Gdx.files.internal("Ships.png"));
+        blueShip = shipAtlas.findRegion("Ship3");
+
+        redShip = shipAtlas.findRegion("Ship2");
+        redShip.flip(false, true);
+
+        fishShip = shipAtlas.findRegion("Ship5");
+        float u = fishShip.getU();
+        fishShip.setU(fishShip.getV());
+        fishShip.setV(u);
+    }
+
+    private static void loadBullets() {
+        shotAtlas = new TextureAtlas(Gdx.files.internal("Shots.atlas"));
+        shotTexture = new Texture(Gdx.files.internal("Shots.png"));
+        redShot = shotAtlas.findRegion("shot6");
+        redShot.flip(false, true);
+        blueShot = shotAtlas.findRegion("shot2");
+    }
+
+    private static void loadItems() {
+        items = new Texture(Gdx.files.internal("items.png"));
+        increaseBulletSpeedItem = new TextureRegion(items, 10, 156, 60, 62);
+        increaseWidthItem = new TextureRegion(items, 79, 156, 60, 62);
+        increaseHealthItem = new TextureRegion(items, 79, 220, 60, 62);
+    }
+
+    private static void loadAnimations() {
+        blueShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("BlueShipExplosion.atlas"));
+        redShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("RedShipExplosion.atlas"));
+        yellowShipExplosionAtlas = new TextureAtlas(Gdx.files.internal("YellowShipExplosion.atlas"));
+
+        blueShipExplosion = new Animation<>(0.1f,
+                blueShipExplosionAtlas.findRegions("Ship3_Explosion"), Animation.PlayMode.LOOP);
+
+        redShipExplosion = new Animation<>(0.05f,
+                redShipExplosionAtlas.findRegions("Ship2_Explosion"), Animation.PlayMode.NORMAL);
+
+        yellowShipExplosion = new Animation<>(0.05f,
+                yellowShipExplosionAtlas.findRegions("Ship5_Explosion"), Animation.PlayMode.NORMAL);
+
+        TextureRegion[] blueShipHitFrames = new TextureRegion[3];
+        for (int frame = 0; frame < 3; frame++) {
+            blueShipHitFrames[frame] = blueShipExplosionAtlas.findRegion("Ship3_Explosion", frame);
+        }
+        blueShipHitAnim = new Animation<>(.02f, blueShipHitFrames);
+    }
+
+
+    private static void setUpShapeDrawer() {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.drawPixel(0, 0);
+        whitePixelTexture = new Texture(pixmap); //remember to dispose of later
+        pixmap.dispose();
+        whitePixelRegion = new TextureRegion(whitePixelTexture, 0, 0, 1, 1);
     }
 }

@@ -11,6 +11,7 @@ import com.jon.enemy.EnemyFactory;
 import com.jon.enemy.EnemyType;
 import com.jon.screens.MainMenuScreen;
 
+import java.awt.Window;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -145,6 +146,9 @@ public class World {
     private void setRunning() {
         gameState = GameState.RUNNING;
         playerControlledShip.resetOrigin();
+        playerControlledShip.getBullets().forEach(b -> {
+            b.setY(WINDOW_HEIGHT);
+        });
     }
 
     private void handleGameOver() {

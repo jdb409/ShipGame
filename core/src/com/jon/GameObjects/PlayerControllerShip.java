@@ -64,6 +64,25 @@ public class PlayerControllerShip extends MoveableGameObject {
         updateBullets();
     }
 
+    public TextureRegion getImage() {
+        if (GameState.GAME_OVER.equals(World.gameState)) {
+            return this.deathAnimation.getKeyFrame(300);
+        }
+
+        //if hit animation has gone on for longer than 500ms, end anim
+        if (animationStart != 0L && System.currentTimeMillis() - animationStart > 500) {
+            hit = false;
+            animationStart = 0L;
+            //resize width.  had to size up animation width
+            this.setWidth(this.getWidth() / 2);
+        }
+        if (!hit) {
+            return defaultImage;
+        } else {
+            return this.hitAnimation.getKeyFrame(this.runTime);
+        }
+    }
+
     private void updatePosition() {
         rectangle.x += velocity.x;
         rectangle.y += velocity.y;
@@ -137,26 +156,6 @@ public class PlayerControllerShip extends MoveableGameObject {
 
     private void decrementHealth(int amount) {
         this.health -= amount;
-    }
-
-
-    public TextureRegion getImage() {
-        if (GameState.GAME_OVER.equals(World.gameState)) {
-            return this.deathAnimation.getKeyFrame(300);
-        }
-
-        //if hit animation has gone on for longer than 500ms, end anim
-        if (animationStart != 0L && System.currentTimeMillis() - animationStart > 500) {
-            hit = false;
-            animationStart = 0L;
-            //resize width.  had to size up animation width
-            this.setWidth(this.getWidth() / 2);
-        }
-        if (!hit) {
-            return defaultImage;
-        } else {
-            return this.hitAnimation.getKeyFrame(this.runTime);
-        }
     }
 
     public TextureRegion getOriginalImage() {
