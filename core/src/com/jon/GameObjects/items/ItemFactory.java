@@ -1,6 +1,7 @@
 package com.jon.GameObjects.items;
 
 import com.jon.AssetLoader;
+import com.jon.enums.ItemType;
 
 public class ItemFactory {
     private static float ITEM_HEIGHT = 30;

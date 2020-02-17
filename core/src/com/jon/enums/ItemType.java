@@ -1,4 +1,4 @@
-package com.jon.GameObjects.items;
+package com.jon.enums;
 
 public enum ItemType {
     INCREASE_POWER(0),

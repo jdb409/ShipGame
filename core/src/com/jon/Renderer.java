@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
@@ -50,11 +49,14 @@ public class Renderer {
         //prevent overflow if game runs for too long
         scrollY = scrollY - 1 % 1600;
         batch.disableBlending();
-        batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
+        batch.draw(LevelConfig.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
         batch.enableBlending();
         switch (this.world.gameState) {
             case READY:
                 handleReady();
+                break;
+            case PAUSED:
+                handlePaused();
                 break;
             case RUNNING:
                 handleRunning();
@@ -64,8 +66,12 @@ public class Renderer {
                 break;
         }
         batch.end();
-
     }
+
+    public void dispose() {
+        AssetLoader.dispose();
+    }
+
 
     private void handleReady() {
         String levelMsg = String.format("Level: %d, Wave %d", LevelConfig.level, LevelConfig.stage);
@@ -90,7 +96,7 @@ public class Renderer {
     }
 
     private void handleRunning() {
-        font.draw(batch, "Ships Destroyed: " + world.getShipsDestroyed(), 0, Constants.WINDOW_HEIGHT);
+        font.draw(batch, "Score: " + LevelConfig.score, 0, Constants.WINDOW_HEIGHT);
         font.draw(batch, String.format("Level: %d, Wave %d", LevelConfig.level, LevelConfig.stage), WINDOW_WIDTH - 150, Constants.WINDOW_HEIGHT);
         drawLives();
         drawPlayerShip();
@@ -100,10 +106,11 @@ public class Renderer {
         drawBulletSpeedBar();
     }
 
-    public void dispose() {
-        AssetLoader.dispose();
-    }
 
+    private void handlePaused(){
+        font.draw(batch, "Paused", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 + 10);
+        font.draw(batch, "Touch to resume", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 - 10);
+    }
 
     private void drawLives() {
         for (int h = 0; h < playerControllerShip.getHealth(); h++) {

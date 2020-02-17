@@ -1,6 +1,9 @@
 package com.jon;
 
 
+import com.badlogic.gdx.graphics.Texture;
+import com.jon.enums.ScoreEvent;
+
 import lombok.Getter;
 
 public class LevelConfig {
@@ -15,6 +18,8 @@ public class LevelConfig {
     public static float horizontalSpeed;
     public static int stagesPerLevel;
     public static float diveSpeedMultiplier;
+    public static Texture bg;
+    public static double score;
 
     private final static int defaultNumEnemyPerRow = 5;
     private final static int defaultNumRows = 2;
@@ -37,12 +42,13 @@ public class LevelConfig {
     }
 
     public static void setLevel(int newLevel) {
+        bg = chooseBg();
         level = newLevel;
         stage = 1;
         numRows = 2;
         diveSpeedMultiplier = newLevel * .1f;
         shootingSpeedMin = defaultShootingSpeedMin - (newLevel * 500);
-        shootingSpeedMax = defaultShootingSpeedMax - (newLevel * 500);
+        shootingSpeedMax = defaultShootingSpeedMax - (newLevel * 100);
     }
 
     private static void init() {
@@ -53,6 +59,7 @@ public class LevelConfig {
             shootingSpeedMax = defaultShootingSpeedMax;
             shootingSpeedMin = defaultShootingSpeedMin;
         }
+        bg = chooseBg();
         stage = 1;
         stagesPerLevel = 3;
         numEnemyPerRow = defaultNumEnemyPerRow;
@@ -60,6 +67,7 @@ public class LevelConfig {
         //33% chance to shoot.  0,1,2
         chanceToShoot = defaultChanceToShoot;
         horizontalSpeed = defaultHorizontalSpeed;
+        score = 0;
     }
 
     public static String printConfig() {
@@ -75,5 +83,38 @@ public class LevelConfig {
                 ", stagesPerLevel=" + stagesPerLevel +
                 ", diveSpeedMultiplier=" + diveSpeedMultiplier +
                 '}';
+    }
+
+    public static void modifyScore(ScoreEvent scoreEvent) {
+        switch (scoreEvent) {
+            case SHIP_HIT:
+                score -= 50;
+                break;
+            case DESTROY_ENEMY:
+                score += 100;
+                break;
+            case RECEIVED_ITEM:
+                score += 10;
+                break;
+            case WAVE_PASSED:
+                score += 500;
+                break;
+            case LEVEL_PASSED:
+                score += 1000;
+                break;
+        }
+    }
+
+    private static Texture chooseBg() {
+        int bgImg = (int) Math.floor(Math.random() * 3);
+        switch (bgImg) {
+            case 0:
+                return AssetLoader.bg;
+            case 1:
+                return AssetLoader.bg2;
+            case 2:
+                return AssetLoader.bg3;
+        }
+        return null;
     }
 }

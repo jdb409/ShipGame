@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.jon.AssetLoader;
 import com.jon.Constants;
-import com.jon.GameState;
+import com.jon.LevelConfig;
+import com.jon.enums.GameState;
 import com.jon.World;
+import com.jon.enums.ScoreEvent;
 
 import java.util.Iterator;
 
@@ -125,6 +127,8 @@ public class PlayerControllerShip extends MoveableGameObject {
         if (System.currentTimeMillis() - this.getLastHit() < 500) {
             return;
         }
+
+        LevelConfig.modifyScore(ScoreEvent.SHIP_HIT);
         this.setHit(true);
         this.decrementHealth(damage);
         this.setLastHit(System.currentTimeMillis());

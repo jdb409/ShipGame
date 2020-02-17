@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.jon.AlienInvaderGame;
-import com.jon.GameState;
+import com.jon.enums.GameState;
 import com.jon.InputHandler;
 import com.jon.Renderer;
 import com.jon.World;
@@ -40,7 +40,6 @@ class GameScreen implements Screen {
     public void render(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.setScreen(new MainMenuScreen(game, game.camera));
-            dispose();
         }
         world.update(delta);
         renderer.render();
@@ -58,13 +57,11 @@ class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        game.setScreen(new MainMenuScreen(game, game.camera));
+        world.gameState = GameState.PAUSED;
     }
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() { }
 
     @Override
     public void hide() {

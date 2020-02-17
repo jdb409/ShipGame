@@ -6,9 +6,11 @@ import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
 import com.jon.GameObjects.items.Item;
 import com.jon.GameObjects.items.ItemFactory;
-import com.jon.GameObjects.items.ItemType;
+import com.jon.enums.ItemType;
 import com.jon.enemy.EnemyFactory;
-import com.jon.enemy.EnemyType;
+import com.jon.enums.EnemyType;
+import com.jon.enums.GameState;
+import com.jon.enums.ScoreEvent;
 import com.jon.screens.MainMenuScreen;
 
 import java.util.Iterator;
@@ -50,13 +52,18 @@ public class World {
         handleEnemySpawn();
         playerControlledShip.update(runTime);
 
-        if (GameState.RUNNING.equals(gameState)) {
-            handleCollision();
-            handleItemCollision();
-        } else if (GameState.GAME_OVER.equals(gameState)) {
-            handleGameOver();
+        switch (gameState) {
+            case RUNNING:
+                handleCollision();
+                handleItemCollision();
+                return;
+            case GAME_OVER:
+                handleGameOver();
+                return;
+
         }
     }
+
 
     public void restart() {
         game.setScreen(new MainMenuScreen(game, game.camera));
@@ -124,7 +131,7 @@ public class World {
             if (!enemyShip.isDead()) {
                 enemyShip.die();
                 handleItemSpawn(enemyShip);
-                shipsDestroyed++;
+                LevelConfig.modifyScore(ScoreEvent.DESTROY_ENEMY);
             }
         }
     }
@@ -137,6 +144,7 @@ public class World {
             if (item.getRectangle().overlaps(playerControlledShip.getRectangle())) {
                 item.apply(playerControlledShip);
                 itemIterator.remove();
+                LevelConfig.modifyScore(ScoreEvent.RECEIVED_ITEM);
             }
             checkItemBounds(item, itemIterator);
         }
@@ -145,9 +153,8 @@ public class World {
     private void setRunning() {
         gameState = GameState.RUNNING;
         playerControlledShip.resetOrigin();
-        playerControlledShip.getBullets().forEach(b -> {
-            b.setY(WINDOW_HEIGHT);
-        });
+        playerControlledShip.getBullets().forEach(b -> b.setY(WINDOW_HEIGHT));
+        items.forEach(i -> i.setY(WINDOW_HEIGHT));
     }
 
     private void handleGameOver() {
@@ -159,7 +166,6 @@ public class World {
     }
 
     private void init(AlienInvaderGame game) {
-        System.out.println(LevelConfig.printConfig());
         this.game = game;
         float heroStart = Constants.WINDOW_WIDTH / 2 - PLAYER_SHIP_WIDTH / 2;
         playerControlledShip = new PlayerControllerShip(heroStart, 25, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, AssetLoader.blueShipExplosion, AssetLoader.blueShipHitAnim);
@@ -171,17 +177,26 @@ public class World {
     private void handleEnemySpawn() {
         //if no enemies are left, start timer
         if (enemyShips.size == 0 && spawnEnemyWaitingTime == 0L) {
-            LevelConfig.setNextStage();
-            spawnEnemyWaitingTime = System.currentTimeMillis();
-            gameState = GameState.READY;
+            setNextWave();
         }
 
         if (spawnEnemyWaitingTime != 0L && System.currentTimeMillis() - spawnEnemyWaitingTime >= 2000) {
-            gameState = GameState.RUNNING;
-            setRunning();
-            spawnEnemies();
-            spawnEnemyWaitingTime = 0L;
+            startNextWave();
         }
+    }
+
+    private void setNextWave() {
+        LevelConfig.setNextStage();
+        LevelConfig.modifyScore(ScoreEvent.WAVE_PASSED);
+        spawnEnemyWaitingTime = System.currentTimeMillis();
+        gameState = GameState.READY;
+    }
+
+    private void startNextWave() {
+        gameState = GameState.RUNNING;
+        setRunning();
+        spawnEnemies();
+        spawnEnemyWaitingTime = 0L;
     }
 
 

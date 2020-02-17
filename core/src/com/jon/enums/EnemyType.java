@@ -1,4 +1,4 @@
-package com.jon.enemy;
+package com.jon.enums;
 
 public enum EnemyType {
     STANDARD_SHOOTING,

@@ -5,6 +5,7 @@ import com.jon.GameObjects.AIControlledShip;
 import com.jon.enemy.AI.AI;
 import com.jon.enemy.AI.DivingEnemyAI;
 import com.jon.enemy.AI.StandardShootingEnemyAI;
+import com.jon.enums.EnemyType;
 
 import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.ENEMY_WIDTH;

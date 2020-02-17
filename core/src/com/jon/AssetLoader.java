@@ -24,6 +24,9 @@ public class AssetLoader {
     private static TextureAtlas menuIconsAtlas;
 
     public static Texture bg;
+    public static Texture bg2;
+    public static Texture bg3;
+    public static Texture bg4;
 
     public static TextureAtlas.AtlasRegion redShip;
     public static TextureAtlas.AtlasRegion blueShip;
@@ -77,8 +80,12 @@ public class AssetLoader {
     }
 
     private static void loadBackgrounds() {
-        bg = new Texture(Gdx.files.internal("GalaxyUno.png"));
+        bg = new Texture(Gdx.files.internal("bg1.png"));
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        bg2 = new Texture(Gdx.files.internal("bg2.png"));
+        bg2.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        bg3 = new Texture(Gdx.files.internal("bg3.png"));
+        bg3.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
     private static void loadMenuItems() {

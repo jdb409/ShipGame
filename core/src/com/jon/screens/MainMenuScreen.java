@@ -66,6 +66,7 @@ public class MainMenuScreen implements Screen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                LevelConfig.setLevel(1);
                 game.setScreen(new GameScreen(game));
                 dispose();
             }
@@ -76,17 +77,24 @@ public class MainMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Dialog dialog = new Dialog("", skin, "dialog") {
                     public void result(Object obj) {
+//                        System.out.println(obj);
+//                        if (obj.equals("EXIT")){
+//                            this.hide();
+//                            return;
+//                        }
                         LevelConfig.setLevel((int) obj);
                         game.setScreen(new GameScreen(game));
                     }
                 };
-                TextButton.TextButtonStyle style = skin.get("oval1", TextButton.TextButtonStyle.class);
+                TextButton.TextButtonStyle stageStyle = skin.get("oval1", TextButton.TextButtonStyle.class);
+//                TextButton.TextButtonStyle exitStyle = skin.get("oval4", TextButton.TextButtonStyle.class);
 //                SelectBox<Integer> selectBox = new SelectBox(skin);
 //                selectBox.setItems(1,2,3);
-//                dialog.getContentTable().add(selectBox);
                 for (int i = 1; i < 7; i++) {
-                    dialog.button(Integer.toString(i), i, style); //sends "true" as the result
+                    dialog.button(Integer.toString(i), i, stageStyle); //sends "true" as the result
                 }
+                dialog.getButtonTable().padBottom(50);
+//                dialog.button("Exit", "EXIT", exitStyle);
                 dialog.show(stage);
             }
         });
