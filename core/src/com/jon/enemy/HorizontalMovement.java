@@ -37,11 +37,11 @@ public class HorizontalMovement {
         }
     }
 
-    private void moveLeft(AIControlledShip ship, int speed) {
+    protected void moveLeft(AIControlledShip ship, int speed) {
         ship.setX(ship.getX() - LevelConfig.horizontalSpeed);
     }
 
-    private void moveRight(AIControlledShip ship, int speed) {
+    protected void moveRight(AIControlledShip ship, int speed) {
         ship.setX(ship.getX() + LevelConfig.horizontalSpeed);
     }
 

@@ -72,11 +72,9 @@ public class PlayerControllerShip extends MoveableGameObject {
         }
 
         //if hit animation has gone on for longer than 500ms, end anim
-        if (animationStart != 0L && System.currentTimeMillis() - animationStart > 500) {
+        if (animationStart != 0L && System.currentTimeMillis() - animationStart > 150) {
             hit = false;
             animationStart = 0L;
-            //resize width.  had to size up animation width
-            this.setWidth(this.getWidth() / 2);
         }
         if (!hit) {
             return defaultImage;
@@ -133,9 +131,6 @@ public class PlayerControllerShip extends MoveableGameObject {
         this.decrementHealth(damage);
         this.setLastHit(System.currentTimeMillis());
         this.setAnimationStart(System.currentTimeMillis());
-
-        //handle animation image change.  anim width is .5 size
-        this.setWidth(this.getWidth() * 2f);
     }
 
 

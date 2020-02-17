@@ -1,0 +1,111 @@
+
+boss.png
+size: 1024,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Ship6
+  rotate: false
+  xy: 900, 11
+  size: 58, 117
+  orig: 128, 128
+  offset: 27, 6
+  index: -1
+Ship6_Explosion
+  rotate: false
+  xy: 2, 64
+  size: 183, 183
+  orig: 256, 256
+  offset: 36, 37
+  index: 6
+Ship6_Explosion
+  rotate: false
+  xy: 187, 86
+  size: 161, 161
+  orig: 256, 256
+  offset: 47, 48
+  index: 5
+Ship6_Explosion
+  rotate: false
+  xy: 350, 102
+  size: 145, 145
+  orig: 256, 256
+  offset: 55, 56
+  index: 7
+Ship6_Explosion
+  rotate: false
+  xy: 497, 103
+  size: 145, 144
+  orig: 256, 256
+  offset: 55, 56
+  index: 4
+Ship6_Explosion
+  rotate: false
+  xy: 644, 130
+  size: 113, 117
+  orig: 256, 256
+  offset: 72, 69
+  index: 3
+Ship6_Explosion
+  rotate: false
+  xy: 759, 138
+  size: 109, 109
+  orig: 256, 256
+  offset: 73, 74
+  index: 8
+Ship6_Explosion
+  rotate: false
+  xy: 870, 130
+  size: 86, 117
+  orig: 256, 256
+  offset: 85, 69
+  index: 2
+Ship6_Explosion
+  rotate: false
+  xy: 644, 37
+  size: 91, 91
+  orig: 256, 256
+  offset: 82, 83
+  index: 9
+Ship6_Explosion
+  rotate: false
+  xy: 737, 11
+  size: 75, 117
+  orig: 256, 256
+  offset: 93, 69
+  index: 0
+Ship6_Explosion
+  rotate: false
+  xy: 814, 11
+  size: 75, 117
+  orig: 256, 256
+  offset: 93, 69
+  index: 1
+Ship6_Explosion
+  rotate: false
+  xy: 187, 2
+  size: 81, 82
+  orig: 256, 256
+  offset: 87, 87
+  index: 10
+shot5_0
+  rotate: false
+  xy: 958, 201
+  size: 12, 46
+  orig: 128, 128
+  offset: 60, 20
+  index: 4
+shot5_1
+  rotate: false
+  xy: 2, 16
+  size: 11, 46
+  orig: 128, 128
+  offset: 57, 57
+  index: 5
+shot5_2
+  rotate: false
+  xy: 270, 54
+  size: 11, 30
+  orig: 128, 128
+  offset: 60, 20
+  index: 3

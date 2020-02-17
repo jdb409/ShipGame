@@ -19,7 +19,7 @@ public class LevelConfig {
     public static int stagesPerLevel;
     public static float diveSpeedMultiplier;
     public static Texture bg;
-    public static double score;
+    public static int score;
 
     private final static int defaultNumEnemyPerRow = 5;
     private final static int defaultNumRows = 2;

@@ -2,5 +2,6 @@ package com.jon.enums;
 
 public enum EnemyType {
     STANDARD_SHOOTING,
-    DIVING
+    DIVING,
+    BOSS
 }

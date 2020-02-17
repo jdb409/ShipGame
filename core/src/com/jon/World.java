@@ -201,21 +201,28 @@ public class World {
 
 
     private void spawnEnemies() {
-        int totalX = LevelConfig.numEnemyPerRow * (ENEMY_WIDTH + 40);
-        int xLeft = WINDOW_WIDTH - totalX;
-        for (int l = 1; l <= LevelConfig.numRows; l++) {
-            for (int i = 0; i < LevelConfig.numEnemyPerRow; i++) {
-                float enemyX = i * (ENEMY_WIDTH + 40) + xLeft;
-                float enemyY = (WINDOW_HEIGHT - TOP_ENEMY_BUFFER) - (l * ENEMY_HEIGHT);
-                Random rand = new Random();
-                int type = rand.nextInt(2);
-                AIControlledShip aiControlledShip;
-                if (type % 2 == 0) {
-                    aiControlledShip = EnemyFactory.create(EnemyType.DIVING, enemyX, enemyY);
-                } else {
-                    aiControlledShip = EnemyFactory.create(EnemyType.STANDARD_SHOOTING, enemyX, enemyY);
+        if (LevelConfig.getLevel() == 1) {
+            AIControlledShip boss = EnemyFactory.create(EnemyType.BOSS,
+                    WINDOW_WIDTH / 2,
+                    WINDOW_HEIGHT - TOP_ENEMY_BUFFER);
+            enemyShips.add(boss);
+        } else {
+            int totalX = LevelConfig.numEnemyPerRow * (ENEMY_WIDTH + 40);
+            int xLeft = WINDOW_WIDTH - totalX;
+            for (int l = 1; l <= LevelConfig.numRows; l++) {
+                for (int i = 0; i < LevelConfig.numEnemyPerRow; i++) {
+                    float enemyX = i * (ENEMY_WIDTH + 40) + xLeft;
+                    float enemyY = (WINDOW_HEIGHT - TOP_ENEMY_BUFFER) - (l * ENEMY_HEIGHT);
+                    Random rand = new Random();
+                    int type = rand.nextInt(2);
+                    AIControlledShip aiControlledShip;
+                    if (type % 2 == 0) {
+                        aiControlledShip = EnemyFactory.create(EnemyType.DIVING, enemyX, enemyY);
+                    } else {
+                        aiControlledShip = EnemyFactory.create(EnemyType.STANDARD_SHOOTING, enemyX, enemyY);
+                    }
+                    enemyShips.add(aiControlledShip);
                 }
-                enemyShips.add(aiControlledShip);
             }
         }
     }
