@@ -33,6 +33,7 @@ public class AIControlledShip extends MoveableGameObject {
 
     private float runTime;
 
+    private boolean showHealthBar;
 
     public AIControlledShip(float x,
                             float y,
@@ -42,7 +43,8 @@ public class AIControlledShip extends MoveableGameObject {
                             int health,
                             AI ai,
                             TextureRegion image,
-                            Animation<TextureRegion> deathAnimation) {
+                            Animation<TextureRegion> deathAnimation,
+                            boolean showHealthBar) {
         super(x, y, width, height, speed);
         this.ai = ai;
         this.health = health;
@@ -51,6 +53,7 @@ public class AIControlledShip extends MoveableGameObject {
         this.bulletWidth = 10;
         this.bulletHeight = 15;
         this.bullets = new Array<>();
+        this.showHealthBar = showHealthBar;
     }
 
     @Override

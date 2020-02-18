@@ -107,7 +107,7 @@ public class Renderer {
     }
 
 
-    private void handlePaused(){
+    private void handlePaused() {
         font.draw(batch, "Paused", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 + 10);
         font.draw(batch, "Touch to resume", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 - 10);
     }
@@ -131,10 +131,28 @@ public class Renderer {
     private void drawEnemies() {
         for (AIControlledShip enemyShip : enemyShips) {
             batch.draw(enemyShip.getImage(), enemyShip.getX(), enemyShip.getY(), enemyShip.getWidth(), enemyShip.getHeight());
+            if (enemyShip.isShowHealthBar()) {
+                drawEnemyHealthBar(enemyShip);
+            }
             for (Bullet bullet : enemyShip.getBullets()) {
                 batch.draw(bullet.getImage(), bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight());
             }
         }
+    }
+
+    private void drawEnemyHealthBar(AIControlledShip enemyShip) {
+        Color bulletSpeedBar = Color.ROYAL;
+        int width = (int) enemyShip.getWidth();
+
+        shapeDrawer.setColor(bulletSpeedBar);
+        shapeDrawer.rectangle(enemyShip.getX(),
+                enemyShip.getY() + enemyShip.getHeight(),
+                width,
+                10);
+        shapeDrawer.filledRectangle(enemyShip.getX(),
+                enemyShip.getY() + enemyShip.getHeight(),
+                ((enemyShip.getHealth() / 20f) * width),
+                10);
     }
 
     private void drawItems() {

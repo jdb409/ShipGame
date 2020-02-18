@@ -27,7 +27,8 @@ public class EnemyFactory {
                         2,
                         divingAI,
                         AssetLoader.fishShip,
-                        AssetLoader.yellowShipExplosion);
+                        AssetLoader.yellowShipExplosion,
+                        false);
             case STANDARD_SHOOTING:
                 AI shootingAI = new StandardShootingEnemyAI();
                 return new AIControlledShip(x,
@@ -38,18 +39,20 @@ public class EnemyFactory {
                         2,
                         shootingAI,
                         AssetLoader.redShip,
-                        AssetLoader.redShipExplosion);
+                        AssetLoader.redShipExplosion,
+                        false);
             case BOSS:
                 AI bossAI = new FirstBossAI();
-                return new AIControlledShip(x-50,
+                return new AIControlledShip(x - 50,
                         y - 200,
                         100,
                         200,
                         SHOOTING_ENEMY_SPEED,
-                        10,
+                        20,
                         bossAI,
                         AssetLoader.bossShip,
-                        AssetLoader.bossShipExplosion);
+                        AssetLoader.bossShipExplosion,
+                        true);
             default:
                 System.out.println("Enemy Factory - should not reach here");
                 return null;

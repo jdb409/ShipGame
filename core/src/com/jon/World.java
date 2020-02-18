@@ -201,7 +201,7 @@ public class World {
 
 
     private void spawnEnemies() {
-        if (LevelConfig.getLevel() == 6) {
+        if (LevelConfig.getLevel() == 1) {
             AIControlledShip boss = EnemyFactory.create(EnemyType.BOSS,
                     WINDOW_WIDTH / 2,
                     WINDOW_HEIGHT - TOP_ENEMY_BUFFER);
