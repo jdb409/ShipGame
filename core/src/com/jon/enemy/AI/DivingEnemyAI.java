@@ -5,6 +5,8 @@ import com.jon.GameObjects.PlayerControllerShip;
 import com.jon.LevelConfig;
 import com.jon.enemy.HorizontalMovement;
 
+import java.util.Random;
+
 import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
 import static com.jon.Constants.TOP_ENEMY_BUFFER;
@@ -18,13 +20,15 @@ public class DivingEnemyAI implements AI {
     private float additionalDivingDepth;
     //the lower this number the more often the ship dives
     private float diveFrequency = 5000;
+    private float nextDive;
 
     public DivingEnemyAI() {
         horizontalSpeed = 2;
         horizontalMovement = new HorizontalMovement();
         additionalDivingDepth = 20;
         //delay first dive by 1 second
-        lastDove = System.currentTimeMillis() - 4000;
+        lastDove = System.currentTimeMillis() - LevelConfig.divingFrequencyMin;
+        nextDive = this.getNextDive();
     }
 
     @Override
@@ -64,8 +68,26 @@ public class DivingEnemyAI implements AI {
         }
     }
 
+    private void checkDive(AIControlledShip ship) {
+        if ((System.currentTimeMillis() - lastDove) > this.nextDive){
+            dive(ship);
+            isDiving = true;
+        }
+
+        if (isDiving && (System.currentTimeMillis() - lastDove) > 2000) {
+            isDiving = false;
+        }
+    }
+
+
+    private float getNextDive() {
+        Random r = new Random();
+        return r.nextInt(LevelConfig.divingFrequencyMax - LevelConfig.divingFrequencyMin)
+                + LevelConfig.divingFrequencyMin;
+    }
+
     private void checkY(AIControlledShip ship) {
-        float maxDivingDepth = PLAYER_SHIP_HEIGHT + ship.getHeight() - additionalDivingDepth;
+        float maxDivingDepth = (PLAYER_SHIP_HEIGHT + ship.getHeight()) - additionalDivingDepth;
 
         if (ship.getY() < maxDivingDepth) {
             ship.resetSpeed();
@@ -73,18 +95,6 @@ public class DivingEnemyAI implements AI {
         }
         if (ship.getY() >= ship.getOriginalY()) {
             ship.resetSpeed();
-        }
-    }
-
-    private void checkDive(AIControlledShip ship) {
-        if ((System.currentTimeMillis() - lastDove) >
-                diveFrequency * (1- LevelConfig.diveSpeedMultiplier)) {
-            dive(ship);
-            isDiving = true;
-        }
-
-        if (isDiving && (System.currentTimeMillis() - lastDove) > 2000) {
-            isDiving = false;
         }
     }
 

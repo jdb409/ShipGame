@@ -20,12 +20,16 @@ public class LevelConfig {
     public static float diveSpeedMultiplier;
     public static Texture bg;
     public static int score;
+    public static int divingFrequencyMax;
+    public static int divingFrequencyMin;
 
     private final static int defaultNumEnemyPerRow = 5;
     private final static int defaultNumRows = 2;
     private final static float defaultDiveSpeedMultiplier = 0;
     private final static int defaultShootingSpeedMax = 3500;
     private final static int defaultShootingSpeedMin = 3000;
+    private final static int defaultDivingFrequencyMax = 5000;
+    private final static int defaultDivingFrequencyMin = 4000;
     private final static int defaultChanceToShoot = 2;
     private final static float defaultHorizontalSpeed = .5f;
 
@@ -47,8 +51,10 @@ public class LevelConfig {
         stage = 1;
         numRows = 2;
         diveSpeedMultiplier = newLevel * .1f;
-        shootingSpeedMin = defaultShootingSpeedMin - (newLevel * 500);
-        shootingSpeedMax = defaultShootingSpeedMax - (newLevel * 100);
+        shootingSpeedMin = Math.max(defaultShootingSpeedMin - (newLevel * 500), 500);
+        shootingSpeedMax = Math.max(defaultShootingSpeedMax - (newLevel * 100), 1000);
+        divingFrequencyMax = Math.max(defaultDivingFrequencyMax - (newLevel * 100), 2000);
+        divingFrequencyMin = Math.max(defaultDivingFrequencyMin - (newLevel * 200), 2500);
     }
 
     private static void init() {
@@ -58,6 +64,8 @@ public class LevelConfig {
             diveSpeedMultiplier = defaultDiveSpeedMultiplier;
             shootingSpeedMax = defaultShootingSpeedMax;
             shootingSpeedMin = defaultShootingSpeedMin;
+            divingFrequencyMax = defaultDivingFrequencyMax;
+            divingFrequencyMin = defaultDivingFrequencyMin;
         }
         bg = chooseBg();
         stage = 1;
