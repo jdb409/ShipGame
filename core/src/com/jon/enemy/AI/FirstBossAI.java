@@ -1,25 +1,24 @@
 package com.jon.enemy.AI;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jon.AssetLoader;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
 import com.jon.GameObjects.PlayerControllerShip;
-import com.jon.enemy.FullScreenHorizontalMovement;
-import com.jon.enemy.HorizontalMovement;
 
 import java.util.Iterator;
 
+import static com.jon.Constants.WINDOW_HEIGHT;
+
 public class FirstBossAI implements AI {
     private int bulletSpeed = 2;
-    private int horizontalSpeed;
-    private HorizontalMovement horizontalMovement;
     private float nextShot;
+    private boolean inPursuit;
+    private long lastPursuitEnd;
+    private long startPursuitTime;
+
 
     public FirstBossAI() {
-        horizontalMovement = new FullScreenHorizontalMovement(360);
-        horizontalSpeed = 2;
         nextShot = this.getNextShot();
     }
 
@@ -31,11 +30,33 @@ public class FirstBossAI implements AI {
 
     @Override
     public void updatePosition(AIControlledShip ship, PlayerControllerShip player, float runTime) {
-//        horizontalMovement.update(ship, horizontalSpeed);
+        checkInPursuit();
+        if (inPursuit) {
+            ship.setVelocity(player.getX() - ship.getX(), ((player.getY() - ship.getY())));
+            ship.setX(ship.getX() + (ship.getVelocity().x * 2));
+            ship.setY(ship.getY() + (ship.getVelocity().y * 2));
+        }
+    }
+
+    private void checkInPursuit() {
+        if (!inPursuit && (System.currentTimeMillis() - lastPursuitEnd > 5000)) {
+            inPursuit = true;
+            startPursuitTime = System.currentTimeMillis();
+        }
+
+        if (inPursuit && (System.currentTimeMillis() - startPursuitTime > 2000)) {
+            inPursuit = false;
+            lastPursuitEnd = System.currentTimeMillis();
+        }
     }
 
     @Override
     public void updateBullets(AIControlledShip ship, PlayerControllerShip player, float runTime) {
+        if (inPursuit) {
+            ship.getBullets().forEach(b -> b.setY(WINDOW_HEIGHT + 100));
+            return;
+        }
+
         if (!ship.isDead()) {
             if ((System.currentTimeMillis() - ship.getLastBulletFired() > this.nextShot)) {
                 spawnBullets(ship, player);
@@ -79,4 +100,13 @@ public class FirstBossAI implements AI {
         ship.setLastBulletFired(System.currentTimeMillis());
         this.nextShot = this.getNextShot();
     }
+
+    //    public void checkX(AIControlledShip ship) {
+//        float fullShipLength = ship.getX() + ship.getWidth();
+//        if (ship.getX() <= 0) {
+//        }
+//
+//        if (fullShipLength >= Constants.WINDOW_WIDTH) {
+//        }
+//    }
 }

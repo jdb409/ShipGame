@@ -240,19 +240,19 @@ public class World {
     }
 
     private void checkItemBounds(Item item, Iterator<Item> itemIterator) {
-        if (item.getY() < 0) {
+        if (item.getY() <= 0 || item.getY() >= WINDOW_HEIGHT) {
             itemIterator.remove();
         }
     }
 
     private void checkPlayerBulletBound(Bullet item, Iterator<Bullet> bulletIterator) {
-        if (item.getY() > WINDOW_HEIGHT) {
+        if (item.getY() >= WINDOW_HEIGHT) {
             bulletIterator.remove();
         }
     }
 
     private void checkEnemyBulletBound(Bullet item, Iterator<Bullet> bulletIterator) {
-        if (item.getY() < 0) {
+        if (item.getY() <= 0 || item.getY() >= WINDOW_HEIGHT) {
             bulletIterator.remove();
         }
     }

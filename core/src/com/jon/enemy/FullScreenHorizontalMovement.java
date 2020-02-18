@@ -8,13 +8,5 @@ public class FullScreenHorizontalMovement extends HorizontalMovement {
         this.framesToMove = framesToMove;
     }
 
-    @Override
-    protected void moveLeft(AIControlledShip ship, int speed) {
-        ship.setX(ship.getX() - speed);
-    }
 
-    @Override
-    protected void moveRight(AIControlledShip ship, int speed) {
-        ship.setX(ship.getX() + speed);
-    }
 }
