@@ -73,7 +73,7 @@ public class World {
         Iterator<AIControlledShip> enemyIterator = enemyShips.iterator();
         while (enemyIterator.hasNext()) {
             AIControlledShip enemyShip = enemyIterator.next();
-            enemyShip.update(runTime);
+            enemyShip.update(playerControlledShip, runTime);
             if (enemyShip.isRemoveFromScreen()) {
                 enemyIterator.remove();
             }

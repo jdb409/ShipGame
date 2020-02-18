@@ -55,7 +55,12 @@ public class AIControlledShip extends MoveableGameObject {
 
     @Override
     public void update(float runTime) {
-        ai.update(this, runTime);
+//        ai.update(this, runTime);
+//        this.runTime = runTime;
+    }
+
+    public void update(PlayerControllerShip player, float runTime) {
+        ai.update(this, player, runTime);
         this.runTime = runTime;
     }
 

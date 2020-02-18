@@ -45,6 +45,17 @@ abstract public class MoveableGameObject implements GameObject {
         velocity.y = speed;
     }
 
+    public void setVelocity(float x, float y) {
+        this.velocity.set(x, y).nor();
+    }
+
+    public void setVelocityX(float x) {
+        this.velocity.x = x;
+    }
+
+    public void setVelocityY(float y) {
+        this.velocity.y = y;
+    }
 
     public float getX() {
         return rectangle.x;
@@ -92,7 +103,7 @@ abstract public class MoveableGameObject implements GameObject {
         velocity.set(0, 0);
     }
 
-    public void resetOrigin(){
+    public void resetOrigin() {
         this.setX(this.originalX);
         this.setY(this.originalY);
     }

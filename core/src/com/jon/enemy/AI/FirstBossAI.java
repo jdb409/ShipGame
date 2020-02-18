@@ -1,15 +1,15 @@
 package com.jon.enemy.AI;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jon.AssetLoader;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
-import com.jon.LevelConfig;
+import com.jon.GameObjects.PlayerControllerShip;
 import com.jon.enemy.FullScreenHorizontalMovement;
 import com.jon.enemy.HorizontalMovement;
 
 import java.util.Iterator;
-import java.util.Random;
 
 public class FirstBossAI implements AI {
     private int bulletSpeed = 2;
@@ -24,29 +24,22 @@ public class FirstBossAI implements AI {
     }
 
     @Override
-    public void update(AIControlledShip ship, float runTime) {
-        updatePosition(ship, runTime);
-        updateBullets(ship, runTime);
+    public void update(AIControlledShip ship, PlayerControllerShip player, float runTime) {
+        updatePosition(ship, player, runTime);
+        updateBullets(ship, player, runTime);
     }
 
     @Override
-    public void updatePosition(AIControlledShip ship, float runTime) {
-        horizontalMovement.update(ship, horizontalSpeed);
+    public void updatePosition(AIControlledShip ship, PlayerControllerShip player, float runTime) {
+//        horizontalMovement.update(ship, horizontalSpeed);
     }
 
     @Override
-    public void updateBullets(AIControlledShip ship, float runTime) {
+    public void updateBullets(AIControlledShip ship, PlayerControllerShip player, float runTime) {
         if (!ship.isDead()) {
-//            double shouldShoot = Math.round(Math.random() * LevelConfig.chanceToShoot);
-//            boolean ableToShoot = shouldShoot == 1;
-            //if not able to shoot,
-            // we still want to set last bullet fired as now because it updates so frequently.
             if ((System.currentTimeMillis() - ship.getLastBulletFired() > this.nextShot)) {
-//                if (ableToShoot) {
-                    spawnBullets(ship);
-//                } else {
-                    ship.setLastBulletFired(System.currentTimeMillis());
-//                }
+                spawnBullets(ship, player);
+                ship.setLastBulletFired(System.currentTimeMillis());
             }
             Iterator<Bullet> bulletIterator = ship.getBullets().iterator();
             while (bulletIterator.hasNext()) {
@@ -66,19 +59,22 @@ public class FirstBossAI implements AI {
     }
 
     private float getNextShot() {
-        Random r = new Random();
-        return r.nextInt(LevelConfig.shootingSpeedMax - LevelConfig.shootingSpeedMin) + LevelConfig.shootingSpeedMin;
+        return 500;
     }
 
-    private void spawnBullets(AIControlledShip ship) {
+    private void spawnBullets(AIControlledShip ship, PlayerControllerShip player) {
         Bullet bullet =
                 new Bullet(ship.getX() + ship.getWidth() / 3,
-                        ship.getY(),
-                        40,
-                        60,
+                        ship.getY() - 30,
+                        15,
+                        30,
                         AssetLoader.bossShot1);
         bullet.setSpeed(bulletSpeed);
-        bullet.moveDown();
+
+        //move towards player
+        bullet.setVelocity(player.getX() - bullet.getX(), ((player.getY() - bullet.getY())));
+        bullet.setVelocityY(bullet.getVelocity().y * 10);
+        bullet.setVelocityX(bullet.getVelocity().x * 10);
         ship.getBullets().add(bullet);
         ship.setLastBulletFired(System.currentTimeMillis());
         this.nextShot = this.getNextShot();

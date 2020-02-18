@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.jon.AssetLoader;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
+import com.jon.GameObjects.PlayerControllerShip;
 import com.jon.LevelConfig;
 import com.jon.enemy.HorizontalMovement;
 
@@ -26,18 +27,18 @@ public class StandardShootingEnemyAI implements AI {
     }
 
     @Override
-    public void update(AIControlledShip ship, float runTime) {
-        updatePosition(ship, runTime);
-        updateBullets(ship, runTime);
+    public void update(AIControlledShip ship, PlayerControllerShip player, float runTime) {
+        updatePosition(ship, player, runTime);
+        updateBullets(ship, player, runTime);
     }
 
     @Override
-    public void updatePosition(AIControlledShip ship, float runTime) {
+    public void updatePosition(AIControlledShip ship, PlayerControllerShip player, float runTime) {
         horizontalMovement.update(ship, horizontalSpeed);
     }
 
     @Override
-    public void updateBullets(AIControlledShip ship, float runTime) {
+    public void updateBullets(AIControlledShip ship, PlayerControllerShip player, float runTime) {
         if (!ship.isDead()) {
             double shouldShoot = Math.round(Math.random() * LevelConfig.chanceToShoot);
             boolean ableToShoot = shouldShoot == 1;
