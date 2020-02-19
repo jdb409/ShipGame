@@ -49,16 +49,15 @@ public class World {
 
     public void update(float delta) {
         runTime += delta;
-        playerControlledShip.update(runTime);
         if (LevelConfig.getLevel() == 6 && LevelConfig.getStage() == 2) {
             gameState = GameState.COMPLETE;
         }
-
+        handleEnemySpawn();
         switch (gameState) {
             case RUNNING:
                 handleCollision();
                 handleItemCollision();
-                handleEnemySpawn();
+                playerControlledShip.update(runTime);
                 return;
             case GAME_OVER:
                 handleGameOver();
@@ -181,7 +180,7 @@ public class World {
 
     private void handleEnemySpawn() {
         //if no enemies are left, start timer
-        if (gameState == GameState.RUNNING) {
+        if (gameState == GameState.RUNNING || gameState == GameState.READY) {
             if (enemyShips.size == 0 && spawnEnemyWaitingTime == 0L) {
                 setNextWave();
             }
@@ -226,7 +225,7 @@ public class World {
         int totalX = LevelConfig.numEnemyPerRow * (ENEMY_WIDTH + 40);
         int xLeft = WINDOW_WIDTH - totalX;
         for (int l = 1; l <= LevelConfig.numRows; l++) {
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < LevelConfig.numEnemyPerRow; i++) {
                 float enemyX = i * (ENEMY_WIDTH + 40) + xLeft;
                 float enemyY = (WINDOW_HEIGHT - TOP_ENEMY_BUFFER) - (l * ENEMY_HEIGHT);
                 double type = Math.floor(Math.random() * 9);
