@@ -5,6 +5,7 @@ import com.jon.GameObjects.AIControlledShip;
 import com.jon.enemy.AI.AI;
 import com.jon.enemy.AI.DivingEnemyAI;
 import com.jon.enemy.AI.FirstBossAI;
+import com.jon.enemy.AI.NonAttackingEnemyAI;
 import com.jon.enemy.AI.StandardShootingEnemyAI;
 import com.jon.enums.EnemyType;
 
@@ -48,11 +49,23 @@ public class EnemyFactory {
                         100,
                         200,
                         SHOOTING_ENEMY_SPEED,
-                        20,
+                        5,
                         bossAI,
                         AssetLoader.bossShip,
                         AssetLoader.bossShipExplosion,
                         true);
+            case NON_ATTACKING:
+                AI nonAttackingAI = new NonAttackingEnemyAI();
+                return new AIControlledShip(x,
+                        y,
+                        ENEMY_WIDTH,
+                        ENEMY_HEIGHT,
+                        SHOOTING_ENEMY_SPEED,
+                        2,
+                        nonAttackingAI,
+                        AssetLoader.redShip,
+                        AssetLoader.redShipExplosion,
+                        false);
             default:
                 System.out.println("Enemy Factory - should not reach here");
                 return null;

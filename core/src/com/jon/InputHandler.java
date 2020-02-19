@@ -55,7 +55,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (GameState.PAUSED.equals(World.gameState)) {
+        if (GameState.PAUSED.equals(world.gameState) || GameState.COMPLETE.equals(world.gameState)) {
             world.gameState = GameState.RUNNING;
         }
 

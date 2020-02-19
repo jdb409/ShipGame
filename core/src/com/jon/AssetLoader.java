@@ -155,7 +155,7 @@ public class AssetLoader {
         yellowShipExplosion = new Animation<>(0.05f,
                 yellowShipExplosionAtlas.findRegions("Ship5_Explosion"), Animation.PlayMode.NORMAL);
 
-        bossShipExplosion = new Animation<>(0.05f,
+        bossShipExplosion = new Animation<>(.10f,
                 bossAtlas.findRegions("Ship6_Explosion"), Animation.PlayMode.NORMAL);
 
         TextureRegion[] blueShipHitFrames = new TextureRegion[3];

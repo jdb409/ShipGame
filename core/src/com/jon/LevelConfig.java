@@ -11,6 +11,7 @@ public class LevelConfig {
     public static int level;
     public static int numEnemyPerRow;
     public static int numRows;
+    @Getter
     public static int stage;
     public static int shootingSpeedMax;
     public static int shootingSpeedMin;

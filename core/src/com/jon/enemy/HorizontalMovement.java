@@ -9,17 +9,17 @@ public class HorizontalMovement {
     int numFramesDir = 0;
     int framesToMove = 60;
 
-    public void update(AIControlledShip ship, int speed) {
+    public void update(AIControlledShip ship) {
         float fullShipLength = ship.getX() + ship.getWidth();
         if (moveRight) {
-            moveRight(ship, speed);
+            moveRight(ship);
             numFramesDir++;
             if (numFramesDir == framesToMove) {
                 moveRight = false;
                 numFramesDir = 0;
             }
         } else {
-            moveLeft(ship, speed);
+            moveLeft(ship);
             numFramesDir++;
             if (numFramesDir == framesToMove) {
                 moveRight = true;
@@ -43,14 +43,6 @@ public class HorizontalMovement {
 
     protected void moveRight(AIControlledShip ship) {
         ship.setX(ship.getX() + LevelConfig.horizontalSpeed);
-    }
-
-    protected void moveLeft(AIControlledShip ship, int speed) {
-        ship.setX(ship.getX() - speed);
-    }
-
-    protected void moveRight(AIControlledShip ship, int speed) {
-        ship.setX(ship.getX() + speed);
     }
 
 }

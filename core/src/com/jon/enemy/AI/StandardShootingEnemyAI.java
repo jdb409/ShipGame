@@ -34,7 +34,7 @@ public class StandardShootingEnemyAI implements AI {
 
     @Override
     public void updatePosition(AIControlledShip ship, PlayerControllerShip player, float runTime) {
-        horizontalMovement.update(ship, horizontalSpeed);
+        horizontalMovement.update(ship);
     }
 
     @Override

@@ -33,8 +33,8 @@ public class FirstBossAI implements AI {
         checkInPursuit();
         if (inPursuit) {
             ship.setVelocity(player.getX() - ship.getX(), ((player.getY() - ship.getY())));
-            ship.setX(ship.getX() + (ship.getVelocity().x * 2));
-            ship.setY(ship.getY() + (ship.getVelocity().y * 2));
+            ship.setX(ship.getX() + (ship.getVelocity().x * 1.5f));
+            ship.setY(ship.getY() + (ship.getVelocity().y * 1.5f));
         }
     }
 
@@ -94,19 +94,11 @@ public class FirstBossAI implements AI {
 
         //move towards player
         bullet.setVelocity(player.getX() - bullet.getX(), ((player.getY() - bullet.getY())));
-        bullet.setVelocityY(bullet.getVelocity().y * 10);
-        bullet.setVelocityX(bullet.getVelocity().x * 10);
+        double noise  = Math.floor(Math.random() * 2);
+        bullet.setVelocityY(bullet.getVelocity().y * 5 + (float) noise);
+        bullet.setVelocityX(bullet.getVelocity().x * 5 + (float) noise);
         ship.getBullets().add(bullet);
         ship.setLastBulletFired(System.currentTimeMillis());
         this.nextShot = this.getNextShot();
     }
-
-    //    public void checkX(AIControlledShip ship) {
-//        float fullShipLength = ship.getX() + ship.getWidth();
-//        if (ship.getX() <= 0) {
-//        }
-//
-//        if (fullShipLength >= Constants.WINDOW_WIDTH) {
-//        }
-//    }
 }

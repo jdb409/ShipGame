@@ -61,6 +61,9 @@ public class Renderer {
             case RUNNING:
                 handleRunning();
                 break;
+            case COMPLETE:
+                handleComplete();
+                break;
             case GAME_OVER:
                 handleGameOver();
                 break;
@@ -88,6 +91,13 @@ public class Renderer {
         }
         font.getData().setScale(1);
     }
+
+    private void handleComplete() {
+        handleRunning();
+        font.draw(batch, "You Win", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 + 20);
+        font.draw(batch, "Touch Screen To Go Back", WINDOW_WIDTH / 2 - 90, Constants.WINDOW_HEIGHT / 2 - 20);
+    }
+
 
     private void handleGameOver() {
         handleRunning();

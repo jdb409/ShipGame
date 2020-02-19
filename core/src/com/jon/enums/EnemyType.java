@@ -3,5 +3,6 @@ package com.jon.enums;
 public enum EnemyType {
     STANDARD_SHOOTING,
     DIVING,
-    BOSS
+    BOSS,
+    NON_ATTACKING
 }

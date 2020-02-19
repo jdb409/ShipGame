@@ -49,17 +49,22 @@ public class World {
 
     public void update(float delta) {
         runTime += delta;
-        handleEnemySpawn();
         playerControlledShip.update(runTime);
+        if (LevelConfig.getLevel() == 6 && LevelConfig.getStage() == 2) {
+            gameState = GameState.COMPLETE;
+        }
 
         switch (gameState) {
             case RUNNING:
                 handleCollision();
                 handleItemCollision();
+                handleEnemySpawn();
                 return;
             case GAME_OVER:
                 handleGameOver();
                 return;
+            case COMPLETE:
+                System.out.println("gameover");
 
         }
     }
@@ -176,12 +181,14 @@ public class World {
 
     private void handleEnemySpawn() {
         //if no enemies are left, start timer
-        if (enemyShips.size == 0 && spawnEnemyWaitingTime == 0L) {
-            setNextWave();
-        }
+        if (gameState == GameState.RUNNING) {
+            if (enemyShips.size == 0 && spawnEnemyWaitingTime == 0L) {
+                setNextWave();
+            }
 
-        if (spawnEnemyWaitingTime != 0L && System.currentTimeMillis() - spawnEnemyWaitingTime >= 2000) {
-            startNextWave();
+            if (spawnEnemyWaitingTime != 0L && System.currentTimeMillis() - spawnEnemyWaitingTime >= 2000) {
+                startNextWave();
+            }
         }
     }
 
@@ -201,28 +208,37 @@ public class World {
 
 
     private void spawnEnemies() {
-        if (LevelConfig.getLevel() == 1) {
-            AIControlledShip boss = EnemyFactory.create(EnemyType.BOSS,
-                    WINDOW_WIDTH / 2,
-                    WINDOW_HEIGHT - TOP_ENEMY_BUFFER);
-            enemyShips.add(boss);
+        if (LevelConfig.getLevel() == 6) {
+            handleBossLevelEnemySpawn();
         } else {
-            int totalX = LevelConfig.numEnemyPerRow * (ENEMY_WIDTH + 40);
-            int xLeft = WINDOW_WIDTH - totalX;
-            for (int l = 1; l <= LevelConfig.numRows; l++) {
-                for (int i = 0; i < LevelConfig.numEnemyPerRow; i++) {
-                    float enemyX = i * (ENEMY_WIDTH + 40) + xLeft;
-                    float enemyY = (WINDOW_HEIGHT - TOP_ENEMY_BUFFER) - (l * ENEMY_HEIGHT);
-                    Random rand = new Random();
-                    int type = rand.nextInt(2);
-                    AIControlledShip aiControlledShip;
-                    if (type % 2 == 0) {
-                        aiControlledShip = EnemyFactory.create(EnemyType.DIVING, enemyX, enemyY);
-                    } else {
-                        aiControlledShip = EnemyFactory.create(EnemyType.STANDARD_SHOOTING, enemyX, enemyY);
-                    }
-                    enemyShips.add(aiControlledShip);
+            handleNormalLevelEnemySpawn();
+        }
+    }
+
+    private void handleBossLevelEnemySpawn() {
+        AIControlledShip boss = EnemyFactory.create(EnemyType.BOSS,
+                WINDOW_WIDTH / 2,
+                WINDOW_HEIGHT - TOP_ENEMY_BUFFER);
+        enemyShips.add(boss);
+    }
+
+    private void handleNormalLevelEnemySpawn() {
+        int totalX = LevelConfig.numEnemyPerRow * (ENEMY_WIDTH + 40);
+        int xLeft = WINDOW_WIDTH - totalX;
+        for (int l = 1; l <= LevelConfig.numRows; l++) {
+            for (int i = 0; i < 1; i++) {
+                float enemyX = i * (ENEMY_WIDTH + 40) + xLeft;
+                float enemyY = (WINDOW_HEIGHT - TOP_ENEMY_BUFFER) - (l * ENEMY_HEIGHT);
+                double type = Math.floor(Math.random() * 9);
+                AIControlledShip aiControlledShip;
+                if (type >= 0 && type < 4) {
+                    aiControlledShip = EnemyFactory.create(EnemyType.DIVING, enemyX, enemyY);
+                } else if (type >= 4 && type < 8) {
+                    aiControlledShip = EnemyFactory.create(EnemyType.STANDARD_SHOOTING, enemyX, enemyY);
+                } else {
+                    aiControlledShip = EnemyFactory.create(EnemyType.NON_ATTACKING, enemyX, enemyY);
                 }
+                enemyShips.add(aiControlledShip);
             }
         }
     }

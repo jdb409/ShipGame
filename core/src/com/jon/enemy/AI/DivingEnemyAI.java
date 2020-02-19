@@ -39,7 +39,7 @@ public class DivingEnemyAI implements AI {
     @Override
     public void updatePosition(AIControlledShip ship, PlayerControllerShip player, float runTime) {
         if (!isDiving) {
-            horizontalMovement.update(ship, horizontalSpeed);
+            horizontalMovement.update(ship);
         }
         ship.setY(ship.getY() + ship.getVelocity().y);
         checkY(ship);
@@ -87,7 +87,8 @@ public class DivingEnemyAI implements AI {
     }
 
     private void checkY(AIControlledShip ship) {
-        float maxDivingDepth = (PLAYER_SHIP_HEIGHT + ship.getHeight()) - additionalDivingDepth;
+        float extraDepth = (float) Math.floor(Math.random() * 5);
+        float maxDivingDepth = (PLAYER_SHIP_HEIGHT + ship.getHeight() + extraDepth ) - additionalDivingDepth;
 
         if (ship.getY() < maxDivingDepth) {
             ship.resetSpeed();

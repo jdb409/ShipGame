@@ -38,9 +38,19 @@ class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.setScreen(new MainMenuScreen(game, game.camera));
         }
+
+        if (this.world.gameState == GameState.COMPLETE && Gdx.input.isTouched()){
+            game.setScreen(new MainMenuScreen(game, game.camera));
+        }
+
+//        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+//            world.gameState = GameState.PAUSED;
+//        }
+
         world.update(delta);
         renderer.render();
     }
@@ -61,7 +71,8 @@ class GameScreen implements Screen {
     }
 
     @Override
-    public void resume() { }
+    public void resume() {
+    }
 
     @Override
     public void hide() {
