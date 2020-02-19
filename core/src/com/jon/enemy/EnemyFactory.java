@@ -49,7 +49,7 @@ public class EnemyFactory {
                         100,
                         200,
                         SHOOTING_ENEMY_SPEED,
-                        5,
+                        20,
                         bossAI,
                         AssetLoader.bossShip,
                         AssetLoader.bossShipExplosion,

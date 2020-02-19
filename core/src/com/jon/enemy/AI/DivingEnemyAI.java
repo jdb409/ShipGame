@@ -69,7 +69,7 @@ public class DivingEnemyAI implements AI {
     }
 
     private void checkDive(AIControlledShip ship) {
-        if ((System.currentTimeMillis() - lastDove) > this.nextDive){
+        if ((System.currentTimeMillis() - lastDove) > this.nextDive) {
             dive(ship);
             isDiving = true;
         }
@@ -87,8 +87,8 @@ public class DivingEnemyAI implements AI {
     }
 
     private void checkY(AIControlledShip ship) {
-        float extraDepth = (float) Math.floor(Math.random() * 5);
-        float maxDivingDepth = (PLAYER_SHIP_HEIGHT + ship.getHeight() + extraDepth ) - additionalDivingDepth;
+        float lessDepth = (float) Math.floor(Math.random() * 5) + 3;
+        float maxDivingDepth = (PLAYER_SHIP_HEIGHT + ship.getHeight() + lessDepth) - additionalDivingDepth;
 
         if (ship.getY() < maxDivingDepth) {
             ship.resetSpeed();

@@ -118,8 +118,8 @@ public class Renderer {
 
 
     private void handlePaused() {
-        font.draw(batch, "Paused", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 + 10);
-        font.draw(batch, "Touch to resume", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 - 10);
+        font.draw(batch, "Paused", WINDOW_WIDTH / 2 - 20, Constants.WINDOW_HEIGHT / 2 + 10);
+        font.draw(batch, "Touch to resume", WINDOW_WIDTH / 2 - 50, Constants.WINDOW_HEIGHT / 2 - 10);
     }
 
     private void drawLives() {
