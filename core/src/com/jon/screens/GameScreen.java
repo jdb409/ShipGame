@@ -39,9 +39,9 @@ class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-//        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-//            game.setScreen(new MainMenuScreen(game, game.camera));
-//        }
+        if (this.world.gameState == GameState.PAUSED && Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            game.setScreen(new MainMenuScreen(game, game.camera));
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             world.gameState = GameState.PAUSED;

@@ -1,33 +1,26 @@
 package com.jon.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jon.AlienInvaderGame;
 import com.jon.AssetLoader;
+import com.jon.Constants;
 import com.jon.LevelConfig;
 
-import java.util.Arrays;
-
+import static com.jon.Constants.HIGHEST_LEVEL;
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
 
@@ -37,7 +30,6 @@ public class MainMenuScreen implements Screen {
     private int scrollY;
     private Skin skin;
     private Stage stage;
-    private Viewport viewport;
 
     public MainMenuScreen(AlienInvaderGame game, OrthographicCamera camera) {
         this.game = game;
@@ -58,7 +50,6 @@ public class MainMenuScreen implements Screen {
 
 
         TextureRegionDrawable settingDrawable = new TextureRegionDrawable(AssetLoader.settingsBtn);
-        ImageButton settingsButton = new ImageButton(settingDrawable);
         skin.getFont("title").getData().setScale(3);
         TextButton startButton = new TextButton("Start", skin, "oval1");
         TextButton stageSelect = new TextButton("Choose Stage", skin, "oval4");
@@ -77,24 +68,28 @@ public class MainMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Dialog dialog = new Dialog("", skin, "dialog") {
                     public void result(Object obj) {
-//                        System.out.println(obj);
-//                        if (obj.equals("EXIT")){
-//                            this.hide();
-//                            return;
-//                        }
                         LevelConfig.setLevel((int) obj);
                         game.setScreen(new GameScreen(game));
                     }
                 };
                 TextButton.TextButtonStyle stageStyle = skin.get("oval1", TextButton.TextButtonStyle.class);
-//                TextButton.TextButtonStyle exitStyle = skin.get("oval4", TextButton.TextButtonStyle.class);
-//                SelectBox<Integer> selectBox = new SelectBox(skin);
-//                selectBox.setItems(1,2,3);
-                for (int i = 1; i < 7; i++) {
-                    dialog.button(Integer.toString(i), i, stageStyle); //sends "true" as the result
+                TextButton.TextButtonStyle exitStyle = skin.get("oval4", TextButton.TextButtonStyle.class);
+
+                Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+                Integer highestLevel = Math.max(prefs.getInteger(HIGHEST_LEVEL, 0), 1);
+                for (int i = 1; i <= highestLevel; i++) {
+                    dialog.button(Integer.toString(i), i, stageStyle);
                 }
-                dialog.getButtonTable().padBottom(50);
-//                dialog.button("Exit", "EXIT", exitStyle);
+                TextButton goBack = new TextButton("Go Back", exitStyle);
+                goBack.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        dialog.hide();
+                    }
+                });
+
+                dialog.row().pad(100);
+                dialog.add(goBack);
                 dialog.show(stage);
             }
         });
@@ -104,8 +99,6 @@ public class MainMenuScreen implements Screen {
         mainTable.add(startButton).width(800).height(200);
         mainTable.row().pad(50);
         mainTable.add(stageSelect).width(800).height(200);
-//        mainTable.row().pad(50);
-//        mainTable.add(settingsButton);
 
         //Add table to stage
         stage.addActor(mainTable);

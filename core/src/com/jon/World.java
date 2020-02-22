@@ -1,5 +1,7 @@
 package com.jon;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.GameObjects.Bullet;
@@ -21,6 +23,8 @@ import lombok.Data;
 import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.ENEMY_WIDTH;
 import static com.jon.Constants.HANDLE_COLLISION;
+import static com.jon.Constants.HIGHEST_LEVEL;
+import static com.jon.Constants.HIGH_SCORE;
 import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
 import static com.jon.Constants.PLAYER_SHIP_WIDTH;
 import static com.jon.Constants.TOP_ENEMY_BUFFER;
@@ -63,7 +67,8 @@ public class World {
                 handleGameOver();
                 return;
             case COMPLETE:
-                System.out.println("gameover");
+                handleComplete();
+                return;
 
         }
     }
@@ -158,7 +163,7 @@ public class World {
         gameState = GameState.RUNNING;
         playerControlledShip.resetOrigin();
         playerControlledShip.getBullets().forEach(b -> b.setY(WINDOW_HEIGHT));
-        items.forEach(i -> i.setY(WINDOW_HEIGHT));
+        items.forEach(i -> i.setY(0));
     }
 
     private void handleGameOver() {
@@ -166,6 +171,31 @@ public class World {
         playerControlledShip.setBullets(new Array<>());
         for (AIControlledShip enemyShip : enemyShips) {
             enemyShip.setSpeed(0);
+        }
+        setHighScore();
+        setHighestCompletedLevel();
+    }
+
+    private void handleComplete() {
+        setHighScore();
+        setHighestCompletedLevel();
+    }
+
+    private void setHighScore() {
+        Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+        Integer highScore = prefs.getInteger(HIGH_SCORE);
+        if (highScore == null || highScore < LevelConfig.score) {
+            prefs.putInteger(HIGH_SCORE, LevelConfig.score);
+            prefs.flush();
+        }
+    }
+
+    private void setHighestCompletedLevel() {
+        Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+        Integer highestLevel = prefs.getInteger(HIGHEST_LEVEL);
+        if (highestLevel == null || highestLevel < LevelConfig.getLevel()) {
+            prefs.putInteger(HIGHEST_LEVEL, LevelConfig.getLevel());
+            prefs.flush();
         }
     }
 

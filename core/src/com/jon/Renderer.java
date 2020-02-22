@@ -1,6 +1,7 @@
 package com.jon;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,6 +15,7 @@ import com.jon.GameObjects.items.Item;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+import static com.jon.Constants.HIGH_SCORE;
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
 
@@ -94,13 +96,17 @@ public class Renderer {
 
     private void handleComplete() {
         handleRunning();
-        font.draw(batch, "You Win", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 + 20);
+        drawNewHighScore();
+        font.getData().setScale(2);
+        font.draw(batch, "You Win!!", WINDOW_WIDTH / 2 - 70, Constants.WINDOW_HEIGHT / 2 + 60);
+        font.getData().setScale(1);
         font.draw(batch, "Touch Screen To Go Back", WINDOW_WIDTH / 2 - 90, Constants.WINDOW_HEIGHT / 2 - 20);
     }
 
 
     private void handleGameOver() {
         handleRunning();
+        drawNewHighScore();
         font.draw(batch, "Game Over", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2);
         font.draw(batch, "Touch Screen", WINDOW_WIDTH / 2 - 40, Constants.WINDOW_HEIGHT / 2 - 20);
     }
@@ -118,8 +124,23 @@ public class Renderer {
 
 
     private void handlePaused() {
+        Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+        Integer highScore = prefs.getInteger(HIGH_SCORE);
+        if (highScore != null) {
+            font.draw(batch, "High Score: " + highScore, WINDOW_WIDTH / 2 - 50, Constants.WINDOW_HEIGHT / 2 + 60);
+        }
         font.draw(batch, "Paused", WINDOW_WIDTH / 2 - 20, Constants.WINDOW_HEIGHT / 2 + 10);
         font.draw(batch, "Touch to resume", WINDOW_WIDTH / 2 - 50, Constants.WINDOW_HEIGHT / 2 - 10);
+    }
+
+    private void drawNewHighScore() {
+        Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+        Integer highScore = prefs.getInteger(HIGH_SCORE);
+        if (highScore == null || highScore <= LevelConfig.score) {
+            font.getData().setScale(2);
+            font.draw(batch, String.format("New High Score: %s !!!!\n", LevelConfig.score), WINDOW_WIDTH / 2 - 150, Constants.WINDOW_HEIGHT / 2 + 60);
+            font.getData().setScale(1);
+        }
     }
 
     private void drawLives() {

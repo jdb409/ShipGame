@@ -77,6 +77,7 @@ public class FirstBossAI implements AI {
     public void die(AIControlledShip ship, float runTime) {
         ship.setBullets(new Array<>());
         ship.setDead(true);
+        ship.setShowHealthBar(false);
     }
 
     private float getNextShot() {
