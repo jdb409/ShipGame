@@ -112,8 +112,8 @@ public class Renderer {
     }
 
     private void handleRunning() {
-        font.draw(batch, "Score: " + LevelConfig.score, 0, Constants.WINDOW_HEIGHT);
-        font.draw(batch, String.format("Level: %d, Wave %d", LevelConfig.level, LevelConfig.stage), WINDOW_WIDTH - 150, Constants.WINDOW_HEIGHT);
+        font.draw(batch, "Score: " + LevelConfig.score, 0, Constants.WINDOW_HEIGHT-Constants.TOP_AD_BUFFER);
+        font.draw(batch, String.format("Level: %d, Wave %d", LevelConfig.level, LevelConfig.stage), WINDOW_WIDTH - 150, Constants.WINDOW_HEIGHT-Constants.TOP_AD_BUFFER);
         drawLives();
         drawPlayerShip();
         drawPlayerBullets();

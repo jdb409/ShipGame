@@ -145,11 +145,12 @@ public class PlayerControllerShip extends MoveableGameObject {
     }
 
     private void checkY() {
+        float topLimit = Constants.WINDOW_HEIGHT - Constants.TOP_AD_BUFFER - this.getHeight();
         if (this.getY() < PLAYER_SHIP_START_Y) {
             this.setY(PLAYER_SHIP_START_Y);
         }
-        if (this.getY() > Constants.WINDOW_HEIGHT - this.getHeight()) {
-            this.setY(Constants.WINDOW_HEIGHT - this.getHeight());
+        if (this.getY() > topLimit) {
+            this.setY(topLimit);
         }
     }
 

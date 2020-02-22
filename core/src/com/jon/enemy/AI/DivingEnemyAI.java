@@ -7,10 +7,7 @@ import com.jon.enemy.HorizontalMovement;
 
 import java.util.Random;
 
-import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
-import static com.jon.Constants.TOP_ENEMY_BUFFER;
-import static com.jon.Constants.WINDOW_HEIGHT;
 
 public class DivingEnemyAI implements AI {
     private int horizontalSpeed;
