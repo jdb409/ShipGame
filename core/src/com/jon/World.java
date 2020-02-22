@@ -222,8 +222,8 @@ public class World {
     }
 
     private void setNextWave() {
-        LevelConfig.setNextStage();
         LevelConfig.modifyScore(ScoreEvent.WAVE_PASSED);
+        LevelConfig.setNextStage();
         spawnEnemyWaitingTime = System.currentTimeMillis();
         gameState = GameState.READY;
     }

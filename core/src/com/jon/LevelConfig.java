@@ -24,6 +24,7 @@ public class LevelConfig {
     public static int divingFrequencyMax;
     public static int divingFrequencyMin;
 
+
     private final static int defaultNumEnemyPerRow = 5;
     private final static int defaultNumRows = 2;
     private final static float defaultDiveSpeedMultiplier = 0;
@@ -34,12 +35,15 @@ public class LevelConfig {
     private final static int defaultChanceToShoot = 2;
     private final static float defaultHorizontalSpeed = .5f;
 
+    private static long waveStartTime;
+
 
     public static void restart() {
         init();
     }
 
     public static void setNextStage() {
+        waveStartTime = System.currentTimeMillis();
         numRows++;
         if (stage++ == stagesPerLevel) {
             setLevel(++level);
@@ -47,6 +51,7 @@ public class LevelConfig {
     }
 
     public static void setLevel(int newLevel) {
+        waveStartTime = System.currentTimeMillis();
         bg = chooseBg();
         level = newLevel;
         stage = 1;
@@ -60,6 +65,8 @@ public class LevelConfig {
 
     private static void init() {
         //check if user selected a level
+        waveStartTime = System.currentTimeMillis();
+        System.out.println(waveStartTime);
         if (level == 0) {
             level = 1;
             diveSpeedMultiplier = defaultDiveSpeedMultiplier;
@@ -106,13 +113,18 @@ public class LevelConfig {
                 score += 10;
                 break;
             case WAVE_PASSED:
-                score += 500;
+                score += Math.max(500 - getWaveDuration(), 0);
                 break;
             case LEVEL_PASSED:
                 score += 1000;
                 break;
         }
     }
+
+    private static int getWaveDuration() {
+        return (int) (Math.floor((System.currentTimeMillis() - waveStartTime) / 100)) / 2;
+    }
+
 
     private static Texture chooseBg() {
         int bgImg = (int) Math.floor(Math.random() * 3);

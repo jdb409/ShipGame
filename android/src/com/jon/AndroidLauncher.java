@@ -17,6 +17,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.jon.AlienInvaderGame;
 
 public class AndroidLauncher extends AndroidApplication {
+    private final String TEST_BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
     private final String BANNER_AD_UNIT_ID = "ca-app-pub-6513912774467462/6433406949";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class AndroidLauncher extends AndroidApplication {
     private AdView setUpBannerAd() {
         AdView adView = new AdView(this);
         adView.setAdSize(AdSize.SMART_BANNER);
-        adView.setAdUnitId(BANNER_AD_UNIT_ID);
+        adView.setAdUnitId(TEST_BANNER_AD_UNIT_ID);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
         return adView;
