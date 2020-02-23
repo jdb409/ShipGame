@@ -64,7 +64,6 @@ project(":android") {
         implementation project(":core")
         implementation 'com.google.android.gms:play-services-ads:18.3.0'
         implementation 'com.android.support:multidex:1.0.3'
-        implementation 'com.google.android.gms:play-services-games:19.0.0'
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
