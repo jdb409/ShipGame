@@ -46,36 +46,7 @@ public class EnemyFactory {
                         AssetLoader.redShipExplosion,
                         false);
             case BOSS:
-//                int aiChoice = (int) Math.floor(Math.random() * 2);
-                int aiChoice = 1;
-                AI bossAI;
-                TextureRegion image;
-                Animation<TextureRegion> deathAnim;
-                switch (aiChoice) {
-                    case (0):
-                        bossAI = new PursuitShootingBossAI();
-                        image = AssetLoader.whiteBossShip;
-                        deathAnim = AssetLoader.whiteBossShipExplosion;
-                    case (1):
-                        bossAI = new PursuitShootingBossAI();
-                        image = AssetLoader.greenBossShip;
-                        deathAnim = AssetLoader.greenBossShipExplosion;
-                    default:
-                        bossAI = new BulletSurroundingBossAI();
-                        image = AssetLoader.orangeBossShip;
-                        deathAnim = AssetLoader.orangeBossShipExplosion;
-
-                }
-                return new AIControlledShip(x - 50,
-                        y - 200,
-                        100,
-                        200,
-                        SHOOTING_ENEMY_SPEED,
-                        5,
-                        bossAI,
-                        image,
-                        deathAnim,
-                        true);
+                return getBoss(x, y);
             case NON_ATTACKING:
                 AI nonAttackingAI = new NonAttackingEnemyAI();
                 return new AIControlledShip(x,
@@ -91,6 +62,47 @@ public class EnemyFactory {
             default:
                 System.out.println("Enemy Factory - should not reach here");
                 return null;
+        }
+    }
+
+    private static AIControlledShip getBoss(float x, float y) {
+        int aiChoice = (int) Math.floor(Math.random() * 2);
+        switch (aiChoice) {
+            case (0):
+                return new AIControlledShip(x - 50,
+                        y - 200,
+                        100,
+                        200,
+                        SHOOTING_ENEMY_SPEED,
+                        20,
+                        new PursuitShootingBossAI(),
+                        AssetLoader.whiteBossShip,
+                        AssetLoader.whiteBossShipExplosion,
+                        true);
+            case (1):
+                return new AIControlledShip(x - 50,
+                        y - 300,
+                        75,
+                        150,
+                        SHOOTING_ENEMY_SPEED,
+                        20,
+                        new BulletSurroundingBossAI(),
+                        AssetLoader.orangeBossShip,
+                        AssetLoader.orangeBossShipExplosion,
+                        true);
+            default:
+                System.out.println("should not return here");
+                return new AIControlledShip(x - 50,
+                        y - 200,
+                        100,
+                        200,
+                        SHOOTING_ENEMY_SPEED,
+                        20,
+                        new PursuitShootingBossAI(),
+                        AssetLoader.whiteBossShip,
+                        AssetLoader.whiteBossShipExplosion,
+                        true);
+
         }
     }
 }
