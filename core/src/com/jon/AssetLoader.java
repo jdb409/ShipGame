@@ -18,12 +18,13 @@ public class AssetLoader {
 
     private static TextureAtlas shipAtlas;
     private static TextureAtlas shotAtlas;
-    private static TextureAtlas bossAtlas;
+    private static TextureAtlas whiteBossAtlas;
 
     private static TextureAtlas blueShipExplosionAtlas;
     private static TextureAtlas yellowShipExplosionAtlas;
     private static TextureAtlas redShipExplosionAtlas;
     private static TextureAtlas menuIconsAtlas;
+    private static TextureAtlas greenOrangeAtlas;
 
     public static Texture bg;
     public static Texture bg2;
@@ -32,12 +33,20 @@ public class AssetLoader {
     public static TextureAtlas.AtlasRegion redShip;
     public static TextureAtlas.AtlasRegion blueShip;
     public static TextureAtlas.AtlasRegion fishShip;
-    public static TextureAtlas.AtlasRegion bossShip;
-    public static TextureAtlas.AtlasRegion bossShot1;
-    public static TextureAtlas.AtlasRegion bossShot2;
-    public static TextureAtlas.AtlasRegion bossShot3;
+    public static TextureAtlas.AtlasRegion whiteBossShip;
+    public static TextureAtlas.AtlasRegion orangeBossShip;
+    public static TextureAtlas.AtlasRegion greenBossShip;
+
+
+    public static TextureAtlas.AtlasRegion orangeBossShot1;
+    public static TextureAtlas.AtlasRegion greenBossShot1;
+    public static TextureAtlas.AtlasRegion whiteBossShot1;
+    public static TextureAtlas.AtlasRegion whiteBossShot2;
+    public static TextureAtlas.AtlasRegion whiteBossShot3;
     public static TextureAtlas.AtlasRegion redShot;
     public static TextureAtlas.AtlasRegion blueShot;
+
+
     public static TextureAtlas.AtlasRegion startBtn;
     public static TextureAtlas.AtlasRegion settingsBtn;
     public static TextureAtlas.AtlasRegion soundBtn;
@@ -49,7 +58,9 @@ public class AssetLoader {
     public static Animation<TextureRegion> blueShipExplosion;
     public static Animation<TextureRegion> yellowShipExplosion;
     public static Animation<TextureRegion> redShipExplosion;
-    public static Animation<TextureRegion> bossShipExplosion;
+    public static Animation<TextureRegion> whiteBossShipExplosion;
+    public static Animation<TextureRegion> greenBossShipExplosion;
+    public static Animation<TextureRegion> orangeBossShipExplosion;
     public static Animation<TextureRegion> blueShipHitAnim;
 
     public static TextureRegion increaseBulletSpeedItem;
@@ -108,10 +119,10 @@ public class AssetLoader {
     private static void loadShips() {
         shipAtlas = new TextureAtlas(Gdx.files.internal("Ships.atlas"));
         shipTexture = new Texture(Gdx.files.internal("Ships.png"));
-        bossAtlas = new TextureAtlas(Gdx.files.internal("boss.atlas"));
+        whiteBossAtlas = new TextureAtlas(Gdx.files.internal("boss.atlas"));
+        greenOrangeAtlas = new TextureAtlas(Gdx.files.internal("ship1and4.atlas"));
 
         blueShip = shipAtlas.findRegion("Ship3");
-
         redShip = shipAtlas.findRegion("Ship2");
         redShip.flip(false, true);
 
@@ -120,7 +131,9 @@ public class AssetLoader {
         fishShip.setU(fishShip.getV());
         fishShip.setV(u);
 
-        bossShip = bossAtlas.findRegion("Ship6");
+        whiteBossShip = whiteBossAtlas.findRegion("Ship6");
+        greenBossShip = greenOrangeAtlas.findRegion("Ship1");
+        orangeBossShip = greenOrangeAtlas.findRegion("Ship4");
     }
 
     private static void loadBullets() {
@@ -129,9 +142,11 @@ public class AssetLoader {
         redShot = shotAtlas.findRegion("shot6");
         redShot.flip(false, true);
         blueShot = shotAtlas.findRegion("shot2");
-        bossShot1 = bossAtlas.findRegion("shot5_0");
-        bossShot2 = bossAtlas.findRegion("shot5_1");
-        bossShot3 = bossAtlas.findRegion("shot5_2");
+        whiteBossShot1 = whiteBossAtlas.findRegion("shot5_0");
+        whiteBossShot2 = whiteBossAtlas.findRegion("shot5_1");
+        whiteBossShot3 = whiteBossAtlas.findRegion("shot5_2");
+        greenBossShot1 = greenOrangeAtlas.findRegion("shot1_exp1");
+        orangeBossShot1 = greenOrangeAtlas.findRegion("shot4_exp3");
     }
 
     private static void loadItems() {
@@ -155,8 +170,14 @@ public class AssetLoader {
         yellowShipExplosion = new Animation<>(0.05f,
                 yellowShipExplosionAtlas.findRegions("Ship5_Explosion"), Animation.PlayMode.NORMAL);
 
-        bossShipExplosion = new Animation<>(.10f,
-                bossAtlas.findRegions("Ship6_Explosion"), Animation.PlayMode.NORMAL);
+        whiteBossShipExplosion = new Animation<>(.10f,
+                whiteBossAtlas.findRegions("Ship6_Explosion"), Animation.PlayMode.NORMAL);
+
+        orangeBossShipExplosion = new Animation<>(.10f,
+                greenOrangeAtlas.findRegions("Ship4_Explosion"), Animation.PlayMode.NORMAL);
+
+        greenBossShipExplosion = new Animation<>(.10f,
+                greenOrangeAtlas.findRegions("Ship1_Explosion"), Animation.PlayMode.NORMAL);
 
         TextureRegion[] blueShipHitFrames = new TextureRegion[3];
         for (int frame = 0; frame < 3; frame++) {

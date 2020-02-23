@@ -17,6 +17,7 @@ public class AIControlledShip extends MoveableGameObject {
     private Array<Bullet> bullets;
 
     private int health;
+    private int originalHealth;
     private long lastHit;
     private boolean dead = false;
 
@@ -32,7 +33,6 @@ public class AIControlledShip extends MoveableGameObject {
     private float bulletWidth;
 
     private float runTime;
-
     private boolean showHealthBar;
 
     public AIControlledShip(float x,
@@ -54,6 +54,7 @@ public class AIControlledShip extends MoveableGameObject {
         this.bulletHeight = 15;
         this.bullets = new Array<>();
         this.showHealthBar = showHealthBar;
+        this.originalHealth = health;
     }
 
     @Override

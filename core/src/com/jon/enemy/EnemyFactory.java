@@ -1,10 +1,13 @@
 package com.jon.enemy;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jon.AssetLoader;
 import com.jon.GameObjects.AIControlledShip;
 import com.jon.enemy.AI.AI;
+import com.jon.enemy.AI.BulletSurroundingBossAI;
 import com.jon.enemy.AI.DivingEnemyAI;
-import com.jon.enemy.AI.FirstBossAI;
+import com.jon.enemy.AI.PursuitShootingBossAI;
 import com.jon.enemy.AI.NonAttackingEnemyAI;
 import com.jon.enemy.AI.StandardShootingEnemyAI;
 import com.jon.enums.EnemyType;
@@ -43,16 +46,35 @@ public class EnemyFactory {
                         AssetLoader.redShipExplosion,
                         false);
             case BOSS:
-                AI bossAI = new FirstBossAI();
+//                int aiChoice = (int) Math.floor(Math.random() * 2);
+                int aiChoice = 1;
+                AI bossAI;
+                TextureRegion image;
+                Animation<TextureRegion> deathAnim;
+                switch (aiChoice) {
+                    case (0):
+                        bossAI = new PursuitShootingBossAI();
+                        image = AssetLoader.whiteBossShip;
+                        deathAnim = AssetLoader.whiteBossShipExplosion;
+                    case (1):
+                        bossAI = new PursuitShootingBossAI();
+                        image = AssetLoader.greenBossShip;
+                        deathAnim = AssetLoader.greenBossShipExplosion;
+                    default:
+                        bossAI = new BulletSurroundingBossAI();
+                        image = AssetLoader.orangeBossShip;
+                        deathAnim = AssetLoader.orangeBossShipExplosion;
+
+                }
                 return new AIControlledShip(x - 50,
                         y - 200,
                         100,
                         200,
                         SHOOTING_ENEMY_SPEED,
-                        20,
+                        5,
                         bossAI,
-                        AssetLoader.bossShip,
-                        AssetLoader.bossShipExplosion,
+                        image,
+                        deathAnim,
                         true);
             case NON_ATTACKING:
                 AI nonAttackingAI = new NonAttackingEnemyAI();

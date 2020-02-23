@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import static com.jon.Constants.WINDOW_HEIGHT;
 
-public class FirstBossAI implements AI {
+public class PursuitShootingBossAI implements AI {
     private int bulletSpeed = 2;
     private float nextShot;
     private boolean inPursuit;
@@ -18,7 +18,7 @@ public class FirstBossAI implements AI {
     private long startPursuitTime;
 
 
-    public FirstBossAI() {
+    public PursuitShootingBossAI() {
         nextShot = this.getNextShot();
     }
 
@@ -90,7 +90,7 @@ public class FirstBossAI implements AI {
                         ship.getY() - 30,
                         15,
                         30,
-                        AssetLoader.bossShot1);
+                        AssetLoader.whiteBossShot1);
         bullet.setSpeed(bulletSpeed);
 
         //move towards player

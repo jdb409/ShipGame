@@ -180,9 +180,10 @@ public class Renderer {
                 enemyShip.getY() + enemyShip.getHeight(),
                 width,
                 10);
+
         shapeDrawer.filledRectangle(enemyShip.getX(),
                 enemyShip.getY() + enemyShip.getHeight(),
-                ((enemyShip.getHealth() / 20f) * width),
+                ((enemyShip.getHealth() / (float) enemyShip.getOriginalHealth()) * width),
                 10);
     }
 
