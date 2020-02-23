@@ -26,6 +26,12 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6513912774467462~9673889783" />
+
+
+        <meta-data android:name="com.google.android.gms.games.APP_ID"
+            android:value="769377432602" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
     </application>
 
 </manifest>

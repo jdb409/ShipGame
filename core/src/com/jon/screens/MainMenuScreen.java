@@ -57,7 +57,7 @@ public class MainMenuScreen implements Screen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig.setLevel(1);
+                LevelConfig.setLevel(13);
                 game.setScreen(new GameScreen(game));
                 dispose();
             }
@@ -79,6 +79,9 @@ public class MainMenuScreen implements Screen {
                 Integer highestLevel = Math.max(prefs.getInteger(HIGHEST_LEVEL, 0), 1);
                 for (int i = 1; i <= highestLevel; i++) {
                     dialog.button(Integer.toString(i), i, stageStyle);
+                    if (i % 6 == 0){
+                        dialog.getButtonTable().row();
+                    }
                 }
                 TextButton goBack = new TextButton("Go Back", exitStyle);
                 goBack.addListener(new ClickListener() {

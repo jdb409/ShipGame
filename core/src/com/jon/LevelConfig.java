@@ -23,6 +23,7 @@ public class LevelConfig {
     public static int score;
     public static int divingFrequencyMax;
     public static int divingFrequencyMin;
+    public static int normalEnemyHealth;
 
 
     private final static int defaultNumEnemyPerRow = 5;
@@ -34,6 +35,7 @@ public class LevelConfig {
     private final static int defaultDivingFrequencyMin = 4000;
     private final static int defaultChanceToShoot = 2;
     private final static float defaultHorizontalSpeed = .5f;
+    private final static int defaultNormalEnemyHealth = 2;
 
     private static long waveStartTime;
 
@@ -45,7 +47,9 @@ public class LevelConfig {
     public static void setNextStage() {
         waveStartTime = System.currentTimeMillis();
         numRows++;
-        if (stage++ == stagesPerLevel) {
+        if (level % 6 == 0) {
+            setLevel(++level);
+        } else if (stage++ == stagesPerLevel) {
             setLevel(++level);
         }
     }
@@ -61,6 +65,14 @@ public class LevelConfig {
         shootingSpeedMax = Math.max(defaultShootingSpeedMax - (newLevel * 100), 1000);
         divingFrequencyMax = Math.max(defaultDivingFrequencyMax - (newLevel * 100), 2000);
         divingFrequencyMin = Math.max(defaultDivingFrequencyMin - (newLevel * 200), 2500);
+        if (level > 6) {
+            normalEnemyHealth = 4;
+        }
+
+        if (level > 12) {
+            normalEnemyHealth = 6;
+        }
+        printConfig();
     }
 
     private static void init() {
@@ -84,10 +96,11 @@ public class LevelConfig {
         chanceToShoot = defaultChanceToShoot;
         horizontalSpeed = defaultHorizontalSpeed;
         score = 0;
+        normalEnemyHealth = defaultNormalEnemyHealth;
     }
 
-    public static String printConfig() {
-        return "LevelConfig{" +
+    public static void printConfig() {
+        System.out.println("LevelConfig{" +
                 "level=" + level +
                 ", numEnemyPerRow=" + numEnemyPerRow +
                 ", numRows=" + numRows +
@@ -98,7 +111,8 @@ public class LevelConfig {
                 ", horizontalSpeed=" + horizontalSpeed +
                 ", stagesPerLevel=" + stagesPerLevel +
                 ", diveSpeedMultiplier=" + diveSpeedMultiplier +
-                '}';
+                ", enemyHealth=" + normalEnemyHealth +
+                '}');
     }
 
     public static void modifyScore(ScoreEvent scoreEvent) {

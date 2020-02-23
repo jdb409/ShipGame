@@ -1,9 +1,8 @@
 package com.jon.enemy;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jon.AssetLoader;
 import com.jon.GameObjects.AIControlledShip;
+import com.jon.LevelConfig;
 import com.jon.enemy.AI.AI;
 import com.jon.enemy.AI.BulletSurroundingBossAI;
 import com.jon.enemy.AI.DivingEnemyAI;
@@ -28,7 +27,7 @@ public class EnemyFactory {
                         ENEMY_WIDTH,
                         ENEMY_HEIGHT,
                         DIVING_ENEMY_SPEED,
-                        2,
+                        LevelConfig.normalEnemyHealth,
                         divingAI,
                         AssetLoader.fishShip,
                         AssetLoader.yellowShipExplosion,
@@ -40,7 +39,7 @@ public class EnemyFactory {
                         ENEMY_WIDTH,
                         ENEMY_HEIGHT,
                         SHOOTING_ENEMY_SPEED,
-                        2,
+                        LevelConfig.normalEnemyHealth,
                         shootingAI,
                         AssetLoader.redShip,
                         AssetLoader.redShipExplosion,

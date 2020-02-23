@@ -53,7 +53,7 @@ public class World {
 
     public void update(float delta) {
         runTime += delta;
-        if (LevelConfig.getLevel() == 6 && LevelConfig.getStage() == 2) {
+        if (LevelConfig.getLevel() == 18 && LevelConfig.getStage() == 2) {
             gameState = GameState.COMPLETE;
         }
         handleEnemySpawn();
@@ -237,7 +237,7 @@ public class World {
 
 
     private void spawnEnemies() {
-        if (LevelConfig.getLevel() == 6) {
+        if (LevelConfig.getLevel() % 6 == 0) {
             handleBossLevelEnemySpawn();
         } else {
             handleNormalLevelEnemySpawn();
