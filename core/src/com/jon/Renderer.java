@@ -112,8 +112,8 @@ public class Renderer {
     }
 
     private void handleRunning() {
-        font.draw(batch, "Score: " + LevelConfig.score, 0, Constants.WINDOW_HEIGHT-Constants.TOP_AD_BUFFER);
-        font.draw(batch, String.format("Level: %d, Wave %d", LevelConfig.level, LevelConfig.stage), WINDOW_WIDTH - 150, Constants.WINDOW_HEIGHT-Constants.TOP_AD_BUFFER);
+        font.draw(batch, "Score: " + LevelConfig.score, 0, Constants.WINDOW_HEIGHT - Constants.TOP_AD_BUFFER);
+        font.draw(batch, String.format("Level: %d, Wave %d", LevelConfig.level, LevelConfig.stage), WINDOW_WIDTH - 150, Constants.WINDOW_HEIGHT - Constants.TOP_AD_BUFFER);
         drawLives();
         drawPlayerShip();
         drawPlayerBullets();
@@ -144,9 +144,9 @@ public class Renderer {
     }
 
     private void drawLives() {
-        for (int h = 0; h < playerControllerShip.getHealth(); h++) {
-            batch.draw(playerControllerShip.getOriginalImage(), (h * 25), 5, 20, 25);
-        }
+        batch.draw(playerControllerShip.getOriginalImage(), 5, 5, 20, 25);
+        font.draw(batch, String.format("X %d",playerControllerShip.getHealth()),30,25);
+
     }
 
     private void drawPlayerShip() {
