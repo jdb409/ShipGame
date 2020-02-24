@@ -6,6 +6,7 @@ import com.jon.LevelConfig;
 import com.jon.enemy.AI.AI;
 import com.jon.enemy.AI.BulletSurroundingBossAI;
 import com.jon.enemy.AI.DivingEnemyAI;
+import com.jon.enemy.AI.HomingBoss;
 import com.jon.enemy.AI.PursuitShootingBossAI;
 import com.jon.enemy.AI.NonAttackingEnemyAI;
 import com.jon.enemy.AI.StandardShootingEnemyAI;
@@ -65,7 +66,7 @@ public class EnemyFactory {
     }
 
     private static AIControlledShip getBoss(float x, float y) {
-        int aiChoice = (int) Math.floor(Math.random() * 2);
+        int aiChoice = (int) Math.floor(Math.random() * 3);
         switch (aiChoice) {
             case (0):
                 return new AIControlledShip(x - 50,
@@ -89,8 +90,19 @@ public class EnemyFactory {
                         AssetLoader.orangeBossShip,
                         AssetLoader.orangeBossShipExplosion,
                         true);
+            case (2):
+                return new AIControlledShip(x - 50,
+                        y - 200,
+                        75,
+                        150,
+                        SHOOTING_ENEMY_SPEED,
+                        20,
+                        new HomingBoss(),
+                        AssetLoader.greenBossShip,
+                        AssetLoader.greenBossShipExplosion,
+                        true);
             default:
-                System.out.println("should not return here");
+                System.out.println("should not reach here");
                 return new AIControlledShip(x - 50,
                         y - 200,
                         100,
