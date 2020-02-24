@@ -63,7 +63,7 @@ public class AndroidLauncher extends AndroidApplication {
     private AdView setUpBannerAd() {
         AdView adView = new AdView(this);
         adView.setAdSize(AdSize.SMART_BANNER);
-        adView.setAdUnitId(TEST_BANNER_AD_UNIT_ID);
+        adView.setAdUnitId(BANNER_AD_UNIT_ID);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
         return adView;
