@@ -1706,8 +1706,8 @@
       down: button-oval-c2-p
     }
     oval3: {
-      font: sub-title
-      fontColor: black
+      font: title
+      fontColor: white
       disabledFontColor: clear
       up: button-oval-c3
       down: button-oval-c3-p
