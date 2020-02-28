@@ -7,9 +7,11 @@ import com.badlogic.gdx.utils.Array;
 import com.jon.AssetLoader;
 import com.jon.Constants;
 import com.jon.LevelConfig;
+import com.jon.SoundEngine;
 import com.jon.enums.GameState;
 import com.jon.World;
 import com.jon.enums.ScoreEvent;
+import com.jon.enums.Sound;
 
 import java.util.Iterator;
 
@@ -119,6 +121,7 @@ public class PlayerControllerShip extends MoveableGameObject {
         bullet.moveUp();
         bullets.add(bullet);
         lastBulletFired = System.currentTimeMillis();
+        SoundEngine.playSound(Sound.PLAYER_BULLET, .5f);
     }
 
     public void handleCollision(int damage) {
@@ -131,6 +134,7 @@ public class PlayerControllerShip extends MoveableGameObject {
         this.decrementHealth(damage);
         this.setLastHit(System.currentTimeMillis());
         this.setAnimationStart(System.currentTimeMillis());
+        SoundEngine.playSound(Sound.PLAYER_HURT, 1.0f);
     }
 
 

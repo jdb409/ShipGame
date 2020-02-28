@@ -1,6 +1,7 @@
 package com.jon;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,6 +20,8 @@ public class AssetLoader {
     private static TextureAtlas shipAtlas;
     private static TextureAtlas shotAtlas;
     private static TextureAtlas whiteBossAtlas;
+    private static TextureAtlas skinAtlas;
+
 
     private static TextureAtlas blueShipExplosionAtlas;
     private static TextureAtlas yellowShipExplosionAtlas;
@@ -67,8 +70,13 @@ public class AssetLoader {
     public static TextureRegion increaseWidthItem;
     public static TextureRegion increaseHealthItem;
     public static TextureRegion whitePixelRegion;
-    private static TextureAtlas skinAtlas;
     public static Skin menuSkin;
+
+    public static Sound gunShot;
+    public static Sound explosion;
+    public static Sound getItem;
+    public static Sound playerHurt;
+
 
     public static void load() {
         //in atlas files
@@ -81,6 +89,7 @@ public class AssetLoader {
         loadItems();
         loadAnimations();
         loadMenuItems();
+        loadSounds();
         setUpShapeDrawer();
     }
 
@@ -94,6 +103,10 @@ public class AssetLoader {
         yellowShipExplosionAtlas.dispose();
         redShipExplosionAtlas.dispose();
         whitePixelTexture.dispose();
+        greenOrangeAtlas.dispose();
+        gunShot.dispose();
+        explosion.dispose();
+        getItem.dispose();
     }
 
     private static void loadBackgrounds() {
@@ -186,6 +199,13 @@ public class AssetLoader {
         blueShipHitAnim = new Animation<>(.05f, blueShipHitFrames);
     }
 
+    private static void loadSounds(){
+        gunShot = Gdx.audio.newSound(Gdx.files.internal("Gunshot.wav"));
+        explosion = Gdx.audio.newSound(Gdx.files.internal("Explosion.wav"));
+        getItem = Gdx.audio.newSound(Gdx.files.internal("GetItem.wav"));
+        playerHurt = Gdx.audio.newSound(Gdx.files.internal("Hurt.wav"));
+    }
+
 
     private static void setUpShapeDrawer() {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -195,4 +215,5 @@ public class AssetLoader {
         pixmap.dispose();
         whitePixelRegion = new TextureRegion(whitePixelTexture, 0, 0, 1, 1);
     }
+
 }

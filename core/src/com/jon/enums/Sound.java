@@ -1,4 +1,8 @@
 package com.jon.enums;
 
-public class Sound {
+public enum Sound {
+    EXPLOSION,
+    GET_ITEM,
+    PLAYER_BULLET,
+    PLAYER_HURT
 }

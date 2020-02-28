@@ -13,6 +13,7 @@ import com.jon.enemy.EnemyFactory;
 import com.jon.enums.EnemyType;
 import com.jon.enums.GameState;
 import com.jon.enums.ScoreEvent;
+import com.jon.enums.Sound;
 import com.jon.screens.MainMenuScreen;
 
 import java.util.Iterator;
@@ -151,6 +152,7 @@ public class World {
             Item item = itemIterator.next();
             item.update(runTime);
             if (item.getRectangle().overlaps(playerControlledShip.getRectangle())) {
+                SoundEngine.playSound(Sound.GET_ITEM, 1.0f);
                 item.apply(playerControlledShip);
                 itemIterator.remove();
                 LevelConfig.modifyScore(ScoreEvent.RECEIVED_ITEM);

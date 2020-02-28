@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.jon.AssetLoader;
+import com.jon.SoundEngine;
 import com.jon.enemy.AI.AI;
+import com.jon.enums.Sound;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -80,6 +83,8 @@ public class AIControlledShip extends MoveableGameObject {
     public void die() {
         ai.die(this, runTime);
         animTime = 0f;
+
+        SoundEngine.playSound(Sound.EXPLOSION, 1.0f);
     }
 
     public TextureRegion getImage() {

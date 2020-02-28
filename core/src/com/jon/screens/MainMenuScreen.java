@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -109,7 +108,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-//        int midX = WINDOW_WIDTH / 2 - 75;
         scrollY = scrollY - 1 % 1600;
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -118,6 +116,22 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
         game.batch.end();
+        Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+        boolean isSoundOn = prefs.getBoolean("SoundOn", true);
+        TextButton soundButton = new TextButton(String.format("Sound: %s", isSoundOn ? "On  " : "Off"), skin, "oval3");
+        soundButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                boolean isSoundOn = prefs.getBoolean("SoundOn", true);
+                prefs.putBoolean("SoundOn",!isSoundOn);
+                prefs.flush();
+            }
+        });
+        soundButton.setX(145);
+        soundButton.setWidth(800);
+        soundButton.setY(Gdx.graphics.getHeight()/2 - 450);
+        soundButton.setHeight(200);
+        stage.addActor(soundButton);
         stage.act();
         stage.draw();
     }
