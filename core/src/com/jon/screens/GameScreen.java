@@ -32,8 +32,6 @@ public class GameScreen implements Screen {
         World.gameState = GameState.RUNNING;
         this.renderer = new Renderer(game.batch, this.world, game.camera);
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
-
-
     }
 
     @Override

@@ -37,7 +37,7 @@ public class LevelConfig {
     private static final int defaultDivingFrequencyMin = 4000;
     private static final int defaultChanceToShoot = 2;
     private static final float defaultHorizontalSpeed = .5f;
-    private static final int defaultNormalEnemyHealth = 2;
+    private static final int defaultNormalEnemyHealth = 20;
 
     private static long waveStartTime;
 

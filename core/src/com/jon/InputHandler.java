@@ -83,6 +83,7 @@ public class InputHandler implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         screenX = scaleX(screenX);
         screenY = scaleY(screenY);
+        //below numbers just found by trial and error
         if (GameState.RUNNING.equals(World.gameState)) {
             float relY = ship.getY() - (WINDOW_HEIGHT - screenY);
             float relX = ship.getX() - screenX;

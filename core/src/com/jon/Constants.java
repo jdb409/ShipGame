@@ -16,6 +16,7 @@ public class Constants {
     public static final String HIGHEST_LEVEL = "highestLevel";
     public static final String SOUND_ON = "SoundOn";
     public static final int BOSS_LEVEL_MODULO = 5;
+    public static final int LAST_LEVEL = 15;
 
     private Constants() {
 

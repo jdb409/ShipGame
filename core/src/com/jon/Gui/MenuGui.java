@@ -22,13 +22,12 @@ import static com.jon.Constants.SOUND_ON;
 public class MenuGui {
     public static void addMenu(AlienInvaderGame game, Skin skin, Stage stage) {
         Table mainTable = new Table();
-        //Set table to fill stage
         mainTable.setFillParent(true);
 
         skin.getFont("title").getData().setScale(3);
         TextButton startButton = new TextButton("Start", skin, "oval1");
-        TextButton stageSelect = new TextButton("Choose Stage", skin, "oval4");
-        //Add listeners to buttons
+
+
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -37,6 +36,40 @@ public class MenuGui {
             }
         });
 
+        TextButton stageSelect = addStageSelectDialog(game, skin, stage);
+
+        //Add buttons to table
+        mainTable.add(startButton).width(800).height(200);
+        mainTable.row().pad(50);
+        mainTable.add(stageSelect).width(800).height(200);
+
+        //Add table to stage
+        stage.addActor(mainTable);
+    }
+
+    public static void addSound(Skin skin, Stage stage) {
+        Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
+        boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
+        TextButton soundButton = new TextButton(String.format("Sound: %s", isSoundOn ? "On  " : "Off"), skin, "oval3");
+        soundButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
+                prefs.putBoolean(SOUND_ON, !isSoundOn);
+                prefs.flush();
+            }
+        });
+        soundButton.setX(145);
+        soundButton.setWidth(800);
+        soundButton.setY(Gdx.graphics.getHeight() / 2 - 450);
+        soundButton.setHeight(200);
+        stage.addActor(soundButton);
+        stage.act();
+        stage.draw();
+    }
+
+    private static TextButton addStageSelectDialog(AlienInvaderGame game, Skin skin, Stage stage) {
+        TextButton stageSelect = new TextButton("Choose Stage", skin, "oval4");
         stageSelect.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -70,34 +103,7 @@ public class MenuGui {
                 dialog.show(stage);
             }
         });
+        return stageSelect;
 
-        //Add buttons to table
-        mainTable.add(startButton).width(800).height(200);
-        mainTable.row().pad(50);
-        mainTable.add(stageSelect).width(800).height(200);
-
-        //Add table to stage
-        stage.addActor(mainTable);
-    }
-
-    public static void addSound(Skin skin, Stage stage) {
-        Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
-        boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
-        TextButton soundButton = new TextButton(String.format("Sound: %s", isSoundOn ? "On  " : "Off"), skin, "oval3");
-        soundButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
-                prefs.putBoolean(SOUND_ON, !isSoundOn);
-                prefs.flush();
-            }
-        });
-        soundButton.setX(145);
-        soundButton.setWidth(800);
-        soundButton.setY(Gdx.graphics.getHeight() / 2 - 450);
-        soundButton.setHeight(200);
-        stage.addActor(soundButton);
-        stage.act();
-        stage.draw();
     }
 }

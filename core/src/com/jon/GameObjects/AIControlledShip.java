@@ -24,6 +24,7 @@ public class AIControlledShip extends MoveableGameObject {
     private boolean dead = false;
 
     private TextureRegion image;
+
     //animation
     private Animation<TextureRegion> deathAnimation;
     private float animTime;
@@ -36,6 +37,7 @@ public class AIControlledShip extends MoveableGameObject {
 
     private float runTime;
     private boolean showHealthBar;
+    private PlayerControllerShip player;
 
     public AIControlledShip(float x,
                             float y,
@@ -46,7 +48,8 @@ public class AIControlledShip extends MoveableGameObject {
                             AI ai,
                             TextureRegion image,
                             Animation<TextureRegion> deathAnimation,
-                            boolean showHealthBar) {
+                            boolean showHealthBar,
+                            PlayerControllerShip player) {
         super(x, y, width, height, speed);
         this.ai = ai;
         this.health = health;
@@ -57,13 +60,11 @@ public class AIControlledShip extends MoveableGameObject {
         this.bullets = new Array<>();
         this.showHealthBar = showHealthBar;
         this.originalHealth = health;
+        this.player = player;
     }
 
     @Override
     public void update(float runTime) {
-    }
-
-    public void update(PlayerControllerShip player, float runTime) {
         ai.update(this, player, runTime);
         this.runTime = runTime;
     }
@@ -80,7 +81,6 @@ public class AIControlledShip extends MoveableGameObject {
     public void die() {
         ai.die(this, runTime);
         animTime = 0f;
-
         SoundEngine.playSound(Sound.EXPLOSION, 1.0f);
     }
 

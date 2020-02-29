@@ -2,6 +2,7 @@ package com.jon.enemy;
 
 import com.jon.AssetLoader;
 import com.jon.GameObjects.AIControlledShip;
+import com.jon.GameObjects.PlayerControllerShip;
 import com.jon.LevelConfig;
 import com.jon.enemy.AI.AI;
 import com.jon.enemy.AI.BulletSurroundingBossAI;
@@ -22,7 +23,10 @@ public class EnemyFactory {
     private EnemyFactory() {
     }
 
-    public static AIControlledShip create(EnemyType type, float x, float y) {
+    public static AIControlledShip create(EnemyType type,
+                                          PlayerControllerShip player,
+                                          float x,
+                                          float y) {
         switch (type) {
             case DIVING:
                 AI divingAI = new DivingEnemyAI();
@@ -35,7 +39,8 @@ public class EnemyFactory {
                         divingAI,
                         AssetLoader.getInstance().getFishShip(),
                         AssetLoader.getInstance().getYellowShipExplosion(),
-                        false);
+                        false,
+                        player);
             case STANDARD_SHOOTING:
                 AI shootingAI = new StandardShootingEnemyAI();
                 return new AIControlledShip(x,
@@ -47,9 +52,10 @@ public class EnemyFactory {
                         shootingAI,
                         AssetLoader.getInstance().getRedShip(),
                         AssetLoader.getInstance().getRedShipExplosion(),
-                        false);
+                        false,
+                        player);
             case BOSS:
-                return getBoss(x, y);
+                return getBoss(x, y, player);
             case NON_ATTACKING:
                 AI nonAttackingAI = new NonAttackingEnemyAI();
                 return new AIControlledShip(x,
@@ -61,14 +67,15 @@ public class EnemyFactory {
                         nonAttackingAI,
                         AssetLoader.getInstance().getRedShip(),
                         AssetLoader.getInstance().getRedShipExplosion(),
-                        false);
+                        false,
+                        player);
             default:
                 System.out.println("Enemy Factory - should not reach here");
                 return null;
         }
     }
 
-    private static AIControlledShip getBoss(float x, float y) {
+    private static AIControlledShip getBoss(float x, float y, PlayerControllerShip player) {
         int aiChoice = (int) Math.floor(Math.random() * 3);
         switch (aiChoice) {
             case (0):
@@ -81,7 +88,8 @@ public class EnemyFactory {
                         new PursuitShootingBossAI(),
                         AssetLoader.getInstance().getWhiteBossShip(),
                         AssetLoader.getInstance().getWhiteBossShipExplosion(),
-                        true);
+                        true,
+                        player);
             case (1):
                 return new AIControlledShip(x - 50,
                         y - 300,
@@ -92,7 +100,8 @@ public class EnemyFactory {
                         new BulletSurroundingBossAI(),
                         AssetLoader.getInstance().getOrangeBossShip(),
                         AssetLoader.getInstance().getOrangeBossShipExplosion(),
-                        true);
+                        true,
+                        player);
             case (2):
                 return new AIControlledShip(x - 50,
                         y - 200,
@@ -103,7 +112,8 @@ public class EnemyFactory {
                         new HomingBoss(),
                         AssetLoader.getInstance().getGreenBossShip(),
                         AssetLoader.getInstance().getGreenBossShipExplosion(),
-                        true);
+                        true,
+                        player);
             default:
                 System.out.println("should not reach here");
                 return new AIControlledShip(x - 50,
@@ -115,7 +125,8 @@ public class EnemyFactory {
                         new PursuitShootingBossAI(),
                         AssetLoader.getInstance().getWhiteBossShip(),
                         AssetLoader.getInstance().getWhiteBossShipExplosion(),
-                        true);
+                        true,
+                        player);
         }
     }
 }
