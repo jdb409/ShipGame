@@ -6,6 +6,8 @@ import com.jon.enums.Sound;
 
 public class SoundEngine {
 
+    private SoundEngine(){}
+
     public static void playSound(Sound sound, float volume) {
         Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
         boolean isSoundOn = prefs.getBoolean("SoundOn", true);

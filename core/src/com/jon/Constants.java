@@ -10,10 +10,11 @@ public class Constants {
     public static final int ENEMY_HEIGHT = 60;
     public static final int TOP_ENEMY_BUFFER = 105;
     public static final int TOP_AD_BUFFER = 85;
-    public static boolean HANDLE_COLLISION = true;
-    public static String PREFERENCES = "AlienInvaderPreferences";
-    public static String HIGH_SCORE = "highScore";
-    public static String HIGHEST_LEVEL = "highestLevel";
+    public static final boolean HANDLE_COLLISION = true;
+    public static final String PREFERENCES = "AlienInvaderPreferences";
+    public static final String HIGH_SCORE = "highScore";
+    public static final String HIGHEST_LEVEL = "highestLevel";
+    public static final String SOUND_ON = "SoundOn";
 
     private Constants() {
 

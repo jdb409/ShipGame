@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.jon.AssetLoader;
 import com.jon.SoundEngine;
 import com.jon.enemy.AI.AI;
 import com.jon.enums.Sound;
@@ -62,8 +61,6 @@ public class AIControlledShip extends MoveableGameObject {
 
     @Override
     public void update(float runTime) {
-//        ai.update(this, runTime);
-//        this.runTime = runTime;
     }
 
     public void update(PlayerControllerShip player, float runTime) {

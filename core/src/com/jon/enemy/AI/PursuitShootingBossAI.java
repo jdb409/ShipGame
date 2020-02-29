@@ -11,6 +11,7 @@ import java.util.Iterator;
 import static com.jon.Constants.WINDOW_HEIGHT;
 
 public class PursuitShootingBossAI implements AI {
+    private static final float NEXT_SHOT = 500;
     private int bulletSpeed = 2;
     private float nextShot;
     private boolean inPursuit;
@@ -19,7 +20,7 @@ public class PursuitShootingBossAI implements AI {
 
 
     public PursuitShootingBossAI() {
-        nextShot = this.getNextShot();
+        nextShot = NEXT_SHOT;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class PursuitShootingBossAI implements AI {
     public void updatePosition(AIControlledShip ship, PlayerControllerShip player, float runTime) {
         checkInPursuit();
         if (inPursuit) {
-            ship.setVelocity(player.getX() - ship.getX(), ((player.getY() - ship.getY())));
+            ship.setVelocity(player.getX() - ship.getX(), (player.getY() - ship.getY()));
             ship.setX(ship.getX() + (ship.getVelocity().x * 1.5f));
             ship.setY(ship.getY() + (ship.getVelocity().y * 1.5f));
         }
@@ -80,10 +81,6 @@ public class PursuitShootingBossAI implements AI {
         ship.setShowHealthBar(false);
     }
 
-    private float getNextShot() {
-        return 500;
-    }
-
     private void spawnBullets(AIControlledShip ship, PlayerControllerShip player) {
         Bullet bullet =
                 new Bullet(ship.getX() + ship.getWidth() / 3,
@@ -94,12 +91,12 @@ public class PursuitShootingBossAI implements AI {
         bullet.setSpeed(bulletSpeed);
 
         //move towards player
-        bullet.setVelocity(player.getX() - bullet.getX(), ((player.getY() - bullet.getY())));
+        bullet.setVelocity(player.getX() - bullet.getX(), (player.getY() - bullet.getY()));
         double noise  = Math.floor(Math.random() * 2);
         bullet.setVelocityY(bullet.getVelocity().y * 5 + (float) noise);
         bullet.setVelocityX(bullet.getVelocity().x * 5 + (float) noise);
         ship.getBullets().add(bullet);
         ship.setLastBulletFired(System.currentTimeMillis());
-        this.nextShot = this.getNextShot();
+        this.nextShot = this.NEXT_SHOT;
     }
 }

@@ -34,14 +34,14 @@ public class HomingBoss implements AI {
             //get original coords to go back to
             originalX = ship.getX();
             originalY = ship.getY();
-            ship.setVelocity(player.getX() - ship.getX(), ((player.getY() - ship.getY())));
+            ship.setVelocity(player.getX() - ship.getX(), (player.getY() - ship.getY()));
         }
 
         //end attack, go back.  2 second attack
         else if (attackingPlayer && (System.currentTimeMillis() - startAttackTime > 1000)) {
             attackingPlayer = false;
             lastAttackEnd = System.currentTimeMillis();
-            ship.setVelocity(originalX - ship.getX(), ((originalY - ship.getY())));
+            ship.setVelocity(originalX - ship.getX(), (originalY - ship.getY()));
         }
     }
 

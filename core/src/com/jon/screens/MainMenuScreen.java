@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.jon.AlienInvaderGame;
 import com.jon.AssetLoader;
@@ -20,6 +19,7 @@ import com.jon.Constants;
 import com.jon.LevelConfig;
 
 import static com.jon.Constants.HIGHEST_LEVEL;
+import static com.jon.Constants.SOUND_ON;
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
 
@@ -115,13 +115,13 @@ public class MainMenuScreen implements Screen {
         game.batch.draw(AssetLoader.getInstance().getBg(), 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
         game.batch.end();
         Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
-        boolean isSoundOn = prefs.getBoolean("SoundOn", true);
+        boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
         TextButton soundButton = new TextButton(String.format("Sound: %s", isSoundOn ? "On  " : "Off"), skin, "oval3");
         soundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                boolean isSoundOn = prefs.getBoolean("SoundOn", true);
-                prefs.putBoolean("SoundOn",!isSoundOn);
+                boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
+                prefs.putBoolean(SOUND_ON,!isSoundOn);
                 prefs.flush();
             }
         });

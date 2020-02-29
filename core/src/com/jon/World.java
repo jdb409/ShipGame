@@ -44,10 +44,12 @@ public class World {
     private int shipsDestroyed;
     private float runTime;
     private long spawnEnemyWaitingTime;
+    private Random rand;
 
     private AlienInvaderGame game;
 
     public World(AlienInvaderGame game) {
+        rand = new Random();
         LevelConfig.restart();
         init(game);
     }
@@ -283,7 +285,6 @@ public class World {
         double shouldSpawnItem = Math.round(Math.random() * playerControlledShip.getChanceToSpawnItem());
         boolean ableToSpawn = shouldSpawnItem == 0;
         if (ableToSpawn) {
-            Random rand = new Random();
             int r = rand.nextInt(3);
             ItemType type = ItemType.from(r);
             Item item = ItemFactory.create(type, enemyShip.getX(), enemyShip.getY());

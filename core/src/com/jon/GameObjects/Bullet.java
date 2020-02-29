@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Bullet extends MoveableGameObject {
-    private static float DEFAULT_SPEED = 5;
+    private static final float DEFAULT_SPEED = 5;
     private TextureRegion image;
 
     public Bullet(float x, float y, float width, float height, TextureRegion image) {

@@ -31,7 +31,7 @@ public class PlayerControllerShip extends MoveableGameObject {
     private static float DEFAULT_BULLET_WIDTH = 15;
     private static float DEFAULT_BULLET_HEIGHT = 24;
     private static float MAX_BULLET_WIDTH = 50;
-    public final int START_BULLET_FREQUENCY = 300;
+    public static final int START_BULLET_FREQUENCY = 300;
 
     private Array<Bullet> bullets;
     private long lastBulletFired;

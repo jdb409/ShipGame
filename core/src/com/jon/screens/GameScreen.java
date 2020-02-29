@@ -29,7 +29,7 @@ class GameScreen implements Screen {
                 screenWidth / WINDOW_WIDTH,
                 screenHeight / WINDOW_HEIGHT));
 
-        this.world.gameState = GameState.RUNNING;
+        World.gameState = GameState.RUNNING;
         this.renderer = new Renderer(game.batch, this.world, game.camera);
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
@@ -39,15 +39,15 @@ class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if (this.world.gameState == GameState.PAUSED && Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+        if (World.gameState == GameState.PAUSED && Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             game.setScreen(new MainMenuScreen(game, game.camera));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-            world.gameState = GameState.PAUSED;
+            World.gameState = GameState.PAUSED;
         }
 
-        if (this.world.gameState == GameState.COMPLETE && Gdx.input.isTouched()){
+        if (World.gameState == GameState.COMPLETE && Gdx.input.isTouched()){
             game.setScreen(new MainMenuScreen(game, game.camera));
         }
 
@@ -67,7 +67,7 @@ class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        world.gameState = GameState.PAUSED;
+        World.gameState = GameState.PAUSED;
     }
 
     @Override

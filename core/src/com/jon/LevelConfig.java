@@ -26,19 +26,22 @@ public class LevelConfig {
     public static int normalEnemyHealth;
 
 
-    private final static int defaultNumEnemyPerRow = 5;
-    private final static int defaultNumRows = 2;
-    private final static float defaultDiveSpeedMultiplier = 0;
-    private final static int defaultShootingSpeedMax = 3500;
-    private final static int defaultShootingSpeedMin = 3000;
-    private final static int defaultDivingFrequencyMax = 5000;
-    private final static int defaultDivingFrequencyMin = 4000;
-    private final static int defaultChanceToShoot = 2;
-    private final static float defaultHorizontalSpeed = .5f;
-    private final static int defaultNormalEnemyHealth = 2;
+    private static final int defaultNumEnemyPerRow = 5;
+    private static final int defaultNumRows = 2;
+    private static final float defaultDiveSpeedMultiplier = 0;
+    private static final int defaultShootingSpeedMax = 3500;
+    private static final int defaultShootingSpeedMin = 3000;
+    private static final int defaultDivingFrequencyMax = 5000;
+    private static final int defaultDivingFrequencyMin = 4000;
+    private static final int defaultChanceToShoot = 2;
+    private static final float defaultHorizontalSpeed = .5f;
+    private static final int defaultNormalEnemyHealth = 2;
 
     private static long waveStartTime;
 
+    private LevelConfig() {
+
+    }
 
     public static void restart() {
         init();
@@ -47,9 +50,7 @@ public class LevelConfig {
     public static void setNextStage() {
         waveStartTime = System.currentTimeMillis();
         numRows++;
-        if (level % 6 == 0) {
-            setLevel(++level);
-        } else if (stage++ == stagesPerLevel) {
+        if (level % 6 == 0 || stage++ == stagesPerLevel) {
             setLevel(++level);
         }
     }
@@ -136,7 +137,7 @@ public class LevelConfig {
     }
 
     private static int getWaveDuration() {
-        return (int) (Math.floor((System.currentTimeMillis() - waveStartTime) / 100)) / 2;
+        return (int) ((System.currentTimeMillis() - waveStartTime) / 100) / 2;
     }
 
 

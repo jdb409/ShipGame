@@ -4,8 +4,11 @@ import com.jon.AssetLoader;
 import com.jon.enums.ItemType;
 
 public class ItemFactory {
-    private static float ITEM_HEIGHT = 30;
-    private static float ITEM_WIDTH = 30;
+    private static final float ITEM_HEIGHT = 30;
+    private static final float ITEM_WIDTH = 30;
+
+    private ItemFactory() {
+    }
 
     public static Item create(ItemType itemType, float x, float y) {
         switch (itemType.getType()) {

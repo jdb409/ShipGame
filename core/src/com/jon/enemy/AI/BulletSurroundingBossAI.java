@@ -9,17 +9,18 @@ import java.util.Iterator;
 
 
 public class BulletSurroundingBossAI implements AI {
+    private static final float NEXT_SHOT = 2000;
     private int bulletSpeed = 2;
     private float nextShot;
 
     public BulletSurroundingBossAI() {
-        this.nextShot = this.getNextShot();
+        this.nextShot = NEXT_SHOT;
     }
 
 
     @Override
     public void updatePosition(AIControlledShip ship, PlayerControllerShip player, float runTime) {
-        ship.setVelocity(player.getX() - ship.getX(), ((player.getY() - ship.getY())));
+        ship.setVelocity(player.getX() - ship.getX(), (player.getY() - ship.getY()));
         ship.setX(ship.getX() + (ship.getVelocity().x * .5f));
         ship.setY(ship.getY() + (ship.getVelocity().y * .5f));
     }
@@ -92,11 +93,6 @@ public class BulletSurroundingBossAI implements AI {
             bullet.moveRight();
             ship.getBullets().add(bullet);
         }
-        this.nextShot = this.getNextShot();
-    }
-
-
-    private float getNextShot() {
-        return 2000;
+        this.nextShot = NEXT_SHOT;
     }
 }

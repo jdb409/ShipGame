@@ -10,7 +10,6 @@ import java.util.Random;
 import static com.jon.Constants.PLAYER_SHIP_HEIGHT;
 
 public class DivingEnemyAI implements AI {
-    private int horizontalSpeed;
     private long lastDove;
     private boolean isDiving;
     private HorizontalMovement horizontalMovement;
@@ -18,9 +17,9 @@ public class DivingEnemyAI implements AI {
     //the lower this number the more often the ship dives
     private float diveFrequency = 5000;
     private float nextDive;
-
+    private Random r;
     public DivingEnemyAI() {
-        horizontalSpeed = 2;
+        r = new Random();
         horizontalMovement = new HorizontalMovement();
         additionalDivingDepth = 20;
         //delay first dive by 1 second
@@ -78,7 +77,6 @@ public class DivingEnemyAI implements AI {
 
 
     private float getNextDive() {
-        Random r = new Random();
         return r.nextInt(LevelConfig.divingFrequencyMax - LevelConfig.divingFrequencyMin)
                 + LevelConfig.divingFrequencyMin;
     }

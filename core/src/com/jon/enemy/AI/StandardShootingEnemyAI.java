@@ -19,8 +19,10 @@ public class StandardShootingEnemyAI implements AI {
     private int horizontalSpeed;
     private HorizontalMovement horizontalMovement;
     private float nextShot;
+    private Random rand;
 
     public StandardShootingEnemyAI() {
+        rand = new Random();
         horizontalMovement = new HorizontalMovement();
         horizontalSpeed = 2;
         nextShot = this.getNextShot();
@@ -63,8 +65,7 @@ public class StandardShootingEnemyAI implements AI {
     }
 
     private float getNextShot() {
-        Random r = new Random();
-        return r.nextInt(LevelConfig.shootingSpeedMax - LevelConfig.shootingSpeedMin) + LevelConfig.shootingSpeedMin;
+        return rand.nextInt(LevelConfig.shootingSpeedMax - LevelConfig.shootingSpeedMin) + LevelConfig.shootingSpeedMin;
     }
 
     @Override

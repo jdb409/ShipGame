@@ -19,6 +19,9 @@ public class EnemyFactory {
     private static float SHOOTING_ENEMY_SPEED = 2;
     private static float DIVING_ENEMY_SPEED = 10;
 
+    private EnemyFactory() {
+    }
+
     public static AIControlledShip create(EnemyType type, float x, float y) {
         switch (type) {
             case DIVING:

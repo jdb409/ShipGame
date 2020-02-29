@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-abstract public class Item extends MoveableGameObject {
+public abstract class Item extends MoveableGameObject {
     private static float ITEM_SPEED = 5f;
 
     private TextureRegion image;

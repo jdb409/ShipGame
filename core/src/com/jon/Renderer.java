@@ -53,7 +53,7 @@ public class Renderer {
         batch.disableBlending();
         batch.draw(LevelConfig.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
         batch.enableBlending();
-        switch (this.world.gameState) {
+        switch (World.gameState) {
             case READY:
                 handleReady();
                 break;
@@ -138,7 +138,7 @@ public class Renderer {
         Integer highScore = prefs.getInteger(HIGH_SCORE);
         if (highScore == null || highScore <= LevelConfig.score) {
             font.getData().setScale(2);
-            font.draw(batch, String.format("New High Score: %s !!!!\n", LevelConfig.score), WINDOW_WIDTH / 2 - 150, Constants.WINDOW_HEIGHT / 2 + 60);
+            font.draw(batch, String.format("New High Score: %s !!!!%n", LevelConfig.score), WINDOW_WIDTH / 2 - 150, Constants.WINDOW_HEIGHT / 2 + 60);
             font.getData().setScale(1);
         }
     }
