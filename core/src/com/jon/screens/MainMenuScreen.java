@@ -1,25 +1,16 @@
 package com.jon.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.jon.AlienInvaderGame;
 import com.jon.AssetLoader;
-import com.jon.Constants;
-import com.jon.LevelConfig;
+import com.jon.Gui.MenuGui;
 
-import static com.jon.Constants.HIGHEST_LEVEL;
-import static com.jon.Constants.SOUND_ON;
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
 
@@ -38,70 +29,11 @@ public class MainMenuScreen implements Screen {
 
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
     public void show() {
-        Table mainTable = new Table();
-        //Set table to fill stage
-        mainTable.setFillParent(true);
-
-        skin.getFont("title").getData().setScale(3);
-        TextButton startButton = new TextButton("Start", skin, "oval1");
-        TextButton stageSelect = new TextButton("Choose Stage", skin, "oval4");
-        //Add listeners to buttons
-        startButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                LevelConfig.setLevel(6);
-                game.setScreen(new GameScreen(game));
-                dispose();
-            }
-        });
-
-        stageSelect.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Dialog dialog = new Dialog("", skin, "dialog") {
-                    public void result(Object obj) {
-                        LevelConfig.setLevel((int) obj);
-                        game.setScreen(new GameScreen(game));
-                    }
-                };
-                TextButton.TextButtonStyle stageStyle = skin.get("oval1", TextButton.TextButtonStyle.class);
-                TextButton.TextButtonStyle exitStyle = skin.get("oval4", TextButton.TextButtonStyle.class);
-
-                Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
-                Integer highestLevel = Math.max(prefs.getInteger(HIGHEST_LEVEL, 0), 1);
-                for (int i = 1; i <= highestLevel; i++) {
-                    dialog.button(Integer.toString(i), i, stageStyle);
-                    if (i % 6 == 0){
-                        dialog.getButtonTable().row();
-                    }
-                }
-                TextButton goBack = new TextButton("Go Back", exitStyle);
-                goBack.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        dialog.hide();
-                    }
-                });
-
-                dialog.row().pad(100);
-                dialog.add(goBack);
-                dialog.show(stage);
-            }
-        });
-
-
-        //Add buttons to table
-        mainTable.add(startButton).width(800).height(200);
-        mainTable.row().pad(50);
-        mainTable.add(stageSelect).width(800).height(200);
-
-        //Add table to stage
-        stage.addActor(mainTable);
+        MenuGui.addMenu(game, skin, stage);
     }
 
     @Override
@@ -114,24 +46,7 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(AssetLoader.getInstance().getBg(), 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
         game.batch.end();
-        Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
-        boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
-        TextButton soundButton = new TextButton(String.format("Sound: %s", isSoundOn ? "On  " : "Off"), skin, "oval3");
-        soundButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
-                prefs.putBoolean(SOUND_ON,!isSoundOn);
-                prefs.flush();
-            }
-        });
-        soundButton.setX(145);
-        soundButton.setWidth(800);
-        soundButton.setY(Gdx.graphics.getHeight()/2 - 450);
-        soundButton.setHeight(200);
-        stage.addActor(soundButton);
-        stage.act();
-        stage.draw();
+        MenuGui.addSound(skin, stage);
     }
 
 

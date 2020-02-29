@@ -12,7 +12,7 @@ import com.jon.World;
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
 
-class GameScreen implements Screen {
+public class GameScreen implements Screen {
     private AlienInvaderGame game;
     private World world;
     private Renderer renderer;

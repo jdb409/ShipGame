@@ -16,6 +16,7 @@ import com.jon.GameObjects.items.Item;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import static com.jon.Constants.HIGH_SCORE;
+import static com.jon.Constants.SOUND_ON;
 import static com.jon.Constants.WINDOW_HEIGHT;
 import static com.jon.Constants.WINDOW_WIDTH;
 
@@ -126,6 +127,7 @@ public class Renderer {
     private void handlePaused() {
         Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
         Integer highScore = prefs.getInteger(HIGH_SCORE);
+        boolean isSoundOn = prefs.getBoolean(SOUND_ON, true);
         if (highScore != null) {
             font.draw(batch, "High Score: " + highScore, WINDOW_WIDTH / 2 - 50, Constants.WINDOW_HEIGHT / 2 + 60);
         }
@@ -145,7 +147,7 @@ public class Renderer {
 
     private void drawLives() {
         batch.draw(playerControllerShip.getOriginalImage(), 5, 5, 20, 25);
-        font.draw(batch, String.format("X %d",playerControllerShip.getHealth()),30,25);
+        font.draw(batch, String.format("X %d", playerControllerShip.getHealth()), 30, 25);
 
     }
 

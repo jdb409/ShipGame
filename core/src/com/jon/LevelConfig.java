@@ -6,6 +6,8 @@ import com.jon.enums.ScoreEvent;
 
 import lombok.Getter;
 
+import static com.jon.Constants.BOSS_LEVEL_MODULO;
+
 public class LevelConfig {
     @Getter
     public static int level;
@@ -50,7 +52,7 @@ public class LevelConfig {
     public static void setNextStage() {
         waveStartTime = System.currentTimeMillis();
         numRows++;
-        if (level % 6 == 0 || stage++ == stagesPerLevel) {
+        if (level % BOSS_LEVEL_MODULO == 0 || stage++ == stagesPerLevel) {
             setLevel(++level);
         }
     }
@@ -79,7 +81,6 @@ public class LevelConfig {
     private static void init() {
         //check if user selected a level
         waveStartTime = System.currentTimeMillis();
-        System.out.println(waveStartTime);
         if (level == 0) {
             level = 1;
             diveSpeedMultiplier = defaultDiveSpeedMultiplier;

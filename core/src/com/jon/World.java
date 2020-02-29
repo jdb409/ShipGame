@@ -21,6 +21,7 @@ import java.util.Random;
 
 import lombok.Data;
 
+import static com.jon.Constants.BOSS_LEVEL_MODULO;
 import static com.jon.Constants.ENEMY_HEIGHT;
 import static com.jon.Constants.ENEMY_WIDTH;
 import static com.jon.Constants.HANDLE_COLLISION;
@@ -246,7 +247,7 @@ public class World {
 
 
     private void spawnEnemies() {
-        if (LevelConfig.getLevel() % 6 == 0) {
+        if (LevelConfig.getLevel() % BOSS_LEVEL_MODULO == 0) {
             handleBossLevelEnemySpawn();
         } else {
             handleNormalLevelEnemySpawn();
