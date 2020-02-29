@@ -25,8 +25,8 @@ import static com.jon.Constants.WINDOW_HEIGHT;
 @EqualsAndHashCode(callSuper = false)
 public class PlayerControllerShip extends MoveableGameObject {
     private static int DEFAULT_HEALTH = 3;
-    private static TextureRegion defaultImage = AssetLoader.blueShip;
-    private static TextureRegion bulletImage = AssetLoader.blueShot;
+    private static TextureRegion defaultImage = AssetLoader.getInstance().getBlueShip();
+    private static TextureRegion bulletImage = AssetLoader.getInstance().getBlueShot();
     private static float DEFAULT_SPEED = 15;
     private static float DEFAULT_BULLET_WIDTH = 15;
     private static float DEFAULT_BULLET_HEIGHT = 24;

@@ -51,7 +51,7 @@ public class BulletSurroundingBossAI implements AI {
                             ship.getY() + ship.getHeight() + 5,
                             15,
                             30,
-                            AssetLoader.orangeBossShot1);
+                            AssetLoader.getInstance().getOrangeBossShot1());
             bullet.setSpeed(bulletSpeed);
             bullet.moveUp();
             ship.getBullets().add(bullet);
@@ -63,7 +63,7 @@ public class BulletSurroundingBossAI implements AI {
                             ship.getY() - 5,
                             15,
                             30,
-                            AssetLoader.orangeBossShot1);
+                            AssetLoader.getInstance().getOrangeBossShot1());
             bullet.setSpeed(bulletSpeed);
             bullet.moveDown();
             ship.getBullets().add(bullet);
@@ -75,7 +75,7 @@ public class BulletSurroundingBossAI implements AI {
                             ship.getY() + h,
                             15,
                             30,
-                            AssetLoader.orangeBossShot1);
+                            AssetLoader.getInstance().getOrangeBossShot1());
             bullet.setSpeed(bulletSpeed);
             bullet.moveLeft();
             ship.getBullets().add(bullet);
@@ -87,7 +87,7 @@ public class BulletSurroundingBossAI implements AI {
                             ship.getY() + h,
                             15,
                             30,
-                            AssetLoader.orangeBossShot1);
+                            AssetLoader.getInstance().getOrangeBossShot1());
             bullet.setSpeed(bulletSpeed);
             bullet.moveRight();
             ship.getBullets().add(bullet);

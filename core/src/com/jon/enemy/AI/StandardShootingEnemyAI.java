@@ -79,7 +79,7 @@ public class StandardShootingEnemyAI implements AI {
                         ship.getY(),
                         ship.getBulletWidth(),
                         ship.getBulletHeight(),
-                        AssetLoader.redShot);
+                        AssetLoader.getInstance().getRedShot());
         bullet.setSpeed(bulletSpeed);
         bullet.moveDown();
         ship.getBullets().add(bullet);

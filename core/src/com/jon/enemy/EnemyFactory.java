@@ -30,8 +30,8 @@ public class EnemyFactory {
                         DIVING_ENEMY_SPEED,
                         LevelConfig.normalEnemyHealth,
                         divingAI,
-                        AssetLoader.fishShip,
-                        AssetLoader.yellowShipExplosion,
+                        AssetLoader.getInstance().getFishShip(),
+                        AssetLoader.getInstance().getYellowShipExplosion(),
                         false);
             case STANDARD_SHOOTING:
                 AI shootingAI = new StandardShootingEnemyAI();
@@ -42,8 +42,8 @@ public class EnemyFactory {
                         SHOOTING_ENEMY_SPEED,
                         LevelConfig.normalEnemyHealth,
                         shootingAI,
-                        AssetLoader.redShip,
-                        AssetLoader.redShipExplosion,
+                        AssetLoader.getInstance().getRedShip(),
+                        AssetLoader.getInstance().getRedShipExplosion(),
                         false);
             case BOSS:
                 return getBoss(x, y);
@@ -54,10 +54,10 @@ public class EnemyFactory {
                         ENEMY_WIDTH,
                         ENEMY_HEIGHT,
                         SHOOTING_ENEMY_SPEED,
-                        2,
+                        LevelConfig.normalEnemyHealth,
                         nonAttackingAI,
-                        AssetLoader.redShip,
-                        AssetLoader.redShipExplosion,
+                        AssetLoader.getInstance().getRedShip(),
+                        AssetLoader.getInstance().getRedShipExplosion(),
                         false);
             default:
                 System.out.println("Enemy Factory - should not reach here");
@@ -76,8 +76,8 @@ public class EnemyFactory {
                         SHOOTING_ENEMY_SPEED,
                         20,
                         new PursuitShootingBossAI(),
-                        AssetLoader.whiteBossShip,
-                        AssetLoader.whiteBossShipExplosion,
+                        AssetLoader.getInstance().getWhiteBossShip(),
+                        AssetLoader.getInstance().getWhiteBossShipExplosion(),
                         true);
             case (1):
                 return new AIControlledShip(x - 50,
@@ -87,8 +87,8 @@ public class EnemyFactory {
                         SHOOTING_ENEMY_SPEED,
                         20,
                         new BulletSurroundingBossAI(),
-                        AssetLoader.orangeBossShip,
-                        AssetLoader.orangeBossShipExplosion,
+                        AssetLoader.getInstance().getOrangeBossShip(),
+                        AssetLoader.getInstance().getOrangeBossShipExplosion(),
                         true);
             case (2):
                 return new AIControlledShip(x - 50,
@@ -98,8 +98,8 @@ public class EnemyFactory {
                         SHOOTING_ENEMY_SPEED,
                         20,
                         new HomingBoss(),
-                        AssetLoader.greenBossShip,
-                        AssetLoader.greenBossShipExplosion,
+                        AssetLoader.getInstance().getGreenBossShip(),
+                        AssetLoader.getInstance().getGreenBossShipExplosion(),
                         true);
             default:
                 System.out.println("should not reach here");
@@ -110,10 +110,9 @@ public class EnemyFactory {
                         SHOOTING_ENEMY_SPEED,
                         20,
                         new PursuitShootingBossAI(),
-                        AssetLoader.whiteBossShip,
-                        AssetLoader.whiteBossShipExplosion,
+                        AssetLoader.getInstance().getWhiteBossShip(),
+                        AssetLoader.getInstance().getWhiteBossShipExplosion(),
                         true);
-
         }
     }
 }

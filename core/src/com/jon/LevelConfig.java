@@ -144,11 +144,11 @@ public class LevelConfig {
         int bgImg = (int) Math.floor(Math.random() * 3);
         switch (bgImg) {
             case 0:
-                return AssetLoader.bg;
+                return AssetLoader.getInstance().getBg();
             case 1:
-                return AssetLoader.bg2;
+                return AssetLoader.getInstance().getBg2();
             case 2:
-                return AssetLoader.bg3;
+                return AssetLoader.getInstance().getBg3();
         }
         return null;
     }

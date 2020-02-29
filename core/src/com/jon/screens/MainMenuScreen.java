@@ -33,7 +33,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(AlienInvaderGame game, OrthographicCamera camera) {
         this.game = game;
         this.camera = camera;
-        this.skin = AssetLoader.menuSkin;
+        this.skin = AssetLoader.getInstance().getMenuSkin();
         camera.update();
 
         this.stage = new Stage(new ScreenViewport());
@@ -47,8 +47,6 @@ public class MainMenuScreen implements Screen {
         //Set table to fill stage
         mainTable.setFillParent(true);
 
-
-        TextureRegionDrawable settingDrawable = new TextureRegionDrawable(AssetLoader.settingsBtn);
         skin.getFont("title").getData().setScale(3);
         TextButton startButton = new TextButton("Start", skin, "oval1");
         TextButton stageSelect = new TextButton("Choose Stage", skin, "oval4");
@@ -56,7 +54,7 @@ public class MainMenuScreen implements Screen {
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                LevelConfig.setLevel(1);
+                LevelConfig.setLevel(6);
                 game.setScreen(new GameScreen(game));
                 dispose();
             }
@@ -114,7 +112,7 @@ public class MainMenuScreen implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.batch.draw(AssetLoader.bg, 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
+        game.batch.draw(AssetLoader.getInstance().getBg(), 0, 0, 0, scrollY, WINDOW_WIDTH, WINDOW_HEIGHT);
         game.batch.end();
         Preferences prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
         boolean isSoundOn = prefs.getBoolean("SoundOn", true);

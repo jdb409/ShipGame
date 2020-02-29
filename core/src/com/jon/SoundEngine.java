@@ -15,16 +15,16 @@ public class SoundEngine {
 
         switch (sound) {
             case EXPLOSION:
-                AssetLoader.explosion.play(volume);
+                AssetLoader.getInstance().getExplosion().play(volume);
                 break;
             case GET_ITEM:
-                AssetLoader.getItem.play(volume);
+                AssetLoader.getInstance().getGetItem().play(volume);
                 break;
             case PLAYER_BULLET:
-                AssetLoader.gunShot.play(volume);
+                AssetLoader.getInstance().getGunShot().play(volume);
                 break;
             case PLAYER_HURT:
-                AssetLoader.playerHurt.play(volume);
+                AssetLoader.getInstance().getPlayerHurt().play(volume);
                 break;
         }
 

@@ -39,7 +39,7 @@ public class Renderer {
         this.world = world;
         this.camera = camera;
         this.font = new BitmapFont();
-        shapeDrawer = new ShapeDrawer(batch, AssetLoader.whitePixelRegion);
+        shapeDrawer = new ShapeDrawer(batch, AssetLoader.getInstance().getWhitePixelRegion());
         initGameObjects();
     }
 
@@ -74,7 +74,7 @@ public class Renderer {
     }
 
     public void dispose() {
-        AssetLoader.dispose();
+        AssetLoader.getInstance().dispose();
     }
 
 

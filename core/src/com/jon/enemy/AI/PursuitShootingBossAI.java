@@ -90,7 +90,7 @@ public class PursuitShootingBossAI implements AI {
                         ship.getY() - 30,
                         15,
                         30,
-                        AssetLoader.whiteBossShot1);
+                        AssetLoader.getInstance().getWhiteBossShot1());
         bullet.setSpeed(bulletSpeed);
 
         //move towards player
